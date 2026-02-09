@@ -9,7 +9,33 @@
 <body>
     <header class="header">
         <img class="header--img" src="Images/Logo.png" alt="Logo">
+        
+        <nav class="header--nav">
+            
+            <a class="header--nav__item" href="#">Proximos partidos</a>
+            <a class="header--nav__item" href="#">Estadisticas de clubs</a>
+            <a class="header--nav__item" href="#">Canales</a>
+            <a class="header--nav__item" href="#">Patroconadores</a>
+            <a class="header--nav__item" href="#">Iniciar sesion</a>
+
+        </nav>
 
     </header>
+
+    <section class="leagues__Container">
+        <div class="leagues__Container_buttons" id="leaguesMenu">
+        <button class="leagues__Container_buttons--b" id="Liga" type="button">Liga</button>
+        <button class="leagues__Container_buttons--b" id="Supercopa" type="button">Supercopa</button>
+        <button class="leagues__Container_buttons--b" id="EuropaLeague" type="button">EuropaLeague</button>
+        <button class="leagues__Container_buttons--b" id="Mundialito" type="button">Mundialito de clubs</button>
+        <button class="leagues__Container_buttons--b" id="CopaRey" type="button">Copa del Rey</button>
+        <button class="leagues__Container_buttons--b" id="ChampionsLeague" type="button">Champions League</button>
+        </div>
+
+        <div id="panel"></div>
+    </section>
+
+<script src="app.js"></script>
+
 </body>
 </html>
