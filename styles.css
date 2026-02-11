@@ -1,17 +1,164 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
+:root{
+  --bg: #0b1220;
+  --surface: #0f172a;
+  --surface2: #111c33;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.10);
+  --accent: #22c55e;     /* verde deportivo */
+  --accent2: #38bdf8;    /* azul info */
 }
 
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 600px at 15% 0%, #10224a 0%, var(--bg) 55%);
+  color: var(--text);
+}
+
+/* HEADER */
 .header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #333;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 22px;
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .header--img{
-    width: 67px;
+  width: 68px;
+  height: auto;
+}
+
+.header--nav{
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.header--nav__item{
+  color: var(--text);
+  text-decoration: none;
+  font-size: 15px;
+  opacity: .9;
+  padding: 8px 10px;
+  border-radius: 10px;
+  transition: transform .12s ease, background .12s ease, opacity .12s ease;
+}
+
+.header--nav__item:hover{
+  background: rgba(255,255,255,0.06);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.header--nav__item--cta{
+  border: 1px solid rgba(34,197,94,0.35);
+  background: rgba(34,197,94,0.12);
+}
+
+/* SECCIÓN DE BOTONES */
+.leagues__Container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 14px;
+  background: linear-gradient(180deg, rgba(56,189,248,0.10), rgba(34,197,94,0.06));
+  border-bottom: 1px solid var(--border);
+}
+
+.leagues__Container_buttons{
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.leagues__Container_buttons--b{
+  padding: 12px 12px;
+  font-size: 14px;
+  color: var(--text);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+  transition: transform .12s ease, border-color .12s ease, background .12s ease;
+}
+
+.leagues__Container_buttons--b:hover{
+  transform: translateY(-1px);
+  border-color: rgba(56,189,248,0.35);
+  background: rgba(17, 28, 51, 0.85);
+}
+
+.leagues__Container_buttons--b.is-active{
+  border-color: rgba(34,197,94,0.55);
+  background: rgba(34,197,94,0.12);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.08);
+}
+
+/* CONTENIDO (2 noticias) */
+.container_advertisement{
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 22px 14px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+@media (max-width: 850px){
+  .leagues__Container_buttons{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .container_advertisement{
+    grid-template-columns: 1fr;
+  }
+}
+
+.container_advertisementLeft,
+.container_advertisementRight{
+  min-height: 140px;
+}
+
+/* Tarjetas de noticia */
+.newsCard{
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+}
+
+.newsCard__tag{
+  display: inline-block;
+  font-size: 12px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(56,189,248,0.35);
+  background: rgba(56,189,248,0.12);
+  color: var(--text);
+  margin-bottom: 10px;
+}
+
+.newsCard h3{
+  margin: 0 0 8px;
+  font-size: 18px;
+  line-height: 1.2;
+}
+
+.newsCard p{
+  margin: 0;
+  color: var(--muted);
+  line-height: 1.45;
 }
