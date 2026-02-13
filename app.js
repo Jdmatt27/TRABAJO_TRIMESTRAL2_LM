@@ -4,75 +4,136 @@ const panelRight = document.getElementById("panelRight");
 
 const contenido = {
   Liga: {
-    left: 
-    `
-      <h3>Liga</h3>
-      <p>Anuncio izquierda Liga</p>
-    `,
-    right: 
-    `
-      <h3>Liga</h3>
-      <p>Anuncio derecha Liga</p>
+    left: `
+    <article >
+        <div class="adMedia">
+          <video class="adVideo" autoplay muted loop playsinline preload="metadata">
+            <source src="Videos/LigaLeft.mp4" type="video/mp4">
+          </video>
+          <button class="adMute" type="button" aria-label="Silenciar/Activar sonido">🔇</button>
+        </div>
+    </article>
+`,
+
+    right: `
+    <article class="adCard">
+      <span >Patrocinado</span>
+      <h3>Entradas oficiales</h3>
+      <p>Compra entradas para los próximos partidos y vive el estadio.</p>
+
+      <a class="adBtn" href="https://www.laliga.com/" target="_blank">Ver oferta</a>
+    </article>
+
     `
   },
+
   Supercopa: {
-    left: 
-    `
-      <h3>Supercopa</h3>
-      <p>Anuncio izquierda Supercopa</p>
+    left: `
+      <article >
+        <div class="adMedia">
+          <video class="adVideo" autoplay muted loop playsinline preload="metadata">
+            <source src="Videos/Supercopa.mp4" type="video/mp4">
+          </video>
+          <button class="adMute" type="button" aria-label="Silenciar/Activar sonido">🔇</button>
+        </div>
+      </article>
     `,
-    right: 
-    `
-      <h3>Supercopa</h3>
-      <p>Anuncio derecha Supercopa</p>
+    right: `
+    <article class="adCard">
+      <span >Patrocinado</span>
+      <h3>Entradas oficiales</h3>
+      <p>Compra entradas para los próximos partidos y vive el estadio.</p>
+
+      <a class="adBtn" href="https://es.uefa.com/uefasupercup/" target="_blank">Ver oferta</a>
+    </article>
     `
   },
+
   EuropaLeague: {
-    left: 
-    `
-      <h3>Europa League</h3>
-      <p>Anuncio izquierda Europa</p>
+    left: `
+      <article >
+        <div class="adMedia">
+          <video class="adVideo" autoplay muted loop playsinline preload="metadata">
+            <source src="Videos/EuropaLeague.mp4" type="video/mp4">
+          </video>
+          <button class="adMute" type="button" aria-label="Silenciar/Activar sonido">🔇</button>
+        </div>
+      </article>
     `,
-    right: 
-    `
-      <h3>Europa League</h3>
-      <p>Anuncio derecha Europa</p>
+    right: `
+    <article class="adCard">
+      <span >Patrocinado</span>
+      <h3>Entradas oficiales</h3>
+      <p>Compra entradas para los próximos partidos y vive el estadio.</p>
+
+      <a class="adBtn" href="https://es.uefa.com/uefaeuropaleague/" target="_blank">Ver oferta</a>
+    </article>
     `
   },
+
   Mundialito: {
-    left: 
-    `
-    <h3>Mundialito</h3>
-      <p>Anuncio izquierda Mundialito</p>
+    left: `
+      <article >
+        <div class="adMedia">
+          <video class="adVideo" autoplay muted loop playsinline preload="metadata">
+            <source src="Videos/Mundialito.mp4" type="video/mp4">
+          </video>
+          <button class="adMute" type="button" aria-label="Silenciar/Activar sonido">🔇</button>
+        </div>
+      </article>
     `,
-    right: 
-    `
-      <h3>Mundialito</h3>
-      <p>Anuncio derecha Mundialito</p>
+    right: `
+    <article class="adCard">
+      <span >Patrocinado</span>
+      <h3>Entradas oficiales</h3>
+      <p>Compra entradas para los próximos partidos y vive el estadio.</p>
+
+      <a class="adBtn" href="https://www.fifa.com/es/tournaments/mens/club-world-cup/usa-2025" target="_blank">Ver oferta</a>
+    </article>
     `
   },
+
   CopaRey: {
-    left: 
-    `
-      <h3>Copa del Rey</h3>
-      <p>Anuncio izquierda Copa</p>
+    left: `
+      <article >
+        <div class="adMedia">
+          <video class="adVideo" autoplay muted loop playsinline preload="metadata">
+            <source src="Videos/CopaRey.mp4" type="video/mp4">
+          </video>
+          <button class="adMute" type="button" aria-label="Silenciar/Activar sonido">🔇</button>
+        </div>
+      </article>
     `,
-    right: 
-    `
-      <h3>Copa del Rey</h3>
-      <p>Anuncio derecha Copa</p>
+    right: `
+    <article class="adCard">
+      <span >Patrocinado</span>
+      <h3>Entradas oficiales</h3>
+      <p>Compra entradas para los próximos partidos y vive el estadio.</p>
+
+      <a class="adBtn" href="https://www.laliga.com/otras-competiciones/copa-del-rey" target="_blank">Ver oferta</a>
+    </article>
     `
   },
+
   ChampionsLeague: {
-    left: 
-    `
-      <h3>Champions</h3>
-      <p>Anuncio izquierda Champions</p>
+    left: `
+      <article >
+        <div class="adMedia">
+          <video class="adVideo" autoplay muted loop playsinline preload="metadata">
+            <source src="Videos/Champions.mp4" type="video/mp4">
+          </video>
+          <button class="adMute" type="button" aria-label="Silenciar/Activar sonido">🔇</button>
+        </div>
+      </article>
     `,
-    right: 
-    `
-      <h3>Champions</h3>
-      <p>Anuncio derecha Champions</p>
+    right: `
+    <article class="adCard">
+      <span >Patrocinado</span>
+      <h3>Entradas oficiales</h3>
+      <p>Compra entradas para los próximos partidos y vive el estadio.</p>
+
+      <a class="adBtn" href="https://www.uefa.com/uefachampionsleague/fixtures-results/#/d/2026-02-17" target="_blank">Ver oferta</a>
+    </article>
     `
   }
 };
@@ -89,4 +150,23 @@ menu.addEventListener("click", (e) => {
   if (!btn) return;
 
   render(btn.id);
+  return true;
 });
+
+document.addEventListener("click", (e) => {
+  const muteBtn = e.target.closest(".adMute");
+  if (!muteBtn) return;
+
+  const video = muteBtn.closest(".adMedia")?.querySelector("video");
+  if (!video) return;
+
+  video.muted = !video.muted;
+  muteBtn.textContent = video.muted ? "🔇" : "🔊";
+});
+
+document.addEventListener("click", () => {
+  document.querySelectorAll("video").forEach(v => v.muted = false);
+  document.querySelectorAll(".adMute").forEach(btn => btn.textContent = "🔊");
+  
+}, { once: true });
+

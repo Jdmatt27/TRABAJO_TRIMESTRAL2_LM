@@ -5,8 +5,8 @@
   --text: #e5e7eb;
   --muted: #9ca3af;
   --border: rgba(255,255,255,0.10);
-  --accent: #22c55e;     /* verde deportivo */
-  --accent2: #38bdf8;    /* azul info */
+  --accent: #22c55e; 
+  --accent2: #38bdf8;    
 }
 
 *{
@@ -31,8 +31,6 @@ body{
   border-bottom: 1px solid var(--border);
   backdrop-filter: blur(10px);
   position: sticky;
-  top: 0;
-  z-index: 10;
 }
 
 .header--img{
@@ -46,6 +44,26 @@ body{
   flex-wrap: wrap;
 }
 
+.nav--mobile{
+
+  display: none;
+}
+
+.dropdown{
+  display: flex;
+}
+
+.dropdown__btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown__list{
+  display: flex;
+  flex-direction: column;
+}
+
 .header--nav__item{
   color: var(--text);
   text-decoration: none;
@@ -53,7 +71,6 @@ body{
   opacity: .9;
   padding: 8px 10px;
   border-radius: 10px;
-  transition: transform .12s ease, background .12s ease, opacity .12s ease;
 }
 
 .header--nav__item:hover{
@@ -67,13 +84,11 @@ body{
   background: rgba(34,197,94,0.12);
 }
 
-/* SECCIÓN DE BOTONES */
 .leagues__Container{
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 24px 14px;
-  background: linear-gradient(180deg, rgba(56,189,248,0.10), rgba(34,197,94,0.06));
   border-bottom: 1px solid var(--border);
 }
 
@@ -92,7 +107,6 @@ body{
   border: 1px solid var(--border);
   border-radius: 14px;
   cursor: pointer;
-  transition: transform .12s ease, border-color .12s ease, background .12s ease;
 }
 
 .leagues__Container_buttons--b:hover{
@@ -107,7 +121,6 @@ body{
   box-shadow: 0 0 0 3px rgba(34,197,94,0.08);
 }
 
-/* CONTENIDO (2 noticias) */
 .container_advertisement{
   width: min(1100px, 100%);
   margin: 0 auto;
@@ -131,34 +144,65 @@ body{
   min-height: 140px;
 }
 
-/* Tarjetas de noticia */
-.newsCard{
-  background: rgba(15, 23, 42, 0.75);
-  border: 1px solid var(--border);
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+.adMedia{
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.25);
 }
 
-.newsCard__tag{
-  display: inline-block;
-  font-size: 12px;
-  padding: 4px 10px;
+.adVideo{
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.adMute{
+  position: absolute;
+  top: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
   border-radius: 999px;
-  border: 1px solid rgba(56,189,248,0.35);
-  background: rgba(56,189,248,0.12);
-  color: var(--text);
-  margin-bottom: 10px;
+  padding: 8px 10px;
+  cursor: pointer;
+  right: 12px;
 }
 
-.newsCard h3{
-  margin: 0 0 8px;
-  font-size: 18px;
-  line-height: 1.2;
+.adBtn{
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #fff;
+  background: rgba(34,197,94,0.18);
+  border: 1px solid rgba(34,197,94,0.35);
+}
+.adBtn:hover{
+  background: rgba(34,197,94,0.28);
 }
 
-.newsCard p{
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.45;
+
+@media (max-width: 850px){
+
+  .header--nav{
+    display: none;
+  }
+
+  .nav--mobile{
+    display: block;
+    
+  }
+
+
+  .leagues__Container_buttons{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .container_advertisement{
+    grid-template-columns: 1fr;
+  }
 }
