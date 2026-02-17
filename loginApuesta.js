@@ -25,6 +25,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Guardamos el texto original del botón y ponemos modo "Cargando"
         const originalText = loginBtn.textContent;
+        const initialWidth = loginBtn.offsetWidth; // Get current width
+        loginBtn.style.minWidth = `${initialWidth}px`; // Set as min-width
         loginBtn.classList.add('btn--loading');
         loginBtn.textContent = 'Verificando...';
 
@@ -35,6 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (email === 'admin@furbo.com' && password === '1234') {
                 
                 // === SI TODO ESTÁ BIEN ===
+                localStorage.setItem('isLoggedIn', 'true');
+
                 loginBtn.textContent = '¡Entrando!';
                 loginBtn.style.background = '#22c55e'; // Se pone verde
                 

@@ -47,6 +47,14 @@ body {
     flex: 1;
 }
 
+.page--añadirSaldo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+}
+
 .login--section {
     display: flex;
     flex-direction: column;

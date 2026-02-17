@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a href="indexApuesta.html" class="brand">
+            <span class="brand__mark" aria-hidden="true">Fb</span>
+            <span class="brand__text">
+                <span class="brand__name">FurboBet</span>
+                <span class="brand__sub">Furbo para todos · Para todos lit</span>
+            </span>
+        </a>
+
+        <nav class="nav">
+            <a class="nav__link" href="">Estadisticas</a>
+            <a class="nav__link" href="">Ligas</a>
+            <a class="nav__link" href="">Futdraft</a>
+            <a class="nav__link" href="">Más opciones</a>
+        </nav>
+
+        <div class="header__right">
+            <a class="btn" href="loginApuesta.html">Login</a>
+        </div>
+    </header>
+
+    <main class="page--añadirSaldo">
+        <section class="hero">
+            <div class="hero__inner">
+                <h1 class="page__title">Añadir saldo a tu cuenta</h1>
+                <p class="page__subtitle">Aquí puedes añadir saldo a tu cuenta para realizar tus apuestas.</p>
+
+                <form class="form" id="addBalanceForm" novalidate>
+                    <div class="form__group">
+                        <label for="amount" class="form__label">Cantidad a añadir</label>
+                        <input type="number" id="amount" name="amount" class="form__input" required placeholder="50" min="1">
+                    </div>
+
+                    <div class="form__actions">
+                        <button type="submit" class="btn" id="addBalanceBtn">Añadir saldo</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer__text">
+            <p>© 2026 FurboBet. Todos los derechos reservados.</p>
+            <p>Juega con responsabilidad.</p>
+        </div>
+    </footer>
+    
+    <script src="sesion.js"></script>
+</body>
+</html>
