@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Esperamos medio segundo y redirigimos
                 setTimeout(() => {
                     // 👇👇 CAMBIA ESTO POR LA PÁGINA A LA QUE QUIERES IR 👇👇
-                    window.location.href = 'index.html'; 
+                    window.location.href = 'indexApuesta.html'; 
                 }, 500);
 
             } else {
