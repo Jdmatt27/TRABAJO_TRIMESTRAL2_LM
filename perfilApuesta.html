@@ -26,22 +26,71 @@
         <div class="header__right"></div>
     </header>
 
-    <main class="page--login">
-        <div class="hero">
-            <div class="hero__inner">
-                <h1 class="page__title">Perfil de Usuario</h1>
-                <p class="page__subtitle">Bienvenido a tu perfil, aquí puedes gestionar tus apuestas y ver tus
-                    estadísticas.</p>
+    <main class="page page--profile">
+    <div class="dashboard-grid">
+        
+        <aside class="profile-card">
+            <div class="profile-avatar">
+                <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Felix" alt="User Avatar">
+            </div>
+            <h2 class="profile-name" id="uEmail">usuario@email.com</h2>
+            <div class="profile-badge">👑 VIP Nivel 1</div>
+            
+            <div class="profile-menu">
+                <a href="#" class="menu-item active">Resumen</a>
+                <a href="#" class="menu-item">Historial de Apuestas</a>
+                <a href="#" class="menu-item">Transacciones</a>
+                <a href="#" class="menu-item text-danger">Cerrar Sesión</a>
+            </div>
+        </aside>
 
-                <p>Email: <strong id="uEmail"></strong>
+        <section class="profile-content">
+            
+            <div class="wallet-card">
+                <div class="wallet-info">
+                    <span class="wallet-label">Saldo Disponible</span>
+                    <div class="wallet-balance saldo-usuario">0.00 €</div>
+                </div>
+                <div class="wallet-actions">
+                    <button class="btn-action btn-deposit">Depositar</button>
+                    <button class="btn-action btn-withdraw">Retirar</button>
+                </div>
             </div>
 
-            <aside>
-                <h2>Saldo</h2>
-                <p>100€</p>
-            </aside>
-        </div>
-    </main>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">📊</span>
+                    <div class="stat-data">
+                        <span class="stat-value">124</span>
+                        <span class="stat-label">Apuestas Totales</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🏆</span>
+                    <div class="stat-data">
+                        <span class="stat-value text-green">62%</span>
+                        <span class="stat-label">Win Rate</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📈</span>
+                    <div class="stat-data">
+                        <span class="stat-value">+450€</span>
+                        <span class="stat-label">Beneficio Neto</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section__head">
+                    <h3 class="section__title">Actividad Reciente</h3>
+                </div>
+                <p class="section__desc">No hay apuestas recientes para mostrar.</p>
+            </div>
+
+        </section>
+    </div>
+</main>
 
     <footer>
         <div class="footer__text">
@@ -51,6 +100,12 @@
     </footer>
     
     <script src = "sesion.js"></script>
+    <script>
+    // Mostrar el saldo actualizado al cargar
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.actualizarSaldo) window.actualizarSaldo(window.obtenerSaldo());
+    });
+    </script>
 </body>
 
 </html>

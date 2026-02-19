@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
     <header class="header">
         <a href="indexApuesta.html" class="brand">
@@ -29,24 +31,99 @@
     </header>
 
     <main class="page--añadirSaldo">
-        <section class="hero">
-            <div class="hero__inner">
-                <h1 class="page__title">Añadir saldo a tu cuenta</h1>
-                <p class="page__subtitle">Aquí puedes añadir saldo a tu cuenta para realizar tus apuestas.</p>
-
-                <form class="form" id="addBalanceForm" novalidate>
-                    <div class="form__group">
-                        <label for="amount" class="form__label">Cantidad a añadir</label>
-                        <input type="number" id="amount" name="amount" class="form__input" required placeholder="50" min="1">
-                    </div>
-
-                    <div class="form__actions">
-                        <button type="submit" class="btn" id="addBalanceBtn">Añadir saldo</button>
-                    </div>
-                </form>
+    <section class="deposit-container">
+        
+        <div class="deposit-card">
+            
+            <div class="deposit-header">
+                <h1 class="deposit-title">Depositar Fondos</h1>
+                <span class="deposit-balance">Saldo actual: <span class="highlight saldo-usuario">0.00 €</span></span>
             </div>
-        </section>
-    </main>
+
+            <form id="depositForm">
+                
+                <label class="section-label">Método de pago</label>
+                <div class="payment-grid">
+                    <div class="payment-option active" onclick="selectMethod(this)">
+                        <div class="pay-icon">💳</div>
+                        <span>Tarjeta</span>
+                    </div>
+                    <div class="payment-option" onclick="selectMethod(this)">
+                        <div class="pay-icon">🅿️</div>
+                        <span>PayPal</span>
+                    </div>
+                    <div class="payment-option" onclick="selectMethod(this)">
+                        <div class="pay-icon">₿</div>
+                        <span>Crypto</span>
+                    </div>
+                </div>
+
+                <label class="section-label">Importe a ingresar</label>
+                <div class="amount-control">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="depositAmount" class="amount-huge" placeholder="0" min="5">
+                </div>
+
+                <div class="quick-chips">
+                    <button type="button" class="chip" onclick="addAmount(10)">+10</button>
+                    <button type="button" class="chip" onclick="addAmount(20)">+20</button>
+                    <button type="button" class="chip" onclick="addAmount(50)">+50</button>
+                    <button type="button" class="chip" onclick="addAmount(100)">+100</button>
+                </div>
+
+                <button type="submit" class="deposit-btn">
+                    <span class="btn-text">DEPOSITAR AHORA</span>
+                    <span class="btn-sub">Transacción Segura SSL</span>
+                </button>
+
+            </form>
+        </div>
+
+        <div class="deposit-info">
+            <div class="info-item">
+                <span class="info-icon">⚡</span>
+                <p>Depósito instantáneo para apuestas en vivo.</p>
+            </div>
+            <div class="info-item">
+                <span class="info-icon">🔒</span>
+                <p>Tus fondos están protegidos por normativa europea.</p>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+
+    <script>
+        function selectMethod(el) {
+            document.querySelectorAll('.payment-option').forEach(d => d.classList.remove('active'));
+            el.classList.add('active');
+        }
+        function addAmount(val) {
+            document.getElementById('depositAmount').value = val;
+        }
+
+        // Manejar el formulario de depósito
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mostrar saldo actual
+            if (window.actualizarSaldo) window.actualizarSaldo(window.obtenerSaldo());
+
+            document.getElementById('depositForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                const input = document.getElementById('depositAmount');
+                let cantidad = parseFloat(input.value);
+                if (isNaN(cantidad) || cantidad < 5) {
+                    alert('El importe mínimo es 5€');
+                    return;
+                }
+                let saldoActual = window.obtenerSaldo();
+                let nuevoSaldo = saldoActual + cantidad;
+                window.actualizarSaldo(nuevoSaldo);
+                input.value = '';
+                alert('Saldo añadido correctamente.');
+            });
+        });
+    </script>
 
     <footer>
         <div class="footer__text">
@@ -54,7 +131,8 @@
             <p>Juega con responsabilidad.</p>
         </div>
     </footer>
-    
+
     <script src="sesion.js"></script>
 </body>
+
 </html>

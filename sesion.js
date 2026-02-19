@@ -1,3 +1,26 @@
+// Inicializar saldo si no existe
+if (localStorage.getItem('saldo') === null) {
+    localStorage.setItem('saldo', '0');
+}
+
+// Función global para obtener el saldo
+window.obtenerSaldo = function() {
+    return parseFloat(localStorage.getItem('saldo') || '0');
+};
+
+// Función global para actualizar el saldo
+window.actualizarSaldo = function(nuevoSaldo) {
+    localStorage.setItem('saldo', String(nuevoSaldo));
+    // Actualiza todos los elementos con la clase 'saldo-usuario'
+    document.querySelectorAll('.saldo-usuario').forEach(el => {
+        el.textContent = Number(nuevoSaldo).toFixed(2) + ' €';
+    });
+};
+
+// Al cargar, actualiza los saldos visibles
+window.addEventListener('DOMContentLoaded', () => {
+    window.actualizarSaldo(window.obtenerSaldo());
+});
 document.addEventListener('DOMContentLoaded', () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const headerRight = document.querySelector('.header__right');
