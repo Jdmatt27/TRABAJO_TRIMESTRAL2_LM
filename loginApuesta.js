@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // === SI TODO ESTÁ BIEN ===
                 localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', email);
 
                 loginBtn.textContent = '¡Entrando!';
                 loginBtn.style.background = '#22c55e'; // Se pone verde

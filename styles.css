@@ -48,6 +48,16 @@ body {
     flex: 1;
 }
 
+.page--cuotas {
+    max-width: 1200px;
+    padding: 1.25rem;
+    margin: 0 395px 0 395px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 1.25rem;
+}
+
 .header {
     position: sticky;
     top: 0;
@@ -115,6 +125,21 @@ body {
     border-radius: 14px;
     border: 1px solid transparent;
 }
+
+.nav__link--saldo-usuario {
+    text-decoration: none;
+    color: var(--muted);
+    padding: .55rem .75rem;
+    border-radius: 14px;
+    border: 1px solid transparent;
+}
+
+.nav__link--saldo-usuario:hover {
+    color: var(--text);
+    background: var(--panel);
+    border-color: rgba(255, 255, 255, .10);
+}
+
 
 .nav__link:hover {
     color: var(--text);
@@ -338,6 +363,16 @@ body {
     overflow: hidden; 
     display: flex;
     flex-direction: column;
+}
+
+.match__card--cuotas {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    width: 100%;
 }
 
 .card--full {
@@ -972,6 +1007,8 @@ footer {
 
 .text-danger { color: #ef4444; }
 .text-danger:hover { background: rgba(239, 68, 68, 0.1); }
+
+
 
 /* --- Contenido (Derecha) --- */
 .profile-content {

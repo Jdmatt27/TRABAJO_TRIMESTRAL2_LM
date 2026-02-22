@@ -11,17 +11,14 @@ window.obtenerSaldo = function() {
 // Función global para actualizar el saldo
 window.actualizarSaldo = function(nuevoSaldo) {
     localStorage.setItem('saldo', String(nuevoSaldo));
-    // Actualiza todos los elementos con la clase 'saldo-usuario'
-    document.querySelectorAll('.saldo-usuario').forEach(el => {
+    // Actualiza todos los elementos que deban mostrar el saldo
+    document.querySelectorAll('.nav__link--saldo-usuario, .saldo-usuario').forEach(el => {
         el.textContent = Number(nuevoSaldo).toFixed(2) + ' €';
     });
 };
 
-// Al cargar, actualiza los saldos visibles
+// Al cargar, inicializar todo
 window.addEventListener('DOMContentLoaded', () => {
-    window.actualizarSaldo(window.obtenerSaldo());
-});
-document.addEventListener('DOMContentLoaded', () => {
     const isLoggedIn = localStorage.getItem('isLoggedIn');
     const headerRight = document.querySelector('.header__right');
     const navLinks = document.querySelector('.nav');
@@ -30,25 +27,48 @@ document.addEventListener('DOMContentLoaded', () => {
         // Usuario ha iniciado sesión
 
         // 1. Cambiar "Login" por "Cerrar Sesión"
-        headerRight.innerHTML = '<button class="btn" id="logoutBtn">Cerrar Sesión</button>';
+        if (headerRight) {
+            headerRight.innerHTML = '<button class="btn" id="logoutBtn">Cerrar Sesión</button>';
+        }
         
         // 2. Añadir enlace a "Mi Cuenta"
-        const miCuentaLink = '<a class="nav__link" href="perfilApuesta.html">Mi Cuenta</a>';
-        navLinks.insertAdjacentHTML('beforeend', miCuentaLink); // Lo añade al final de la nav
+        if (navLinks) {
+            const miCuentaLink = '<a class="nav__link" href="perfilApuesta.html">Mi Cuenta</a>';
+            navLinks.insertAdjacentHTML('beforeend', miCuentaLink);
 
-        const añadirSaldoLink = '<a class="nav__link" href="añadirSaldoApuesta.html">Añadir Saldo</a>';
-
-        navLinks.insertAdjacentHTML('beforeend', añadirSaldoLink); 
+            const saldoActual = '<a class="nav__link--saldo-usuario" href="añadirSaldoApuesta.html">0,00€</a>';
+            navLinks.insertAdjacentHTML('beforeend', saldoActual);
+        }
 
         // 3. Funcionalidad del botón "Cerrar Sesión"
         const logoutBtn = document.getElementById('logoutBtn');
-        logoutBtn.addEventListener('click', () => {
-            localStorage.removeItem('isLoggedIn'); // Quitamos el "pase VIP"
-            window.location.reload(); // Recargamos la página para que se actualice
-        });
+        const logout = () => {
+            localStorage.removeItem('isLoggedIn');
+            localStorage.removeItem('userEmail');
+            window.location.href = 'indexApuesta.html';
+        };
 
-    } else {
-        // Usuario NO ha iniciado sesión
-        // No hacemos nada, porque el HTML por defecto ya muestra "Login"
+        if (logoutBtn) {
+            logoutBtn.addEventListener('click', logout);
+        }
+
+        // También para el link de Cerrar Sesión en el perfil si existe
+        const profileLogoutLink = document.querySelector('.menu-item.text-danger');
+        if (profileLogoutLink) {
+            profileLogoutLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                logout();
+            });
+        }
+    }
+
+    // Actualiza los saldos visibles DESPUÉS de haber añadido el elemento si era necesario
+    window.actualizarSaldo(window.obtenerSaldo());
+
+    // Mostrar el email si estamos en la página de perfil
+    const emailDisplay = document.getElementById('uEmail');
+    const savedEmail = localStorage.getItem('userEmail');
+    if (emailDisplay && savedEmail) {
+        emailDisplay.textContent = savedEmail;
     }
 });
