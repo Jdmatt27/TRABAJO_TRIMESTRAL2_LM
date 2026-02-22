@@ -363,6 +363,14 @@ body {
     overflow: hidden; 
     display: flex;
     flex-direction: column;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.match__card:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon);
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
 }
 
 .match__card--cuotas {
@@ -373,6 +381,48 @@ body {
     display: flex;
     flex-direction: column;
     width: 100%;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.match__card--cuotas:hover {
+    transform: translateY(-5px);
+    border-color: var(--neon);
+    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
+}
+
+.page--cuotas .match__card--cuotas {
+    cursor: default;
+    transform: none !important;
+    box-shadow: none !important;
+    border-color: var(--line);
+}
+
+.page--cuotas .match__card--cuotas:hover {
+    transform: none;
+    box-shadow: none;
+    border-color: var(--line);
+}
+
+/* Estado activo para botones de mercado */
+.market__btn.active {
+    border-color: transparent;
+    background: var(--panel2);
+}
+
+.market__btn.active::before {
+    content: "";
+    position: absolute;
+    inset: -1px; 
+    z-index: -1;
+    border-radius: inherit;
+    padding: 1px; 
+    background: 
+        linear-gradient(var(--panel2), var(--panel2)) content-box,
+        linear-gradient(90deg, #4ade80, #22d3ee, #a78bfa, #4ade80) border-box;
+    background-size: 100% 100%, 300% 100%;
+    animation: gradientMove 3s linear infinite;
+    pointer-events: none; 
 }
 
 .card--full {

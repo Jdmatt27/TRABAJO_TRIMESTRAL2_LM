@@ -31,67 +31,25 @@
     </header>
 
     <main class="page--cuotas">
-            <article class="match__card--cuotas">
-                <div class="match__header"
-                    style="background-image: url('https://i.guim.co.uk/img/media/2a5a0a94ecf2db5c9975703e0f3a5cff06b44508/0_201_5624_3375/master/5624.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=1b2207265c5445db251467d68a5e8403');">
-                    <div class="match__overlay"></div>
-                    <div class="match__top">
-                        <span class="badge">🎾 WTA</span>
-                        <span class="pill">En directo</span>
-                    </div>
-
-                    <div class="match__teams">
-                        <div class="team">
-                            <span class="team__name">Aryna Sabalenka</span>
-                        </div>
-
-                        <div class="match__time">
-                            <span class="time__big">21:00</span>
-                            <span class="date__small">12 Feb</span>
-                        </div>
-
-                        <div class="team">
-                            <span class="team__name">Iga Swiatek</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="match__markets--big">
-                    <button class="market__btn" style="--percent: 3%;">
-                        <span class="market__name">Aryna Sabalenka</span>
-                        <span class="market__odds">2,75</span>
-                    </button>
-
-                    <button class="market__btn active" style="--percent: 94%;">
-                        <span class="market__name">Iga Swiatek</span>
-                        <span class="market__odds">2,20</span>
-                    </button>
+            <!-- La tarjeta del partido se generará dinámicamente -->
+            <article class="match__card--cuotas" id="partidoDetalle">
+                <div class="match__header" style="background: var(--panel); height: 220px;">
+                    <!-- Placeholder mientras carga -->
                 </div>
             </article>
 
             <section class="hero">
             <div class="hero__inner">
                 <p class="pill">Selección del día</p>
-                <h1 class="hero__title">Aryna Sabalenka VS Iga Swiatek</h1>
+                <h1 class="hero__title">Cargando partido...</h1>
                 <p class="hero__text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sunt, inventore. Culpa nostrum, nobis nihil fugit repudiandae exercitationem corrupti. Amet aliquid optio alias accusantium omnis, quibusdam expedita magni ducimus sapiente suscipit.
+                    Análisis detallado del encuentro. Consulta las cuotas y realiza tu apuesta para ganar grandes premios. ¡El deporte no se detiene!
                 </p>
             </div>
 
             <aside class="hero__card">
-                <div class="card__outcome">
-                    <button class="outcome-btn outcome-btn--yes">
-                        <span class="outcome-label">Gana Atleti</span>
-                        <span class="outcome-price">2.45</span>
-                    </button>
-                    <button class="outcome-btn outcome-btn--no">
-                        <span class="outcome-label">Gana Madrid</span>
-                        <span class="outcome-price">2.25</span>
-                    </button>
-                </div>
-
                 <div class="card__amount-section">
-                    <label>Cantidad</label>
+                    <label>Cantidad a apostar</label>
                     <div class="amount-input-wrapper">
                         <span class="currency">€</span>
                         <input type="number" placeholder="0" class="amount-input">
@@ -117,6 +75,9 @@
         </div>
     </footer>
 
+    <script src="sesion.js"></script>
+    <script src="saldoApuesta.js"></script>
+    <script src="cuotas.js"></script>
 </body>
 
 </html>
