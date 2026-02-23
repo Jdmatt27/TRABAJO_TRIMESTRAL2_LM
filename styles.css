@@ -128,20 +128,48 @@ body{
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
-}
-
-@media (max-width: 850px){
-  .leagues__Container_buttons{
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .container_advertisement{
-    grid-template-columns: 1fr;
-  }
+  height: 500px;
 }
 
 .container_advertisementLeft,
 .container_advertisementRight{
+  display: flex;
+  align-items: center;
   min-height: 140px;
+}
+
+.container_news{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 0px 0px 40px;
+  width: 95%;
+  height: 400px;
+}
+
+.container_newsLeft{
+  width: 35%;
+
+}
+
+.newsLeft__img{
+  width: 100%;
+  height: 400px;
+  border-radius: 14px;
+}
+
+.new__title{
+  text-align: center;
+  font-size: 22px;
+  color: var(--accent);
+  padding-bottom: 20px;
+}
+
+.new__text{
+  max-width: 400px;
+  text-align: center;
+  color: var(--muted);
 }
 
 .adMedia{
@@ -205,4 +233,32 @@ body{
   .container_advertisement{
     grid-template-columns: 1fr;
   }
+
+  .container_news{
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .container_newsLeft{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .container_newsRight{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    width: 85%;
+  }
+
+  .newsLeft__img{
+    width: 90%;
+  }
+
+
 }
+
+
