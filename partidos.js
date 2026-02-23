@@ -175,29 +175,61 @@ function renderizarPartidos() {
         const quickBtns = heroCard.querySelectorAll('.q-btn');
         let seleccionRapida = null;
 
+        // Añadir un contenedor para las ganancias potenciales si no existe en el hero
+        let winningsDisplay = heroCard.querySelector('.winnings-display');
+        if (!winningsDisplay) {
+            winningsDisplay = document.createElement('div');
+            winningsDisplay.className = 'winnings-display';
+            winningsDisplay.style.marginTop = '0.5rem';
+            winningsDisplay.style.fontSize = '0.9rem';
+            winningsDisplay.style.color = 'var(--muted)';
+            winningsDisplay.innerHTML = 'Ganancias potenciales: <span class="potential-val" style="color:var(--neon2); font-weight:bold;">0.00€</span>';
+            const amountSection = heroCard.querySelector('.card__amount-section');
+            if (amountSection) amountSection.appendChild(winningsDisplay);
+        }
+
+        const actualizarGananciasHero = () => {
+            const cantidad = parseFloat(inputCantidad.value) || 0;
+            const potentialVal = winningsDisplay.querySelector('.potential-val');
+            if (seleccionRapida && cantidad > 0) {
+                const ganancias = cantidad * seleccionRapida.cuota;
+                potentialVal.textContent = ganancias.toFixed(2) + '€';
+            } else {
+                potentialVal.textContent = '0.00€';
+            }
+        };
+
         if (outcomeBtnYes && outcomeBtnNo) {
             outcomeBtnYes.addEventListener('click', (e) => {
                 e.stopPropagation();
                 outcomeBtnYes.style.background = "#22c55e";
                 outcomeBtnNo.style.background = "var(--panel2)";
                 seleccionRapida = { nombre: "Gana Atleti", cuota: 2.45 };
+                actualizarGananciasHero();
             });
             outcomeBtnNo.addEventListener('click', (e) => {
                 e.stopPropagation();
                 outcomeBtnNo.style.background = "#22c55e";
                 outcomeBtnYes.style.background = "var(--panel2)";
                 seleccionRapida = { nombre: "Gana Madrid", cuota: 2.25 };
+                actualizarGananciasHero();
             });
         }
+
+        inputCantidad.addEventListener('input', actualizarGananciasHero);
 
         quickBtns.forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.stopPropagation();
                 let currentVal = parseFloat(inputCantidad.value) || 0;
-                if (btn.textContent.includes('+1')) inputCantidad.value = currentVal + 1;
-                if (btn.textContent.includes('+20')) inputCantidad.value = currentVal + 20;
-                if (btn.textContent.includes('+100')) inputCantidad.value = currentVal + 100;
-                if (btn.textContent === 'Max') inputCantidad.value = window.obtenerSaldo();
+                const text = btn.textContent.trim();
+
+                if (text === '+$1') inputCantidad.value = currentVal + 1;
+                else if (text === '+$20') inputCantidad.value = currentVal + 20;
+                else if (text === '+$100') inputCantidad.value = currentVal + 100;
+                else if (text === 'Max') inputCantidad.value = window.obtenerSaldo();
+                
+                actualizarGananciasHero();
             });
         });
 

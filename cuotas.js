@@ -161,10 +161,13 @@ function configurarEventosApuesta(partido) {
     quickBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             let currentVal = parseFloat(inputCantidad.value) || 0;
-            if (btn.textContent.includes('+1')) inputCantidad.value = currentVal + 1;
-            else if (btn.textContent.includes('+20')) inputCantidad.value = currentVal + 20;
-            else if (btn.textContent.includes('+100')) inputCantidad.value = currentVal + 100;
-            else if (btn.textContent === 'Max') inputCantidad.value = window.obtenerSaldo();
+            const text = btn.textContent.trim();
+            
+            if (text === '+$1') inputCantidad.value = currentVal + 1;
+            else if (text === '+$20') inputCantidad.value = currentVal + 20;
+            else if (text === '+$100') inputCantidad.value = currentVal + 100;
+            else if (text === 'Max') inputCantidad.value = window.obtenerSaldo();
+            
             actualizarGanancias();
         });
     });
