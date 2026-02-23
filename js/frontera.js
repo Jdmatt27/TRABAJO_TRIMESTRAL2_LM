@@ -349,6 +349,7 @@
         return;
       }
       
+      let delay = 100;
       const event = generateMatchEvent(homeTeam, awayTeam, minute);
       if (event){
         if (event.type === 'tarjeta_amarilla') {
@@ -363,6 +364,7 @@
           if (event.team === homeTeam.name) homeScore++;
           else awayScore++;
           triggerGoalAnimation(event.team); 
+          delay = 2600; 
         }
         displayEvent(event, eventsContainer);
       }
@@ -373,7 +375,7 @@
       document.getElementById('match-away-score').textContent = awayScore;
       
       minute++;
-      setTimeout(simulateMinute, 100);
+      setTimeout(simulateMinute, delay);
     }
     
     simulateMinute();
