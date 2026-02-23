@@ -43,9 +43,9 @@ function renderizarDetallesPartido(partido) {
 
     if (isFutbol) {
         marketsHTML += `
-            <button class="market__btn" id="btnCuotaEmpate" data-cuota="${partido.cuotaEmpate}" data-nombre="Empate">
+            <button class="market__btn" id="btnCuotaEmpate" data-cuota="${partido.cuotaEmpate || '3.10'}" data-nombre="Empate">
                 <span class="market__name">Empate</span>
-                <span class="market__odds">${partido.cuotaEmpate}</span>
+                <span class="market__odds">${partido.cuotaEmpate || '3.10'}</span>
             </button>
         `;
     }
@@ -68,7 +68,7 @@ function renderizarDetallesPartido(partido) {
 
                 <div class="match__teams">
                     <div class="team">
-                        ${isFutbol && partido.logo1 ? `<img src="${partido.logo1}" class="team__logo">` : ''}
+                        ${partido.logo1 ? `<img src="${partido.logo1}" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
                         <span class="team__name">${partido.equipo1}</span>
                     </div>
 
@@ -78,7 +78,7 @@ function renderizarDetallesPartido(partido) {
                     </div>
 
                     <div class="team">
-                        ${isFutbol && partido.logo2 ? `<img src="${partido.logo2}" class="team__logo">` : ''}
+                        ${partido.logo2 ? `<img src="${partido.logo2}" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
                         <span class="team__name">${partido.equipo2}</span>
                     </div>
                 </div>
@@ -93,8 +93,11 @@ function renderizarDetallesPartido(partido) {
     // Actualizar el hero y descripción
     const heroTitle = document.querySelector('.hero__title');
     const heroText = document.querySelector('.hero__text');
+    const pill = document.querySelector('.hero .pill');
+    
     if (heroTitle) heroTitle.textContent = `${partido.equipo1} VS ${partido.equipo2}`;
     if (heroText) heroText.textContent = generarDescripcionAleatoria(partido);
+    if (pill) pill.textContent = `Apuestas ${partido.deporte}`;
 }
 
 let seleccionActual = null;
@@ -104,6 +107,30 @@ function configurarEventosApuesta(partido) {
     const inputCantidad = document.querySelector('.amount-input');
     const btnApostar = document.querySelector('.trade-btn');
     const quickBtns = document.querySelectorAll('.q-btn');
+    const amountLabel = document.querySelector('.card__amount-section label');
+
+    // Añadir un contenedor para las ganancias potenciales si no existe
+    let winningsDisplay = document.querySelector('.winnings-display');
+    if (!winningsDisplay) {
+        winningsDisplay = document.createElement('div');
+        winningsDisplay.className = 'winnings-display';
+        winningsDisplay.style.marginTop = '0.5rem';
+        winningsDisplay.style.fontSize = '0.9rem';
+        winningsDisplay.style.color = 'var(--muted)';
+        winningsDisplay.innerHTML = 'Ganancias potenciales: <span class="potential-val" style="color:var(--neon2); font-weight:bold;">0.00€</span>';
+        document.querySelector('.card__amount-section').appendChild(winningsDisplay);
+    }
+
+    const actualizarGanancias = () => {
+        const cantidad = parseFloat(inputCantidad.value) || 0;
+        const potentialVal = winningsDisplay.querySelector('.potential-val');
+        if (seleccionActual && cantidad > 0) {
+            const ganancias = cantidad * seleccionActual.cuota;
+            potentialVal.textContent = ganancias.toFixed(2) + '€';
+        } else {
+            potentialVal.textContent = '0.00€';
+        }
+    };
 
     botonesMercado.forEach(btn => {
         btn.addEventListener('click', () => {
@@ -115,6 +142,7 @@ function configurarEventosApuesta(partido) {
             if (wasActive) {
                 // Si ya estaba activo, deseleccionamos todo
                 seleccionActual = null;
+                if (amountLabel) amountLabel.textContent = 'Cantidad a apostar';
             } else {
                 // Si no estaba activo, lo seleccionamos
                 btn.classList.add('active');
@@ -122,7 +150,22 @@ function configurarEventosApuesta(partido) {
                     nombre: btn.dataset.nombre,
                     cuota: parseFloat(btn.dataset.cuota)
                 };
+                if (amountLabel) amountLabel.innerHTML = `Apostar por: <span style="color:var(--neon2)">${seleccionActual.nombre}</span> (x${seleccionActual.cuota})`;
             }
+            actualizarGanancias();
+        });
+    });
+
+    inputCantidad.addEventListener('input', actualizarGanancias);
+
+    quickBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            let currentVal = parseFloat(inputCantidad.value) || 0;
+            if (btn.textContent.includes('+1')) inputCantidad.value = currentVal + 1;
+            else if (btn.textContent.includes('+20')) inputCantidad.value = currentVal + 20;
+            else if (btn.textContent.includes('+100')) inputCantidad.value = currentVal + 100;
+            else if (btn.textContent === 'Max') inputCantidad.value = window.obtenerSaldo();
+            actualizarGanancias();
         });
     });
 

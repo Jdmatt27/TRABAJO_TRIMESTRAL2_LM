@@ -116,6 +116,7 @@ function renderizarPartidos() {
 
     // Tarjeta grande de tenis (abajo)
     if (matchDia) {
+        matchDia.style.cursor = 'pointer';
         matchDia.addEventListener('click', () => {
             const partidoSeleccionado = {
                 id: 100,
@@ -124,6 +125,8 @@ function renderizarPartidos() {
                 estado: "En directo",
                 equipo1: "Aryna Sabalenka",
                 equipo2: "Iga Swiatek",
+                logo1: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e0/Aryna_Sabalenka_Logo.png/640px-Aryna_Sabalenka_Logo.png", // Placeholder o logo real si existe
+                logo2: "https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/Iga_Swiatek_logo.png/640px-Iga_Swiatek_logo.png",
                 fondo: "https://i.guim.co.uk/img/media/2a5a0a94ecf2db5c9975703e0f3a5cff06b44508/0_201_5624_3375/master/5624.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=1b2207265c5445db251467d68a5e8403",
                 hora: "21:00",
                 fecha: "12 Feb",
@@ -136,28 +139,31 @@ function renderizarPartidos() {
     }
 
     if (heroSection) {
-        const heroInner = heroSection.querySelector('.hero__inner');
-        if (heroInner) {
-            heroInner.style.cursor = 'pointer';
-            heroInner.addEventListener('click', () => {
-                const partidoSeleccionado = {
-                    id: 99,
-                    deporte: "Fútbol",
-                    liga: "La Liga",
-                    estado: "En directo",
-                    equipo1: "Real Madrid",
-                    equipo2: "Atlético de Madrid",
-                    fondo: "https://img.asmedia.epimg.net/resizer/v2/LALIGA_EA_SPORTS_MADRID_-_SEVILLA_G9V7P4_3.jpg?auth=96b72944b7d14e0f6c2c628e930f9a2e6e14d115e8e8e3d6e3e3e3e3e3e3e3e&width=1200&height=675&smart=true",
-                    hora: "21:00",
-                    fecha: "Hoy",
-                    cuota1: "2.25",
-                    cuotaEmpate: "3.40",
-                    cuota2: "2.45"
-                };
-                sessionStorage.setItem('partidoSeleccionado', JSON.stringify(partidoSeleccionado));
-                window.location.href = 'páginaCuotasApuesta.html';
-            });
-        }
+        // Redirigir al hacer clic en el hero (excepto si se hace clic en botones de apuesta o inputs)
+        heroSection.addEventListener('click', (e) => {
+            if (e.target.closest('.hero__card') || e.target.closest('button') || e.target.closest('input')) {
+                return;
+            }
+
+            const partidoSeleccionado = {
+                id: 99,
+                deporte: "Fútbol",
+                liga: "La Liga",
+                estado: "En directo",
+                equipo1: "Real Madrid",
+                equipo2: "Atlético de Madrid",
+                logo1: "https://upload.wikimedia.org/wikipedia/en/thumb/5/56/Real_Madrid_CF.svg/1200px-Real_Madrid_CF.svg.png",
+                logo2: "https://upload.wikimedia.org/wikipedia/an/thumb/f/f4/Atletico_Madrid_2017_logo.svg/330px-Atletico_Madrid_2017_logo.svg.png",
+                fondo: "https://img.asmedia.epimg.net/resizer/v2/LALIGA_EA_SPORTS_MADRID_-_SEVILLA_G9V7P4_3.jpg?auth=96b72944b7d14e0f6c2c628e930f9a2e6e14d115e8e8e3d6e3e3e3e3e3e3e3e&width=1200&height=675&smart=true",
+                hora: "21:00",
+                fecha: "Hoy",
+                cuota1: "2.25",
+                cuotaEmpate: "3.40",
+                cuota2: "2.45"
+            };
+            sessionStorage.setItem('partidoSeleccionado', JSON.stringify(partidoSeleccionado));
+            window.location.href = 'páginaCuotasApuesta.html';
+        });
     }
 
     // Apuesta rápida

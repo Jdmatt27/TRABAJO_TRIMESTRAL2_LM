@@ -194,30 +194,6 @@ body {
     align-items: start;
 }
 
-.hero--aside {
-    display: flex;
-    width: 20rem;
-    height: 20rem;
-    gap: 2.5rem;
-    align-items: start;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, .04);
-    border-radius: var(--radius);
-    padding: 2.5rem;
-}
-
-.hero__añadirSaldo {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, .04);
-    border-radius: var(--radius);
-    padding: 2rem;
-    gap: 2.5rem;
-    min-height: 420px;
-}
-
 .hero__inner {
     display: flex;
     flex-direction: column;
@@ -251,6 +227,7 @@ body {
     box-shadow: 0 8px 32px rgba(34, 211, 238, 0.12);
     display: flex;
     margin: 0 auto;
+    cursor: default; /* El card dentro del hero no debe ser el trigger principal */
 }
 
 .hero__card {

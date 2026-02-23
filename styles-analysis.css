@@ -1,0 +1,162 @@
+/* --- Layout Página Cuotas Mejorado y Estilizado --- */
+.dashboard-analysis {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1.5rem;
+    align-items: start;
+    margin-top: 1rem;
+}
+
+.analysis-panel {
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2rem;
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.panel-tabs {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1rem;
+}
+
+.panel-tab {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-weight: 700;
+    padding-bottom: 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.panel-tab.active {
+    color: var(--text);
+}
+
+.panel-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--neon);
+    box-shadow: 0 0 15px var(--neon);
+}
+
+/* Estadísticas Estilizadas */
+.stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.stat-label-center {
+    color: var(--muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-bar-container {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-fill {
+    height: 455px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-fill--home { 
+    background: linear-gradient(90deg, #a855f7, #6366f1);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+} 
+
+.stat-fill--away { 
+    background: linear-gradient(90deg, #22d3ee, #06b6d4);
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+}
+
+/* Calculadora de Ganancias Neón - Animación Smooth */
+.potential-win-box {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding: 0 1.25rem;
+    overflow: hidden;
+    background: rgba(33, 219, 64, 0.05);
+    border: 1px solid rgba(33, 219, 64, 0);
+    border-radius: 16px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.potential-win-box.show {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(33, 219, 64, 0.2);
+    pointer-events: auto;
+}
+
+.win-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--neon2);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+}
+
+.win-amount {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(33, 219, 64, 0.6);
+}
+
+.win-amount::after {
+    content: ' €';
+    font-size: 1rem;
+    color: var(--neon2);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.analysis-panel h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    font-weight: 800;
+}
