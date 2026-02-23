@@ -1,18 +1,59 @@
 document.addEventListener('DOMContentLoaded', () => {
     const sectionDesc = document.querySelector('.section__desc');
     const container = document.querySelector('.section');
+    const saldoDisplay = document.querySelector('.wallet-balance.saldo-usuario');
     
-    function renderBets() {
-        const apuestasRaw = localStorage.getItem('furboBet_bets');
-        if (!apuestasRaw || JSON.parse(apuestasRaw).length === 0) {
-            if (sectionDesc) sectionDesc.textContent = "No hay apuestas recientes para mostrar.";
+    // Elementos de Estadísticas
+    const statApuestasTotales = document.querySelectorAll('.stat-value')[0];
+    const statWinRate = document.querySelectorAll('.stat-value')[1];
+    const statBeneficioNeto = document.querySelectorAll('.stat-value')[2];
+
+    function actualizarEstadisticas() {
+        const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');
+        const retiros = JSON.parse(localStorage.getItem('furboBet_withdrawals') || '[]');
+        
+        const totales = apuestas.length;
+        const ganadas = apuestas.filter(a => a.estado === 'ganada').length;
+        const perdidas = apuestas.filter(a => a.estado === 'perdida').length;
+        
+        // Calcular Win Rate
+        const winRate = totales > 0 ? ((ganadas / (ganadas + perdidas || 1)) * 100).toFixed(1) : 0;
+        
+        // Calcular Beneficio Neto (Premios ganados - Importes apostados)
+        let beneficio = 0;
+        apuestas.forEach(a => {
+            if (a.estado === 'ganada') beneficio += (a.importe * a.cuota) - a.importe;
+            if (a.estado === 'perdida') beneficio -= a.importe;
+        });
+
+        // Actualizar el DOM
+        if (statApuestasTotales) statApuestasTotales.textContent = totales;
+        if (statWinRate) {
+            statWinRate.textContent = winRate + '%';
+            statWinRate.className = beneficio >= 0 ? 'stat-value text-green' : 'stat-value text-danger';
+        }
+        if (statBeneficioNeto) {
+            statBeneficioNeto.textContent = (beneficio >= 0 ? '+' : '') + beneficio.toFixed(2) + '€';
+            statBeneficioNeto.className = beneficio >= 0 ? 'stat-value text-green' : 'stat-value text-danger';
+        }
+    }
+
+    function renderHistorial() {
+        const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');
+        const retiros = JSON.parse(localStorage.getItem('furboBet_withdrawals') || '[]');
+        
+        // Combinar y ordenar por fecha
+        const historialCompleto = [
+            ...apuestas.map(a => ({ ...a, tipo: 'apuesta' })),
+            ...retiros.map(r => ({ ...r, tipo: 'retiro' }))
+        ].sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+        if (historialCompleto.length === 0) {
+            if (sectionDesc) sectionDesc.style.display = 'block';
             return;
         }
 
-        const apuestas = JSON.parse(apuestasRaw);
         if (sectionDesc) sectionDesc.style.display = 'none';
-
-        // Eliminar lista anterior si existe
         const oldList = document.querySelector('.bets-list');
         if (oldList) oldList.remove();
 
@@ -20,88 +61,103 @@ document.addEventListener('DOMContentLoaded', () => {
         list.className = 'bets-list';
         list.style.marginTop = '1rem';
 
-        // Ordenar por fecha (más recientes primero)
-        apuestas.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
-
-        apuestas.forEach(apuesta => {
-            const betCard = document.createElement('div');
-            betCard.className = 'bet-item';
-            betCard.style.cssText = "background: var(--panel); padding: 1rem; border-radius: 8px; margin-bottom: 0.8rem; border-left: 4px solid var(--muted); display: flex; justify-content: space-between; align-items: center;";
+        historialCompleto.forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'bet-item';
+            card.style.cssText = "background: var(--panel); padding: 1rem; border-radius: 8px; margin-bottom: 0.8rem; border-left: 4px solid var(--muted); display: flex; justify-content: space-between; align-items: center;";
             
-            if (apuesta.estado === 'ganada') betCard.style.borderLeftColor = 'var(--neon2)';
-            if (apuesta.estado === 'perdida') betCard.style.borderLeftColor = 'var(--danger)';
+            if (item.tipo === 'retiro') {
+                card.style.borderLeftColor = '#f59e0b'; // Naranja para retiros
+                card.innerHTML = `
+                    <div>
+                        <div style="font-weight: bold; font-size: 1.1rem;">📤 Retiro de Fondos</div>
+                        <div style="font-size: 0.9rem; color: var(--muted);">Enviado a tu cuenta bancaria</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; color: #f59e0b;">-${item.importe.toFixed(2)}€</div>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">${new Date(item.timestamp).toLocaleDateString()}</div>
+                    </div>
+                `;
+            } else {
+                // Es una apuesta
+                if (item.estado === 'ganada') card.style.borderLeftColor = 'var(--neon2)';
+                if (item.estado === 'perdida') card.style.borderLeftColor = 'var(--danger)';
 
-            const info = document.createElement('div');
-            info.innerHTML = `
-                <div style="font-weight: bold; font-size: 1.1rem;">${apuesta.equipo1} vs ${apuesta.equipo2}</div>
-                <div style="font-size: 0.9rem; color: var(--muted);">Tu apuesta: <span style="color: var(--text);">${apuesta.eleccion}</span> (@${apuesta.cuota})</div>
-                <div style="font-size: 0.9rem; color: var(--muted);">Importe: ${apuesta.importe.toFixed(2)}€</div>
-            `;
-
-            const status = document.createElement('div');
-            status.style.textAlign = 'right';
-            let statusText = 'Pendiente';
-            let statusColor = 'var(--muted)';
-            
-            if (apuesta.estado === 'ganada') {
-                statusText = '¡GANADA!';
-                statusColor = 'var(--neon2)';
-            } else if (apuesta.estado === 'perdida') {
-                statusText = 'PERDIDA';
-                statusColor = 'var(--danger)';
+                card.innerHTML = `
+                    <div>
+                        <div style="font-weight: bold; font-size: 1.1rem;">⚽ ${item.equipo1} vs ${item.equipo2}</div>
+                        <div style="font-size: 0.9rem; color: var(--muted);">Apuesta: ${item.eleccion} (@${item.cuota})</div>
+                    </div>
+                    <div style="text-align: right;">
+                        <div style="font-weight: bold; color: ${item.estado === 'ganada' ? 'var(--neon2)' : (item.estado === 'perdida' ? 'var(--danger)' : 'var(--muted)')}">
+                            ${item.estado === 'ganada' ? '+' + (item.importe * item.cuota).toFixed(2) : (item.estado === 'perdida' ? '-' + item.importe.toFixed(2) : 'PENDIENTE')}
+                        </div>
+                        <div style="font-size: 0.8rem; opacity: 0.7;">${new Date(item.timestamp).toLocaleDateString()}</div>
+                    </div>
+                `;
             }
-
-            status.innerHTML = `
-                <div style="font-weight: bold; color: ${statusColor};">${statusText.toUpperCase()}</div>
-                <div style="font-size: 0.8rem; opacity: 0.7;">${new Date(apuesta.timestamp).toLocaleDateString()}</div>
-            `;
-
-            betCard.appendChild(info);
-            betCard.appendChild(status);
-            list.appendChild(betCard);
+            list.appendChild(card);
         });
 
         container.appendChild(list);
     }
 
-    // Botón para validar apuestas
+    // Lógica de Retiro
+    const btnWithdraw = document.querySelector('.btn-withdraw');
+    if (btnWithdraw) {
+        btnWithdraw.onclick = function() {
+            const saldoActual = window.obtenerSaldo();
+            if (saldoActual <= 0) return alert("No tienes saldo suficiente para retirar.");
+            
+            const cantidadStr = prompt(`¿Cuánto deseas retirar? (Saldo disponible: ${saldoActual.toFixed(2)}€)`);
+            const cantidad = parseFloat(cantidadStr);
+
+            if (isNaN(cantidad) || cantidad <= 0 || cantidad > saldoActual) {
+                return alert("Cantidad inválida o superior a tu saldo.");
+            }
+
+            if (confirm(`¿Confirmas el retiro de ${cantidad.toFixed(2)}€?`)) {
+                // Restar saldo
+                window.actualizarSaldo(saldoActual - cantidad);
+                
+                // Registrar retiro
+                const retiros = JSON.parse(localStorage.getItem('furboBet_withdrawals') || '[]');
+                retiros.push({
+                    id: Date.now(),
+                    importe: cantidad,
+                    timestamp: new Date().toISOString()
+                });
+                localStorage.setItem('furboBet_withdrawals', JSON.stringify(retiros));
+                
+                alert("Retiro procesado con éxito. El dinero llegará a tu cuenta en 24-48h.");
+                actualizarEstadisticas();
+                renderHistorial();
+            }
+        };
+    }
+
+    // Botón para validar (mantener funcionalidad anterior)
     const validateBtn = document.createElement('button');
     validateBtn.className = 'btn';
     validateBtn.textContent = 'Validar Apuestas Pendientes';
     validateBtn.style.marginTop = '1rem';
     validateBtn.onclick = function() {
-        const apuestasRaw = localStorage.getItem('furboBet_bets');
-        if (!apuestasRaw) return alert('No hay apuestas para validar.');
-        
-        let apuestas = JSON.parse(apuestasRaw);
-        let countChecked = 0;
-        let countWon = 0;
-        let totalPrize = 0;
+        const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');
+        let countChecked = 0, totalPrize = 0;
 
         apuestas.forEach(apuesta => {
             if (apuesta.estado === 'pendiente') {
-                const histKey = `frontera_${apuesta.leagueKey}_historial`;
-                const histRaw = localStorage.getItem(histKey);
-                
+                const histRaw = localStorage.getItem(`frontera_${apuesta.leagueKey}_historial`);
                 if (histRaw) {
                     const historial = JSON.parse(histRaw);
-                    // Buscar el partido en el historial
-                    const resultado = historial.find(h => h.homeIdx === apuesta.matchKey.split('-')[0]*1 && h.awayIdx === apuesta.matchKey.split('-')[1]*1);
-                    
-                    if (resultado) {
+                    const res = historial.find(h => h.homeIdx === apuesta.matchKey.split('-')[0]*1 && h.awayIdx === apuesta.matchKey.split('-')[1]*1);
+                    if (res) {
                         countChecked++;
-                        let winner = 'Empate';
-                        if (resultado.homeG > resultado.awayG) winner = apuesta.equipo1;
-                        else if (resultado.awayG > resultado.homeG) winner = apuesta.equipo2;
-                        
+                        let winner = (res.homeG > res.awayG) ? apuesta.equipo1 : (res.awayG > res.homeG ? apuesta.equipo2 : 'Empate');
                         if (apuesta.eleccion === winner) {
                             apuesta.estado = 'ganada';
-                            const premio = apuesta.importe * apuesta.cuota;
-                            totalPrize += premio;
-                            countWon++;
-                        } else {
-                            apuesta.estado = 'perdida';
-                        }
+                            totalPrize += (apuesta.importe * apuesta.cuota);
+                        } else apuesta.estado = 'perdida';
                     }
                 }
             }
@@ -109,17 +165,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (countChecked > 0) {
             localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
-            if (totalPrize > 0) {
-                const nuevoSaldo = window.obtenerSaldo() + totalPrize;
-                window.actualizarSaldo(nuevoSaldo);
-                alert(`¡Felicidades! Se han validado ${countChecked} apuestas. Has ganado ${countWon} y recibido ${totalPrize.toFixed(2)}€ de premio.`);
-            } else {
-                alert(`Se han validado ${countChecked} apuestas, pero no has ganado ninguna esta vez. ¡Sigue intentándolo!`);
-            }
-            renderBets();
-        } else {
-            alert('No se encontraron nuevos resultados en Omar. Asegúrate de simular los partidos allí primero.');
-        }
+            if (totalPrize > 0) window.actualizarSaldo(window.obtenerSaldo() + totalPrize);
+            alert(`Sincronización completa: ${countChecked} apuestas procesadas.`);
+            actualizarEstadisticas();
+            renderHistorial();
+        } else alert("No hay nuevos resultados en Omar.");
     };
 
     if (container) {
@@ -127,5 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (head) head.appendChild(validateBtn);
     }
 
-    renderBets();
+    // Inicializar página
+    actualizarEstadisticas();
+    renderHistorial();
 });

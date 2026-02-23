@@ -533,7 +533,7 @@ body {
 }
 
 .match__markets--big {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr; /* Cambiado a 3 para que quepan en una fila */
 }
 
 .market__btn {
