@@ -18,6 +18,7 @@
   const selView = document.getElementById('view-selection');
   const dashView = document.getElementById('view-dashboard');
   const teamView = document.getElementById('view-team');
+  const globalView = document.getElementById('view-global');
   const leagueTitle = document.getElementById('league-title');
   const tbody = document.getElementById('table-body');
   const homeSel = document.getElementById('home-team');
@@ -28,6 +29,7 @@
   let fixtures = [];
   let simulatedMatches = [];
   let matchHistory = [];
+  let matchesInProgress = []; 
 
   function generateFixtures(){
     fixtures = [];
@@ -77,10 +79,11 @@
     selView.classList.remove('hidden'); 
     dashView.classList.add('hidden'); 
     teamView.classList.add('hidden');
+    if(globalView) globalView.classList.add('hidden');
     if(typeof updateCarousel === 'function') setTimeout(updateCarousel, 50);
   }
-  function showDashboard(){ selView.classList.add('hidden'); dashView.classList.remove('hidden'); teamView.classList.add('hidden'); }
-  function showTeamView(){ selView.classList.add('hidden'); dashView.classList.add('hidden'); teamView.classList.remove('hidden'); }
+  function showDashboard(){ selView.classList.add('hidden'); dashView.classList.remove('hidden'); teamView.classList.add('hidden'); if(globalView) globalView.classList.add('hidden'); }
+  function showTeamView(){ selView.classList.add('hidden'); dashView.classList.add('hidden'); teamView.classList.remove('hidden'); if(globalView) globalView.classList.add('hidden'); }
 
   function load(leagueKey, el){
     if (!leagues[leagueKey]) return showToast('Liga no encontrada', 'error');
@@ -310,11 +313,31 @@
     
     document.getElementById('match-home').textContent = homeTeam.name;
     document.getElementById('match-away').textContent = awayTeam.name;
-    document.getElementById('match-home-score').textContent = '0';
-    document.getElementById('match-away-score').textContent = '0';
-    document.getElementById('current-minute').textContent = '0';
-    document.getElementById('minute-progress').style.width = '0%';
-    document.getElementById('events-container').innerHTML = '<p style="color:var(--muted);font-size:13px;">Haz click en "Simular Partido" para ver eventos</p>';
+    
+    const matchKey = `${match.homeIdx}-${match.awayIdx}`;
+    if (simulatedMatches.includes(matchKey) || matchesInProgress.includes(matchKey)) {
+      simulateMatchDetailBtn.disabled = true;
+      simulateMatchDetailBtn.textContent = 'Partido Finalizado';
+      const hist = matchHistory.find(h => h.homeIdx === match.homeIdx && h.awayIdx === match.awayIdx);
+      document.getElementById('match-home-score').textContent = hist ? hist.homeG : 0;
+      document.getElementById('match-away-score').textContent = hist ? hist.awayG : 0;
+      document.getElementById('current-minute').textContent = '90';
+      document.getElementById('minute-progress').style.width = '100%';
+      if (matchesInProgress.includes(matchKey)) {
+        simulateMatchDetailBtn.textContent = 'Simulando...';
+        document.getElementById('events-container').innerHTML = '<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Partido en curso en segundo plano...</p>';
+      } else {
+        document.getElementById('events-container').innerHTML = '<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Este partido ya se ha jugado.</p>';
+      }
+    } else {
+      simulateMatchDetailBtn.disabled = false;
+      simulateMatchDetailBtn.textContent = 'Iniciar Partido';
+      document.getElementById('match-home-score').textContent = '0';
+      document.getElementById('match-away-score').textContent = '0';
+      document.getElementById('current-minute').textContent = '0';
+      document.getElementById('minute-progress').style.width = '0%';
+      document.getElementById('events-container').innerHTML = '<p style="color:var(--muted);font-size:13px;">Haz click en "Simular Partido" para ver eventos</p>';
+    }
     document.getElementById('match-detail-view').style.display = 'block';
     
     window.currentMatch = match;
@@ -322,6 +345,8 @@
   if (simulateMatchDetailBtn) simulateMatchDetailBtn.addEventListener('click', ()=>{
     if (!window.currentMatch) return showToast('Selecciona un partido primero', 'error');
     if (simulateMatchDetailBtn.disabled && simulateMatchDetailBtn.textContent === 'Partido Simulado') return showToast('Este partido ya ha sido simulado', 'info');
+    if (simulatedMatches.includes(`${window.currentMatch.homeIdx}-${window.currentMatch.awayIdx}`)) return showToast('Este partido ya se ha jugado', 'error');
+    
     const match = window.currentMatch;
     const homeTeam = table[match.homeIdx];
     const awayTeam = table[match.awayIdx];
@@ -331,6 +356,9 @@
     btn.disabled = true;
     btn.textContent = 'Simulando...';
     
+    const matchKey = `${match.homeIdx}-${match.awayIdx}`;
+    matchesInProgress.push(matchKey);
+
     let homeScore = 0, awayScore = 0;
     let minute = 1;
     const playerYellows = {};
@@ -340,7 +368,7 @@
         btn.disabled = true;
         btn.textContent = 'Partido Simulado';
         processResult(match.homeIdx, match.awayIdx, homeScore, awayScore);
-        const matchKey = `${match.homeIdx}-${match.awayIdx}`;
+        matchesInProgress = matchesInProgress.filter(k => k !== matchKey);
         if (!simulatedMatches.includes(matchKey)) simulatedMatches.push(matchKey);
         matchHistory.push({ week: currentWeek + 1, homeIdx: match.homeIdx, awayIdx: match.awayIdx, homeG: homeScore, awayG: awayScore });
         saveData(); render();
@@ -518,12 +546,360 @@
     triggerConfetti();
   }
 
+  const btnGlobalView = document.getElementById('btn-global-view');
+  const btnGlobalStart = document.getElementById('global-start-btn');
+  const btnGlobalSim = document.getElementById('global-sim-btn');
+  const btnGlobalSimOne = document.getElementById('global-sim-one-btn');
+  const btnGlobalReset = document.getElementById('global-reset-btn');
+  const btnGlobalStandings = document.getElementById('global-standings-btn');
+  const btnGlobalHistory = document.getElementById('global-history-btn');
+  const globalContainer = document.getElementById('global-matches-container');
+  let globalPendingMatches = [];
+
+  if (btnGlobalView) {
+    btnGlobalView.addEventListener('click', () => {
+      selView.classList.add('hidden');
+      dashView.classList.add('hidden');
+      teamView.classList.add('hidden');
+      if(globalView) globalView.classList.remove('hidden');
+      if(globalContainer) globalContainer.innerHTML = '<p style="text-align:center;color:var(--muted);grid-column:1/-1;">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
+      if(btnGlobalStart) btnGlobalStart.style.display = 'inline-block';
+      if(btnGlobalSim) btnGlobalSim.style.display = 'none';
+      if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
+    });
+  }
+
+  if (btnGlobalStart) {
+    btnGlobalStart.addEventListener('click', () => {
+      globalContainer.innerHTML = '';
+      globalPendingMatches = [];
+      
+      Object.keys(leagues).forEach(key => {
+        const storageKey = `frontera_${key}`;
+        let lTable = [];
+        const raw = localStorage.getItem(storageKey);
+        if (raw) lTable = JSON.parse(raw);
+        else lTable = leagues[key].teams.map((name,i)=>({ id: i, name, pj:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0, rating: teamRatings[name] || 70 }));
+        
+        const simKey = storageKey + '_simulados';
+        const simRaw = localStorage.getItem(simKey);
+        const lSimulated = simRaw ? JSON.parse(simRaw) : [];
+
+
+        let lFixtures = [];
+        const n = lTable.length;
+        const teams = [...Array(n).keys()];
+        for (let round = 0; round < n - 1; round++){
+          const jornada = [];
+          for (let i = 0; i < Math.floor(n / 2); i++){
+            let homeIdx = teams[i];
+            let awayIdx = teams[n - 1 - i];
+            if (i === 0 && round % 2 === 1) [homeIdx, awayIdx] = [awayIdx, homeIdx];
+            jornada.push({ homeIdx, awayIdx });
+          }
+          lFixtures.push(jornada);
+          teams.splice(1, 0, teams.pop());
+        }
+        const idaCount = lFixtures.length;
+        for (let r = 0; r < idaCount; r++){
+          lFixtures.push(lFixtures[r].map(m => ({ homeIdx: m.awayIdx, awayIdx: m.homeIdx })));
+        }
+
+        let lWeek = 0;
+        for(let i=0; i<lFixtures.length; i++){
+          const allSimulated = lFixtures[i].every(m => lSimulated.includes(`${m.homeIdx}-${m.awayIdx}`));
+          if(allSimulated) lWeek = i + 1;
+          else break;
+        }
+
+        if (lWeek >= lFixtures.length) return;
+
+        const jornada = lFixtures[lWeek];
+        const leagueCard = document.createElement('div');
+        leagueCard.className = 'card';
+        leagueCard.style.padding = '10px';
+        leagueCard.innerHTML = `<h4 style="margin:0 0 10px 0;color:var(--accent);text-align:center">${leagues[key].name} - Semana ${lWeek + 1}</h4>`;
+        
+        const list = document.createElement('div');
+        list.style.display = 'flex';
+        list.style.flexDirection = 'column';
+        list.style.gap = '6px';
+
+        jornada.forEach(m => {
+          const home = lTable[m.homeIdx];
+          const away = lTable[m.awayIdx];
+          const matchId = `global-${key}-${m.homeIdx}-${m.awayIdx}`;
+          const matchKey = `${m.homeIdx}-${m.awayIdx}`;
+          const isPlayed = lSimulated.includes(matchKey);
+          
+          if (!isPlayed) {
+            globalPendingMatches.push({
+              leagueKey: key, matchId, homeIdx: m.homeIdx, awayIdx: m.awayIdx,
+              homeTeam: home, awayTeam: away, storageKey, simKey,
+              weekNum: lWeek + 1
+            });
+          }
+
+          const row = document.createElement('div');
+          row.id = matchId;
+          row.style.background = 'var(--surface2)';
+          row.style.padding = '8px';
+          row.style.borderRadius = '6px';
+          row.style.display = 'flex';
+          row.style.justifyContent = 'space-between';
+          row.style.fontSize = '0.9rem';
+          if (isPlayed) {
+            row.innerHTML = `<span>${home.name}</span> <span class="g-res" style="color:var(--success);font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
+          } else {
+            row.innerHTML = `<span>${home.name}</span> <span class="g-res" style="font-weight:bold;color:var(--muted)">vs</span> <span>${away.name}</span>`;
+          }
+          list.appendChild(row);
+        });
+
+        leagueCard.appendChild(list);
+        globalContainer.appendChild(leagueCard);
+      });
+
+      if (globalPendingMatches.length > 0) {
+        btnGlobalStart.style.display = 'none';
+        btnGlobalSim.style.display = 'inline-block';
+        if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'inline-block';
+      } else {
+        globalContainer.innerHTML = '<p style="text-align:center;color:var(--muted);grid-column:1/-1;">Todas las ligas han finalizado.</p>';
+      }
+    });
+  }
+
+  function simulateGlobalMatch(p) {
+    const { homeGoals, awayGoals } = calculateGoals(p.homeTeam, p.awayTeam);
+    
+    const el = document.getElementById(p.matchId);
+    if(el) {
+      el.querySelector('.g-res').textContent = `${homeGoals} - ${awayGoals}`;
+      el.querySelector('.g-res').style.color = 'var(--accent)';
+      if(homeGoals > awayGoals) el.style.borderLeft = '3px solid var(--success)';
+      else if(awayGoals > homeGoals) el.style.borderRight = '3px solid var(--success)';
+      else el.style.borderBottom = '2px solid var(--muted)';
+    }
+
+   
+    const raw = localStorage.getItem(p.storageKey);
+    let table;
+    if (raw) {
+      table = JSON.parse(raw);
+    } else {
+      table = leagues[p.leagueKey].teams.map((name,i)=>({ id: i, name, pj:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0, rating: teamRatings[name] || 70 }));
+    }
+
+    const home = table[p.homeIdx];
+    const away = table[p.awayIdx];
+    
+    home.pj++; away.pj++;
+    home.gf += homeGoals; home.ga += awayGoals; home.gd = home.gf - home.ga;
+    away.gf += awayGoals; away.ga += homeGoals; away.gd = away.gf - away.ga;
+    
+    if (homeGoals > awayGoals){ home.w++; home.pts += 3; away.l++; }
+    else if (homeGoals === awayGoals){ home.d++; away.d++; home.pts++; away.pts++; }
+    else { away.w++; away.pts += 3; home.l++; }
+    
+    localStorage.setItem(p.storageKey, JSON.stringify(table));
+
+    const simRaw = localStorage.getItem(p.simKey);
+    let simulated = simRaw ? JSON.parse(simRaw) : [];
+    const matchKey = `${p.homeIdx}-${p.awayIdx}`;
+    if(!simulated.includes(matchKey)) simulated.push(matchKey);
+    localStorage.setItem(p.simKey, JSON.stringify(simulated));
+
+    const histKey = p.storageKey + '_historial';
+    const histRaw = localStorage.getItem(histKey);
+    let history = histRaw ? JSON.parse(histRaw) : [];
+    history.push({ week: p.weekNum, homeIdx: p.homeIdx, awayIdx: p.awayIdx, homeG: homeGoals, awayG: awayGoals });
+    localStorage.setItem(histKey, JSON.stringify(history));
+  }
+
+  if (btnGlobalSim) {
+    btnGlobalSim.addEventListener('click', () => {
+      globalPendingMatches.forEach(p => {
+        simulateGlobalMatch(p);
+      });
+      globalPendingMatches = [];
+
+      triggerConfetti();
+      showToast('¡Jornada global completada!', 'success');
+      btnGlobalSim.style.display = 'none';
+      if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
+      btnGlobalStart.style.display = 'inline-block';
+      btnGlobalStart.textContent = 'Siguiente Semana';
+    });
+  }
+
+  if (btnGlobalSimOne) {
+    btnGlobalSimOne.addEventListener('click', () => {
+      if (globalPendingMatches.length === 0) return;
+      const p = globalPendingMatches.shift();
+      simulateGlobalMatch(p);
+      
+      if (globalPendingMatches.length === 0) {
+        triggerConfetti();
+        showToast('¡Jornada global completada!', 'success');
+        btnGlobalSim.style.display = 'none';
+        btnGlobalSimOne.style.display = 'none';
+        btnGlobalStart.style.display = 'inline-block';
+        btnGlobalStart.textContent = 'Siguiente Semana';
+      }
+    });
+  }
+
+
+  if (btnGlobalStandings) {
+    btnGlobalStandings.addEventListener('click', () => {
+      globalContainer.innerHTML = '';
+    
+      if(btnGlobalSim) btnGlobalSim.style.display = 'none';
+      if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
+      if(btnGlobalStart) btnGlobalStart.style.display = 'inline-block';
+
+      Object.keys(leagues).forEach(key => {
+        const storageKey = `frontera_${key}`;
+        let lTable = [];
+        const raw = localStorage.getItem(storageKey);
+        if (raw) lTable = JSON.parse(raw);
+        else lTable = leagues[key].teams.map((name,i)=>({ id: i, name, pj:0,w:0,d:0,l:0,gf:0,ga:0,gd:0,pts:0, rating: teamRatings[name] || 70 }));
+
+        lTable.sort((a,b)=> b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
+
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.style.padding = '10px';
+        card.innerHTML = `<h4 style="margin:0 0 10px 0;color:var(--accent);text-align:center">${leagues[key].name}</h4>`;
+
+        const tableEl = document.createElement('table');
+        tableEl.style.fontSize = '0.85rem';
+        tableEl.innerHTML = `
+          <thead><tr><th style="padding:4px">#</th><th style="padding:4px;text-align:left">Equipo</th><th style="padding:4px">PJ</th><th style="padding:4px">Pts</th></tr></thead>
+          <tbody>
+            ${lTable.map((t, i) => `
+              <tr style="${i < 4 ? 'background:rgba(34,197,94,0.05)' : ''}">
+                <td style="padding:4px;text-align:center">${i+1}</td>
+                <td style="padding:4px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;">${t.name}</td>
+                <td style="padding:4px;text-align:center">${t.pj}</td>
+                <td style="padding:4px;text-align:center;font-weight:bold;color:var(--accent)">${t.pts}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        `;
+        card.appendChild(tableEl);
+        globalContainer.appendChild(card);
+      });
+    });
+  }
+
+  if (btnGlobalHistory) {
+    btnGlobalHistory.addEventListener('click', () => {
+      globalContainer.innerHTML = '';
+      if(btnGlobalSim) btnGlobalSim.style.display = 'none';
+      if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
+      if(btnGlobalStart) btnGlobalStart.style.display = 'inline-block';
+
+      const weeksSet = new Set();
+      Object.keys(leagues).forEach(key => {
+        const histKey = `frontera_${key}_historial`;
+        const raw = localStorage.getItem(histKey);
+        if (raw) {
+          const hist = JSON.parse(raw);
+          hist.forEach(m => weeksSet.add(m.week));
+        }
+      });
+
+  
+      const sortedWeeks = Array.from(weeksSet).sort((a,b) => {
+        if (typeof a === 'number' && typeof b === 'number') return a - b;
+        return 0;
+      });
+
+      if (sortedWeeks.length === 0) {
+        globalContainer.innerHTML = '<p style="text-align:center;color:var(--muted);grid-column:1/-1;">No hay historial disponible.</p>';
+        return;
+      }
+
+      const listContainer = document.createElement('div');
+      listContainer.style.gridColumn = "1 / -1";
+      listContainer.style.display = "flex";
+      listContainer.style.flexWrap = "wrap";
+      listContainer.style.gap = "10px";
+      listContainer.style.justifyContent = "center";
+
+      sortedWeeks.forEach(week => {
+        const btn = document.createElement('button');
+        btn.className = 'btn-small';
+        btn.style.fontSize = '14px';
+        btn.style.padding = '12px 20px';
+        btn.textContent = `Semana ${week}`;
+        btn.onclick = () => {
+          globalContainer.innerHTML = '';
+          const header = document.createElement('div');
+          header.style.gridColumn = "1 / -1";
+          header.style.textAlign = "center";
+          header.style.marginBottom = "10px";
+          header.innerHTML = `<h3 style="margin:0">Resultados Semana ${week}</h3><button class="btn-small" onclick="document.getElementById('global-history-btn').click()" style="margin-top:10px">Volver</button>`;
+          globalContainer.appendChild(header);
+
+          Object.keys(leagues).forEach(key => {
+            const hist = JSON.parse(localStorage.getItem(`frontera_${key}_historial`) || '[]');
+            const table = JSON.parse(localStorage.getItem(`frontera_${key}`) || '[]');
+            const weekMatches = hist.filter(m => m.week === week);
+            
+            if (weekMatches.length === 0) return;
+
+            const card = document.createElement('div');
+            card.className = 'card';
+            card.style.padding = '10px';
+            card.innerHTML = `<h4 style="margin:0 0 10px 0;color:var(--accent);text-align:center">${leagues[key].name}</h4>`;
+            const list = document.createElement('div');
+            list.style.display = 'flex'; list.style.flexDirection = 'column'; list.style.gap = '6px';
+            
+            weekMatches.forEach(m => {
+              const row = document.createElement('div');
+              row.style.background = 'var(--surface2)'; row.style.padding = '8px'; row.style.borderRadius = '6px'; row.style.display = 'flex'; row.style.justifyContent = 'space-between'; row.style.fontSize = '0.9rem';
+              row.innerHTML = `<span>${table[m.homeIdx]?.name || 'Local'}</span> <span style="font-weight:bold">${m.homeG} - ${m.awayG}</span> <span>${table[m.awayIdx]?.name || 'Visitante'}</span>`;
+              list.appendChild(row);
+            });
+            card.appendChild(list); globalContainer.appendChild(card);
+          });
+        };
+        listContainer.appendChild(btn);
+      });
+      globalContainer.appendChild(listContainer);
+    });
+  }
+
+  if (btnGlobalReset) {
+    btnGlobalReset.addEventListener('click', () => {
+      if(!confirm('¿Estás seguro de que quieres REINICIAR TODAS las ligas? Se perderá todo el progreso.')) return;
+      
+      Object.keys(leagues).forEach(key => {
+        const k = `frontera_${key}`;
+        localStorage.removeItem(k);
+        localStorage.removeItem(k + '_simulados');
+        localStorage.removeItem(k + '_historial');
+        localStorage.removeItem(k + '_bets');
+      });
+      localStorage.removeItem('frontera_wallet');
+      
+      showToast('Todas las ligas han sido reiniciadas', 'success');
+      globalContainer.innerHTML = '';
+      btnGlobalSim.style.display = 'none';
+      if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
+      btnGlobalStart.style.display = 'inline-block';
+      btnGlobalStart.textContent = 'Iniciar Semana';
+    });
+  }
+
   const simulateMatchBtn = document.getElementById('simulate-match-btn');
   const simulateLeagueBtn = document.getElementById('simulate-league-btn');
   if (simulateMatchBtn) simulateMatchBtn.addEventListener('click', simulateRound);
   if (simulateLeagueBtn) simulateLeagueBtn.addEventListener('click', simulateFullLeague);
 
-  // --- HISTORIAL ---
   const historyBtn = document.getElementById('view-history-btn');
   const historyModal = document.getElementById('history-modal');
   const closeHistoryBtn = document.getElementById('close-history-btn');
@@ -647,9 +1023,9 @@
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
  
-    let icon = 'ℹ️';
-    if (type === 'success') icon = '✅';
-    if (type === 'error') icon = '❌';
+    let icon = 'i';
+    if (type === 'success') icon = 'OK';
+    if (type === 'error') icon = '!';
     
     toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
     container.appendChild(toast);
@@ -694,7 +1070,7 @@
     overlay.innerHTML = `
       <div class="goal-text">¡GOL!</div>
       <div class="goal-subtext">${teamName}</div>
-      <div class="goal-hands">🙌 ⚽ 🙌</div>
+      <div class="goal-hands"></div>
     `;
     container.appendChild(overlay);
     

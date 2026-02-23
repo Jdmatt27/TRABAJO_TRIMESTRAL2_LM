@@ -54,6 +54,7 @@
         <button class="carousel-btn next" id="carousel-next">&#10095;</button>
       </div>
     </div>
+    <button id="btn-global-view" class="btn-play" style="max-width:300px;margin:20px auto;display:block;background:var(--surface2);border:1px solid var(--accent);color:var(--accent);">Simulación Global</button>
   </section>
 
   <section id="view-dashboard" class="card hidden" style="margin-top:18px;">
@@ -132,7 +133,7 @@
         </div>
       </div>
 
-      <button id="simulate-match-detail-btn" type="button" class="btn-play">▶ Iniciar Partido</button>
+      <button id="simulate-match-detail-btn" type="button" class="btn-play">Iniciar Partido</button>
 
       <div class="events-feed">
         <h4>Narración en vivo</h4>
@@ -142,6 +143,22 @@
       </div>
 
     </div>
+  </section>
+
+  <section id="view-global" class="card hidden" style="margin-top:18px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;">
+      <h3 style="margin:0">Panel Global de Ligas</h3>
+      <button onclick="goBackToSelection()" class="btn-small">Volver</button>
+    </div>
+    <div class="controls-bar" style="justify-content:center; gap: 15px;">
+      <button id="global-start-btn" class="btn-play" style="width:auto;margin:0;">Iniciar Semana</button>
+      <button id="global-sim-btn" class="btn-play" style="width:auto;margin:0;background:var(--success);color:white;display:none;">Simular Resultados</button>
+      <button id="global-sim-one-btn" class="btn-play" style="width:auto;margin:0;background:var(--accent2);color:#0b1220;display:none;">Simular 1 Partido</button>
+      <button id="global-standings-btn" class="btn-play" style="width:auto;margin:0;background:var(--accent2);color:#0b1220;">Clasificación</button>
+      <button id="global-history-btn" class="btn-play" style="width:auto;margin:0;background:var(--surface2);color:var(--text);border:1px solid var(--border)">Historial</button>
+      <button id="global-reset-btn" class="btn-play" style="width:auto;margin:0;background:var(--danger);color:white;">Resetear Todo</button>
+    </div>
+    <div id="global-matches-container" style="display:grid;grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));gap:16px;margin-top:20px;"></div>
   </section>
 
 </main>
