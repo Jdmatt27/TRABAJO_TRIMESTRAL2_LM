@@ -30,13 +30,13 @@ body {
 }
 
 .page {
-    max-width: 1200px;
+    width: 1200px;
     margin: 0 auto;
-    padding: 1.25rem;
+    padding: 20px;
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 1.25rem;
+    gap: 20px;
 }
 
 .page--login,
@@ -49,36 +49,44 @@ body {
 }
 
 .page--cuotas {
-    max-width: 1200px;
-    padding: 1.25rem;
-    margin: 0 395px 0 395px;
+    width: 1200px;
+    padding: 20px;
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     flex: 1;
-    gap: 1.25rem;
+    gap: 20px;
 }
 
 .header {
     position: sticky;
     top: 0;
     z-index: 20;
-    display: grid;
-    grid-template-columns: 260px 1fr auto;
-    gap: 1rem;
+    display: flex;
+    justify-content: center;
     align-items: center;
-    padding: 1rem 1.25rem;
+    padding: 0 20px;
     border-bottom: 1px solid var(--line);
     background: rgba(7, 10, 20, .72);
     backdrop-filter: blur(10px);
-    min-height: 80px;
+    height: 80px;
+    width: 100%;
+}
+
+.header__content {
+    width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .brand {
     display: flex;
     align-items: center;
-    gap: .75rem;
+    gap: 12px;
     text-decoration: none; 
     color: var(--text);
+    width: 260px;
 }
 
 .brand__mark {
@@ -194,6 +202,30 @@ body {
     align-items: start;
 }
 
+.hero--aside {
+    display: flex;
+    width: 20rem;
+    height: 20rem;
+    gap: 2.5rem;
+    align-items: start;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, .04);
+    border-radius: var(--radius);
+    padding: 2.5rem;
+}
+
+.hero__añadirSaldo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, .04);
+    border-radius: var(--radius);
+    padding: 2rem;
+    gap: 2.5rem;
+    min-height: 420px;
+}
+
 .hero__inner {
     display: flex;
     flex-direction: column;
@@ -227,7 +259,6 @@ body {
     box-shadow: 0 8px 32px rgba(34, 211, 238, 0.12);
     display: flex;
     margin: 0 auto;
-    cursor: default; /* El card dentro del hero no debe ser el trigger principal */
 }
 
 .hero__card {
@@ -328,7 +359,7 @@ body {
 .matches__grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr); 
-    gap: 1rem;
+    gap: 1.25rem;
     width: 100%;
     margin-top: 2rem;
 }

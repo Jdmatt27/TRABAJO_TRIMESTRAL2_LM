@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const partidoJson = sessionStorage.getItem('partidoSeleccionado');
     if (!partidoJson) {
-        window.location.href = 'indexApuesta.html';
+        window.location.href = '../index.html';
         return;
     }
 
@@ -18,14 +18,7 @@ function generarDescripcionAleatoria(partido) {
         `Todo listo para el pitido inicial. Con las plantillas al completo, se espera un partido de ida y vuelta con muchas ocasiones de gol para ambos bandos.`
     ];
 
-    const descripcionesTenis = [
-        `Duelo de raquetas en la cumbre. ${partido.equipo1} y ${partido.equipo2} se enfrentan por el pase a la gran final en un partido que se decidirá por pequeños detalles.`,
-        `La superficie rápida favorece el potente servicio de ${partido.equipo1}, pero la resistencia física de ${partido.equipo2} será la clave de este emocionante encuentro.`,
-        `Dos de las mejores raquetas del mundo frente a frente. La tensión se nota en el ambiente de la pista central mientras las jugadoras calientan.`,
-        `Un choque de estilos donde la técnica se impone a la fuerza bruta. ¿Quién logrará dominar el fondo de la pista en este ${partido.liga}?`
-    ];
-
-    const lista = partido.deporte === 'Fútbol' ? descripcionesFutbol : descripcionesTenis;
+    const lista = descripcionesFutbol;
     return lista[Math.floor(Math.random() * lista.length)];
 }
 
@@ -33,7 +26,7 @@ function renderizarDetallesPartido(partido) {
     const card = document.querySelector('.match__card--cuotas');
     const isFutbol = partido.deporte === 'Fútbol';
 
-    // Generar mercados dinámicos (Empate solo si es fútbol)
+    // Generar mercados dinámicos
     let marketsHTML = `
         <button class="market__btn" id="btnCuota1" data-cuota="${partido.cuota1}" data-nombre="${partido.equipo1}">
             <span class="market__name">${partido.equipo1}</span>
@@ -43,9 +36,9 @@ function renderizarDetallesPartido(partido) {
 
     if (isFutbol) {
         marketsHTML += `
-            <button class="market__btn" id="btnCuotaEmpate" data-cuota="${partido.cuotaEmpate || '3.10'}" data-nombre="Empate">
+            <button class="market__btn" id="btnCuotaEmpate" data-cuota="${partido.cuotaEmpate}" data-nombre="Empate">
                 <span class="market__name">Empate</span>
-                <span class="market__odds">${partido.cuotaEmpate || '3.10'}</span>
+                <span class="market__odds">${partido.cuotaEmpate}</span>
             </button>
         `;
     }
@@ -90,7 +83,6 @@ function renderizarDetallesPartido(partido) {
         `;
     }
 
-    // Actualizar el hero y descripción
     const heroTitle = document.querySelector('.hero__title');
     const heroText = document.querySelector('.hero__text');
     const pill = document.querySelector('.hero .pill');
@@ -109,7 +101,6 @@ function configurarEventosApuesta(partido) {
     const quickBtns = document.querySelectorAll('.q-btn');
     const amountLabel = document.querySelector('.card__amount-section label');
 
-    // Añadir un contenedor para las ganancias potenciales si no existe
     let winningsDisplay = document.querySelector('.winnings-display');
     if (!winningsDisplay) {
         winningsDisplay = document.createElement('div');
@@ -135,16 +126,12 @@ function configurarEventosApuesta(partido) {
     botonesMercado.forEach(btn => {
         btn.addEventListener('click', () => {
             const wasActive = btn.classList.contains('active');
-            
-            // Primero quitamos el estado activo de todos los botones
             botonesMercado.forEach(b => b.classList.remove('active'));
             
             if (wasActive) {
-                // Si ya estaba activo, deseleccionamos todo
                 seleccionActual = null;
                 if (amountLabel) amountLabel.textContent = 'Cantidad a apostar';
             } else {
-                // Si no estaba activo, lo seleccionamos
                 btn.classList.add('active');
                 seleccionActual = {
                     nombre: btn.dataset.nombre,
@@ -162,23 +149,11 @@ function configurarEventosApuesta(partido) {
         btn.addEventListener('click', () => {
             let currentVal = parseFloat(inputCantidad.value) || 0;
             const text = btn.textContent.trim();
-            
             if (text === '+$1') inputCantidad.value = currentVal + 1;
             else if (text === '+$20') inputCantidad.value = currentVal + 20;
             else if (text === '+$100') inputCantidad.value = currentVal + 100;
             else if (text === 'Max') inputCantidad.value = window.obtenerSaldo();
-            
             actualizarGanancias();
-        });
-    });
-
-    quickBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            let currentVal = parseFloat(inputCantidad.value) || 0;
-            if (btn.textContent.includes('+1')) inputCantidad.value = currentVal + 1;
-            if (btn.textContent.includes('+20')) inputCantidad.value = currentVal + 20;
-            if (btn.textContent.includes('+100')) inputCantidad.value = currentVal + 100;
-            if (btn.textContent === 'Max') inputCantidad.value = window.obtenerSaldo();
         });
     });
 
@@ -207,35 +182,42 @@ function configurarEventosApuesta(partido) {
             return;
         }
 
-        const nuevoSaldo = saldoActual - cantidad;
-        window.actualizarSaldo(nuevoSaldo);
-        resolverApuesta(seleccionActual, cantidad, partido);
+        // GUARDAR APUESTA PENDIENTE
+        guardarApuesta(seleccionActual, cantidad, partido);
     });
 }
 
-function resolverApuesta(seleccion, cantidad, partido) {
+function guardarApuesta(seleccion, cantidad, partido) {
     const btnApostar = document.querySelector('.trade-btn');
     btnApostar.disabled = true;
-    btnApostar.textContent = 'Procesando...';
+    btnApostar.textContent = 'Registrando apuesta...';
+
+    // Reducir saldo inmediatamente
+    const saldoActual = window.obtenerSaldo();
+    window.actualizarSaldo(saldoActual - cantidad);
+
+    const nuevaApuesta = {
+        id: Date.now(),
+        matchId: partido.id,
+        leagueKey: partido.leagueKey,
+        week: partido.week,
+        matchKey: partido.matchKey,
+        equipo1: partido.equipo1,
+        equipo2: partido.equipo2,
+        eleccion: seleccion.nombre,
+        cuota: seleccion.cuota,
+        importe: cantidad,
+        estado: 'pendiente',
+        timestamp: new Date().toISOString()
+    };
+
+    const apuestasRaw = localStorage.getItem('furboBet_bets');
+    const apuestas = apuestasRaw ? JSON.parse(apuestasRaw) : [];
+    apuestas.push(nuevaApuesta);
+    localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
 
     setTimeout(() => {
-        const opciones = [partido.equipo1, partido.equipo2];
-        if (partido.deporte === 'Fútbol') opciones.push('Empate');
-        
-        const resultadoGanador = opciones[Math.floor(Math.random() * opciones.length)];
-        const gano = seleccion.nombre === resultadoGanador;
-        
-        if (gano) {
-            const premio = cantidad * seleccion.cuota;
-            const nuevoSaldo = window.obtenerSaldo() + premio;
-            window.actualizarSaldo(nuevoSaldo);
-            alert(`¡ENHORABUENA! El resultado fue ${resultadoGanador}. Has ganado ${premio.toFixed(2)}€`);
-        } else {
-            alert(`Lo sentimos, el resultado fue ${resultadoGanador}. Has perdido tu apuesta de ${cantidad.toFixed(2)}€`);
-        }
-
-        btnApostar.disabled = false;
-        btnApostar.textContent = 'Apostar';
-        document.querySelector('.amount-input').value = '';
-    }, 2000);
+        alert(`¡Apuesta registrada con éxito! Deberás simular el partido en Omar para ver el resultado.`);
+        window.location.href = '../index.html';
+    }, 1000);
 }

@@ -23,6 +23,11 @@ window.addEventListener('DOMContentLoaded', () => {
     const headerRight = document.querySelector('.header__right');
     const navLinks = document.querySelector('.nav');
 
+    // Detectar si estamos en una subcarpeta (html/)
+    const isSubFolder = window.location.pathname.includes('/html/');
+    const prefix = isSubFolder ? '' : 'html/';
+    const rootPrefix = isSubFolder ? '../' : '';
+
     if (isLoggedIn === 'true') {
         // Usuario ha iniciado sesión
 
@@ -33,10 +38,10 @@ window.addEventListener('DOMContentLoaded', () => {
         
         // 2. Añadir enlace a "Mi Cuenta"
         if (navLinks) {
-            const miCuentaLink = '<a class="nav__link" href="perfilApuesta.html">Mi Cuenta</a>';
+            const miCuentaLink = `<a class="nav__link" href="${prefix}perfilApuesta.html">Mi Cuenta</a>`;
             navLinks.insertAdjacentHTML('beforeend', miCuentaLink);
 
-            const saldoActual = '<a class="nav__link--saldo-usuario" href="añadirSaldoApuesta.html">0,00€</a>';
+            const saldoActual = `<a class="nav__link--saldo-usuario" href="${prefix}añadirSaldoApuesta.html">0,00€</a>`;
             navLinks.insertAdjacentHTML('beforeend', saldoActual);
         }
 
@@ -45,7 +50,7 @@ window.addEventListener('DOMContentLoaded', () => {
         const logout = () => {
             localStorage.removeItem('isLoggedIn');
             localStorage.removeItem('userEmail');
-            window.location.href = 'indexApuesta.html';
+            window.location.href = `${rootPrefix}index.html`;
         };
 
         if (logoutBtn) {
