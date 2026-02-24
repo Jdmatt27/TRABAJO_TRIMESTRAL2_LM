@@ -142,12 +142,11 @@ function createMatchCard(p, isBig = false) {
     card.className = isBig ? 'match__card--cuotas' : 'match__card';
     card.style.cursor = 'pointer';
     if (isBig) {
-        card.style.margin = '2rem 0';
         card.style.width = '100%';
     }
 
     card.innerHTML = `
-        <div class="match__header" style="background-image: url('${p.fondo}'); ${isBig ? 'height: 280px;' : ''}">
+        <div class="match__header" style="background-image: url('${p.fondo}');">
             <div class="match__overlay"></div>
             <div class="match__top">
                 <span class="badge">🏆 ${p.liga}</span>
@@ -160,9 +159,9 @@ function createMatchCard(p, isBig = false) {
             </div>
         </div>
         <div class="${isBig ? 'match__markets--big' : 'match__markets'}">
-            <button class="market__btn" style="--percent: 33%;"><span class="market__name">${p.equipo1}</span><span class="market__odds">${p.cuota1}</span></button>
-            <button class="market__btn" style="--percent: 33%;"><span class="market__name">Empate</span><span class="market__odds">${p.cuotaEmpate}</span></button>
-            <button class="market__btn" style="--percent: 33%;"><span class="market__name">${p.equipo2}</span><span class="market__odds">${p.cuota2}</span></button>
+            <button class="market__btn"><span class="market__name">${p.equipo1}</span><span class="market__odds">${p.cuota1}</span></button>
+            <button class="market__btn"><span class="market__name">Empate</span><span class="market__odds">${p.cuotaEmpate}</span></button>
+            <button class="market__btn"><span class="market__name">${p.equipo2}</span><span class="market__odds">${p.cuota2}</span></button>
         </div>
     `;
     card.onclick = () => { sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p)); window.location.href = 'html/páginaCuotasApuesta.html'; };
@@ -188,8 +187,39 @@ function renderizarPartidos() {
     // 2. Extraer el TOP 1 para el Hero
     const topHero = partidosData.shift();
     if (heroSection) {
+        // Actualizar Título y Texto
         heroSection.querySelector('.hero__title').textContent = `${topHero.equipo1} vs ${topHero.equipo2}`;
-        // (Lógica de apuesta rápida del hero omitida por brevedad, se mantiene igual)
+        
+        // Actualizar Logos y Nombres en el display
+        const matchDisplay = heroSection.querySelector('.hero__match-display');
+        if (matchDisplay) {
+            const teams = matchDisplay.querySelectorAll('.hero__team');
+            if (teams.length === 2) {
+                // Equipo 1
+                teams[0].querySelector('.hero__team-logo').src = topHero.logo1;
+                teams[0].querySelector('.hero__team-logo').alt = topHero.equipo1;
+                teams[0].querySelector('.hero__team-name').textContent = topHero.equipo1;
+                
+                // Equipo 2
+                teams[1].querySelector('.hero__team-logo').src = topHero.logo2;
+                teams[1].querySelector('.hero__team-logo').alt = topHero.equipo2;
+                teams[1].querySelector('.hero__team-name').textContent = topHero.equipo2;
+            }
+        }
+
+        // Actualizar Botones de Apuesta
+        const outcomeBtns = heroSection.querySelectorAll('.outcome-btn');
+        if (outcomeBtns.length === 2) {
+            // Botón 1 (Gana Local)
+            outcomeBtns[0].setAttribute('onclick', `seleccionarMercadoHero('${topHero.equipo1}', ${topHero.cuota1})`);
+            outcomeBtns[0].querySelector('.outcome-label').textContent = `Gana ${topHero.equipo1}`;
+            outcomeBtns[0].querySelector('.outcome-price').textContent = topHero.cuota1;
+            
+            // Botón 2 (Gana Visitante)
+            outcomeBtns[1].setAttribute('onclick', `seleccionarMercadoHero('${topHero.equipo2}', ${topHero.cuota2})`);
+            outcomeBtns[1].querySelector('.outcome-label').textContent = `Gana ${topHero.equipo2}`;
+            outcomeBtns[1].querySelector('.outcome-price').textContent = topHero.cuota2;
+        }
     }
 
     // 3. Organizar los "Seleccionados del Día" (Grandes)
