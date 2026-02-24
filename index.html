@@ -29,15 +29,59 @@
     </header>
 
     <main class="page">
-        <section class="hero hero--main">
+        <section class="hero">
             <div class="hero__inner">
                 <p class="pill">Selección del día</p>
-                <h1 class="hero__title">Real Madrid vs Atletico de Madrid</h1>
+                
+                <div class="hero__match-display">
+                    <div class="hero__team">
+                        <img src="https://crests.football-data.org/86.png" alt="Real Madrid" class="hero__team-logo">
+                        <span class="hero__team-name">Real Madrid</span>
+                    </div>
+                    
+                    <div class="hero__vs">VS</div>
+                    
+                    <div class="hero__team">
+                        <img src="https://crests.football-data.org/78.png" alt="Atlético Madrid" class="hero__team-logo">
+                        <span class="hero__team-name">Atlético Madrid</span>
+                    </div>
+                </div>
+
+                <h1 class="hero__title">El Derbi Madrileño</h1>
                 <p class="hero__text">
-                    El derbi madrileño es uno de los partidos más emocionantes del fútbol español. El Real Madrid y el
-                    Atlético de Madrid se enfrentan en un duelo lleno de pasión, rivalidad y calidad futbolística.
+                    El Real Madrid y el Atlético de Madrid se enfrentan en un duelo lleno de pasión, rivalidad y calidad futbolística. ¿Quién dominará la capital?
                 </p>
             </div>
+
+            <aside class="hero__card">
+                <div class="card__outcome">
+                    <button class="outcome-btn outcome-btn--yes" onclick="seleccionarMercadoHero('Real Madrid', 2.25)">
+                        <span class="outcome-label">Gana Madrid</span>
+                        <span class="outcome-price">2.25</span>
+                    </button>
+                    <button class="outcome-btn outcome-btn--no" onclick="seleccionarMercadoHero('Atlético Madrid', 2.45)">
+                        <span class="outcome-label">Gana Atleti</span>
+                        <span class="outcome-price">2.45</span>
+                    </button>
+                </div>
+
+                <div class="card__amount-section">
+                    <label>Cantidad</label>
+                    <div class="amount-input-wrapper">
+                        <span class="currency">€</span>
+                        <input type="number" placeholder="0" class="amount-input" id="heroAmount">
+                    </div>
+                </div>
+
+                <div class="card__quick-amounts">
+                    <button class="q-btn" onclick="addAmountHero(1)">+$1</button>
+                    <button class="q-btn" onclick="addAmountHero(20)">+$20</button>
+                    <button class="q-btn" onclick="addAmountHero(100)">+$100</button>
+                    <button class="q-btn" onclick="maxAmountHero()">Max</button>
+                </div>
+
+                <button class="trade-btn" onclick="apostarHero()">Apostar</button>
+            </aside>
         </section>
 
         <section class="matches__grid">
@@ -45,7 +89,6 @@
         </section>
         
         <article class="match__card--cuotas" id="matchSeleccionadoDia">
-            <!-- Podríamos hacer esto dinámico también si quisiéramos -->
             <div class="match__header"
                 style="background-image: url('https://i.guim.co.uk/img/media/2a5a0a94ecf2db5c9975703e0f3a5cff06b44508/0_201_5624_3375/master/5624.jpg?width=1200&height=900&quality=85&auto=format&fit=crop&s=1b2207265c5445db251467d68a5e8403');">
                 <div class="match__overlay"></div>
@@ -56,6 +99,7 @@
 
                 <div class="match__teams">
                     <div class="team">
+                        <div class="team__logo-placeholder"></div>
                         <span class="team__name">Aryna Sabalenka</span>
                     </div>
 
@@ -65,32 +109,44 @@
                     </div>
 
                     <div class="team">
+                        <div class="team__logo-placeholder"></div>
                         <span class="team__name">Iga Swiatek</span>
                     </div>
                 </div>
             </div>
 
-            <div class="match__markets--big">
-                <button class="market__btn" style="--percent: 50%;">
+            <div class="match__markets--big" style="grid-template-columns: repeat(2, 1fr);">
+                <button class="market__btn">
                     <span class="market__name">Aryna Sabalenka</span>
-                    <span class="market__odds">2,75</span>
+                    <span class="market__odds">2.75</span>
                 </button>
 
-                <button class="market__btn" style="--percent: 50%;">
+                <button class="market__btn">
                     <span class="market__name">Iga Swiatek</span>
-                    <span class="market__odds">2,20</span>
+                    <span class="market__odds">2.20</span>
                 </button>
             </div>
         </article>
     </main>
 
     <footer>
-        <div class="footer__text">
-            <p>© 2026 FurboBet. Todos los derechos reservados.</p>
-            <p>FurboBet es una marca registrada de Furbo Entertainment Ltd. Juega con responsabilidad.</p>
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="#" class="footer__link">Privacidad</a>
+                <a href="#" class="footer__link">Términos</a>
+                <a href="#" class="footer__link">Soporte</a>
+                <a href="#" class="footer__link">Contacto</a>
+            </div>
+            <div class="footer__text">
+                <p>© 2026 FurboBet. Todos los derechos reservados.</p>
+                <p>FurboBet es una marca registrada de Furbo Entertainment Ltd. Juega con responsabilidad.</p>
+            </div>
         </div>
     </footer>
 
+    <button id="theme-toggle" class="theme-toggle-floating" aria-label="Cambiar tema">🌓</button>
+    <script src="js/theme.js"></script>
+    <script src="js/heroBet.js"></script>
     <script src="js/equipos.js"></script>
     <script src="js/sesion.js"></script>
     <script src="js/saldoApuesta.js"></script>
