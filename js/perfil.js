@@ -83,9 +83,20 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (item.estado === 'ganada') card.style.borderLeftColor = 'var(--neon2)';
                 if (item.estado === 'perdida') card.style.borderLeftColor = 'var(--danger)';
 
+                // Buscar resultado en el historial para mostrar el marcador
+                let marcadorHTML = '';
+                const histRaw = localStorage.getItem(`frontera_${item.leagueKey}_historial`);
+                if (histRaw) {
+                    const historial = JSON.parse(histRaw);
+                    const res = historial.find(h => h.homeIdx === item.matchKey.split('-')[0]*1 && h.awayIdx === item.matchKey.split('-')[1]*1);
+                    if (res) {
+                        marcadorHTML = `<span style="background: rgba(255,255,255,0.1); padding: 2px 6px; border-radius: 4px; margin-left: 8px; font-family: monospace;">${res.homeG} - ${res.awayG}</span>`;
+                    }
+                }
+
                 card.innerHTML = `
                     <div>
-                        <div style="font-weight: bold; font-size: 1.1rem;">⚽ ${item.equipo1} vs ${item.equipo2}</div>
+                        <div style="font-weight: bold; font-size: 1.1rem;">⚽ ${item.equipo1} vs ${item.equipo2} ${marcadorHTML}</div>
                         <div style="font-size: 0.9rem; color: var(--muted);">Apuesta: ${item.eleccion} (@${item.cuota})</div>
                     </div>
                     <div style="text-align: right;">
@@ -136,6 +147,37 @@ document.addEventListener('DOMContentLoaded', () => {
         };
     }
 
+    function validarApuestasAutomaticamente() {
+        const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');
+        let countChecked = 0, totalPrize = 0;
+
+        apuestas.forEach(apuesta => {
+            if (apuesta.estado === 'pendiente') {
+                const histRaw = localStorage.getItem(`frontera_${apuesta.leagueKey}_historial`);
+                if (histRaw) {
+                    const historial = JSON.parse(histRaw);
+                    const res = historial.find(h => h.homeIdx === apuesta.matchKey.split('-')[0]*1 && h.awayIdx === apuesta.matchKey.split('-')[1]*1);
+                    if (res) {
+                        countChecked++;
+                        let winner = (res.homeG > res.awayG) ? apuesta.equipo1 : (res.awayG > res.homeG ? apuesta.equipo2 : 'Empate');
+                        if (apuesta.eleccion === winner) {
+                            apuesta.estado = 'ganada';
+                            totalPrize += (apuesta.importe * apuesta.cuota);
+                        } else apuesta.estado = 'perdida';
+                    }
+                }
+            }
+        });
+
+        if (countChecked > 0) {
+            localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
+            if (totalPrize > 0) window.actualizarSaldo(window.obtenerSaldo() + totalPrize);
+            // No alertamos en el automático para no molestar, solo actualizamos vista
+            actualizarEstadisticas();
+            renderHistorial();
+        }
+    }
+
     // Botón para validar (mantener funcionalidad anterior)
     const validateBtn = document.createElement('button');
     validateBtn.className = 'btn';
@@ -178,6 +220,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // Inicializar página
+    validarApuestasAutomaticamente();
     actualizarEstadisticas();
     renderHistorial();
 });

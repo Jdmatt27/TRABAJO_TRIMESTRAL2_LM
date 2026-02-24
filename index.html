@@ -10,28 +10,26 @@
 
 <body>
     <header class="header">
-        <a href="index.html" class="brand">
-            <span class="brand__mark" aria-hidden="true">Fb</span>
-            <span class="brand__text">
-                <span class="brand__name">FurboBet</span>
-                <span class="brand__sub">Furbo para todos · Para todos lit</span>
-            </span>         
-        </a>
+        <div class="header__content">
+            <a href="index.html" class="brand">
+                <img src="Fuentes/Logo Furbo Bet.png" alt="FurboBet Logo" class="brand__logo">
+            </a>
 
-        <nav class="nav">
-            <a class="nav__link" href="">Estadisticas</a>
-            <a class="nav__link" href="">Ligas</a>
-            <a class="nav__link" href="">Futdraft</a>
-            <a class="nav__link" href="">Más opciones</a>
-        </nav>
+            <nav class="nav">
+                <a class="nav__link" href="">Estadisticas</a>
+                <a class="nav__link" href="">Ligas</a>
+                <a class="nav__link" href="">Futdraft</a>
+                <a class="nav__link" href="">Más opciones</a>
+            </nav>
 
-        <div class="header__right">
-            <a class="btn" href="html/loginApuesta.html">Login</a>
+            <div class="header__right">
+                <a class="btn" href="html/loginApuesta.html">Login</a>
+            </div>
         </div>
     </header>
 
     <main class="page">
-        <section class="hero">
+        <section class="hero hero--main">
             <div class="hero__inner">
                 <p class="pill">Selección del día</p>
                 <h1 class="hero__title">Real Madrid vs Atletico de Madrid</h1>
@@ -40,36 +38,6 @@
                     Atlético de Madrid se enfrentan en un duelo lleno de pasión, rivalidad y calidad futbolística.
                 </p>
             </div>
-
-            <aside class="hero__card">
-                <div class="card__outcome">
-                    <button class="outcome-btn outcome-btn--yes">
-                        <span class="outcome-label">Gana Atleti</span>
-                        <span class="outcome-price">2.45</span>
-                    </button>
-                    <button class="outcome-btn outcome-btn--no">
-                        <span class="outcome-label">Gana Madrid</span>
-                        <span class="outcome-price">2.25</span>
-                    </button>
-                </div>
-
-                <div class="card__amount-section">
-                    <label>Cantidad</label>
-                    <div class="amount-input-wrapper">
-                        <span class="currency">€</span>
-                        <input type="number" placeholder="0" class="amount-input">
-                    </div>
-                </div>
-
-                <div class="card__quick-amounts">
-                    <button class="q-btn">+$1</button>
-                    <button class="q-btn">+$20</button>
-                    <button class="q-btn">+$100</button>
-                    <button class="q-btn">Max</button>
-                </div>
-
-                <button class="trade-btn">Apostar</button>
-            </aside>
         </section>
 
         <section class="matches__grid">

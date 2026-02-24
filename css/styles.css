@@ -60,6 +60,7 @@ body {
 
 .header {
     position: sticky;
+    gap: 20px;
     top: 0;
     z-index: 20;
     display: flex;
@@ -74,8 +75,10 @@ body {
 }
 
 .header__content {
-    width: 1200px;
+    width: 100%;
+    max-width: 1200px;
     display: flex;
+    gap: 20px;
     justify-content: space-between;
     align-items: center;
 }
@@ -86,7 +89,19 @@ body {
     gap: 12px;
     text-decoration: none; 
     color: var(--text);
-    width: 260px;
+    width: 200px; /* Ancho fijo para equilibrar con el lado derecho */
+}
+
+.brand__logo {
+    height: 50px;
+    width: auto;
+    object-fit: contain;
+}
+
+.header__right {
+    width: 200px; /* Mismo ancho que .brand para centrar el .nav */
+    display: flex;
+    justify-content: flex-end;
 }
 
 .brand__mark {
@@ -123,7 +138,6 @@ body {
     display: flex;
     gap: 1rem;
     font-weight: 500;
-    margin-left: auto;
 }
 
 .nav__link {
@@ -200,6 +214,18 @@ body {
     gap: 2.5rem;
     min-height: 420px;
     align-items: start;
+}
+
+.hero--main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.hero--main .hero__inner {
+    align-items: center;
 }
 
 .hero--aside {

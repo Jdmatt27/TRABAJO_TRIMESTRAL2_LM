@@ -20,17 +20,55 @@ function generateFixtures(teamsCount){
     return fixtures;
 }
 
-function generarCuotasParaPartido(team1, team2) {
-    const data1 = window.getEquipoData(team1);
-    const data2 = window.getEquipoData(team2);
-    const total = data1.rating + data2.rating;
-    const prob1 = data1.rating / total;
-    const prob2 = data2.rating / total;
-    const margin = 0.9;
+function getRatingFromStats(teamName, table) {
+    const baseData = window.getEquipoData(teamName);
+    if (!table || !Array.isArray(table)) return baseData.rating;
+    
+    const teamStats = table.find(t => t.nombre === teamName);
+    if (!teamStats) return baseData.rating;
+
+    // Cálculo de rating dinámico basado en puntos y diferencia de goles
+    const puntos = teamStats.puntos || 0;
+    const gf = teamStats.golesFavor || 0;
+    const gc = teamStats.golesContra || 0;
+    const pj = teamStats.partidosJugados || 0;
+    const dg = gf - gc;
+
+    if (pj === 0) return baseData.rating;
+
+    const ppg = puntos / pj; // Puntos por partido (0 a 3)
+    
+    // El rating actual se basa en el rendimiento: 
+    // 50 (base) + (puntos por partido * 15) + (diferencia de goles * 0.2)
+    const performanceRating = 50 + (ppg * 15) + (dg * 0.2);
+    
+    // Mezclamos el rating histórico (EQUIPOS_CONFIG) con el rendimiento actual (60/40)
+    const finalRating = (baseData.rating * 0.6) + (performanceRating * 0.4);
+    
+    return Math.min(98, Math.max(45, finalRating));
+}
+
+function generarCuotasParaPartido(team1, team2, table = null) {
+    const rating1 = getRatingFromStats(team1, table);
+    const rating2 = getRatingFromStats(team2, table);
+    
+    const total = rating1 + rating2;
+    const prob1 = rating1 / total;
+    const prob2 = rating2 / total;
+    const margin = 0.92; // Margen de la casa (8%)
+
+    // Cálculo de cuotas basado en probabilidades
+    let c1 = (1 / prob1) * margin;
+    let c2 = (1 / prob2) * margin;
+    
+    // Cuota de empate basada en la cercanía de los ratings
+    const diff = Math.abs(rating1 - rating2);
+    let cEmpate = 3.10 + (diff / 15);
+
     return {
-        cuota1: Math.max(1.1, (1 / prob1) * margin).toFixed(2),
-        cuotaEmpate: (3.20 + (Math.abs(data1.rating - data2.rating) / 10)).toFixed(2),
-        cuota2: Math.max(1.1, (1 / prob2) * margin).toFixed(2)
+        cuota1: Math.max(1.05, c1).toFixed(2),
+        cuotaEmpate: Math.max(2.50, cEmpate).toFixed(2),
+        cuota2: Math.max(1.05, c2).toFixed(2)
     };
 }
 
@@ -40,38 +78,60 @@ function obtenerPartidosDeOmar() {
 
     Object.keys(LIGAS_CONFIG).forEach(leagueKey => {
         const league = LIGAS_CONFIG[leagueKey];
-        const rawTable = localStorage.getItem(`frontera_${leagueKey}`);
-        if (rawTable) {
-            const simulatedMatches = JSON.parse(localStorage.getItem(`frontera_${leagueKey}_simulados`) || '[]');
-            const fixtures = generateFixtures(league.teams.length);
-            let currentWeek = 0;
-            for(let i=0; i<fixtures.length; i++){
-                if(fixtures[i].every(m => simulatedMatches.includes(`${m.homeIdx}-${m.awayIdx}`))) currentWeek = i + 1;
-                else break;
-            }
-            if (currentWeek < fixtures.length) {
-                fixtures[currentWeek].forEach((match, idx) => {
-                    const matchKey = `${match.homeIdx}-${match.awayIdx}`;
-                    if (!simulatedMatches.includes(matchKey)) {
-                        const homeTeam = league.teams[match.homeIdx];
-                        const awayTeam = league.teams[match.awayIdx];
-                        const homeData = window.getEquipoData(homeTeam);
-                        const awayData = window.getEquipoData(awayTeam);
-                        
-                        allMatches.push({
-                            id: `omar_${leagueKey}_w${currentWeek}_${idx}`,
-                            leagueKey, week: currentWeek, matchKey,
-                            deporte: "Fútbol", liga: league.name, estado: "Próximamente",
-                            equipo1: homeTeam, equipo2: awayTeam,
-                            logo1: homeData.logo, logo2: awayData.logo,
-                            hora: "20:00", fecha: `Semana ${currentWeek + 1}`,
-                            fondo: homeData.stadium,
-                            ratingTotal: homeData.rating + awayData.rating,
-                            ...generarCuotasParaPartido(homeTeam, awayTeam)
-                        });
-                    }
-                });
-            }
+        // Intentamos obtener la tabla por ID o por Nombre (por si Omar usa el nombre)
+        let rawTable = localStorage.getItem(`frontera_${leagueKey}`);
+        if (!rawTable) rawTable = localStorage.getItem(`frontera_${league.name}`);
+        
+        // Si no hay tabla, pero es la primera vez que entramos, podríamos querer ver los partidos
+        // No obstante, si Omar no ha inicializado la liga, no sabemos qué equipos están.
+        // Asumimos que si existe la config, la liga es válida.
+        
+        const table = rawTable ? JSON.parse(rawTable) : null;
+        const histRaw = localStorage.getItem(`frontera_${leagueKey}_historial`) || localStorage.getItem(`frontera_${league.name}_historial`);
+        const historial = histRaw ? JSON.parse(histRaw) : [];
+        
+        const teamsCount = league.teams.length;
+        const fixtures = generateFixtures(teamsCount);
+        const matchesPerJornada = Math.floor(teamsCount / 2);
+        
+        // Calculamos la jornada actual de forma más robusta:
+        // Total de partidos jugados / partidos por jornada
+        let currentWeek = Math.floor(historial.length / matchesPerJornada);
+
+        if (currentWeek < fixtures.length) {
+            fixtures[currentWeek].forEach((match, idx) => {
+                // Solo mostramos si no está en el historial (por si se juegan jornadas parciales)
+                const yaJugado = historial.some(h => 
+                    (h.homeIdx === match.homeIdx && h.awayIdx === match.awayIdx) ||
+                    (h.equipoLocal === league.teams[match.homeIdx] && h.equipoVisitante === league.teams[match.awayIdx])
+                );
+                
+                if (!yaJugado) {
+                    const homeTeam = league.teams[match.homeIdx];
+                    const awayTeam = league.teams[match.awayIdx];
+                    const homeData = window.getEquipoData(homeTeam);
+                    const awayData = window.getEquipoData(awayTeam);
+                    
+                    allMatches.push({
+                        id: `omar_${leagueKey}_w${currentWeek}_${idx}`,
+                        leagueKey, 
+                        week: currentWeek, 
+                        matchKey: `${match.homeIdx}-${match.awayIdx}`,
+                        deporte: "Fútbol", 
+                        liga: league.name, 
+                        estado: "Próximamente",
+                        equipo1: homeTeam, 
+                        equipo2: awayTeam,
+                        logo1: homeData.logo, 
+                        logo2: awayData.logo,
+                        hora: "20:00", 
+                        fecha: `Jornada ${currentWeek + 1}`,
+                        fondo: homeData.stadium,
+                        ratingTotal: homeData.rating + awayData.rating,
+                        ...generarCuotasParaPartido(homeTeam, awayTeam, table)
+                    });
+                }
+            });
         }
     });
     return allMatches;
