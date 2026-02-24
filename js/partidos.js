@@ -112,19 +112,24 @@ function obtenerPartidosDeOmar() {
                     const homeData = window.getEquipoData(homeTeam);
                     const awayData = window.getEquipoData(awayTeam);
                     
+                    // Horarios realistas basados en el orden (índice del partido en la jornada)
+                    const horariosBase = ["14:00", "16:15", "18:30", "21:00", "21:00"];
+                    const horaAsignada = horariosBase[idx % horariosBase.length];
+
                     allMatches.push({
                         id: `omar_${leagueKey}_w${currentWeek}_${idx}`,
                         leagueKey, 
                         week: currentWeek, 
                         matchKey: `${match.homeIdx}-${match.awayIdx}`,
                         deporte: "Fútbol", 
-                        liga: league.name, 
+                        liga: league.name,
+                        ligaLogo: league.logo,
                         estado: "Próximamente",
                         equipo1: homeTeam, 
                         equipo2: awayTeam,
                         logo1: homeData.logo, 
                         logo2: awayData.logo,
-                        hora: "20:00", 
+                        hora: horaAsignada, 
                         fecha: `Jornada ${currentWeek + 1}`,
                         fondo: homeData.stadium,
                         ratingTotal: homeData.rating + awayData.rating,
@@ -149,7 +154,10 @@ function createMatchCard(p, isBig = false) {
         <div class="match__header" style="background-image: url('${p.fondo}');">
             <div class="match__overlay"></div>
             <div class="match__top">
-                <span class="badge">🏆 ${p.liga}</span>
+                <span class="badge" style="display: flex; align-items: center; gap: 6px;">
+                    <img src="${p.ligaLogo}" style="width: 16px; height: 16px; object-fit: contain;">
+                    ${p.liga}
+                </span>
                 <span class="pill">${p.estado}</span>
             </div>
             <div class="match__teams">

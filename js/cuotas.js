@@ -55,8 +55,17 @@ function renderizarDetallesPartido(partido) {
             <div class="match__header" style="background-image: url('${partido.fondo}');">
                 <div class="match__overlay"></div>
                 <div class="match__top">
-                    <span class="badge">🏆 ${partido.liga}</span>
-                    <span class="pill">${partido.estado}</span>
+                    <span class="badge" style="display: flex; align-items: center; gap: 6px;">
+                        <img src="${partido.ligaLogo}" style="width: 16px; height: 16px; object-fit: contain;">
+                        ${partido.liga}
+                    </span>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <a href="http://127.0.0.1:5500/Trabajos%20Finales/Segundo%20Trimestre/P%C3%A1gina%20Web%20Omar/frontera.html" class="pill" style="background: #001933; color: white; border: 1px solid #00a9e0; text-decoration: none; font-weight: bold; cursor: pointer; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 4px 12px;">
+                            <img src="../Fuentes/movistar.svg" style="width: 16px; height: 16px; object-fit: contain;">
+                            Ver Partido
+                        </a>
+                        <span class="pill">${partido.estado}</span>
+                    </div>
                 </div>
 
                 <div class="match__teams">
