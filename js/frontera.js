@@ -88,7 +88,7 @@
   function load(leagueKey, el){
     if (!leagues[leagueKey]) return showToast('Liga no encontrada', 'error');
 
-    document.querySelectorAll('.league-item.selected').forEach(x=>x.classList.remove('selected'));
+    document.querySelectorAll('.league_item.selected').forEach(x=>x.classList.remove('selected'));
     if (el && el.classList) el.classList.add('selected');
 
     current = leagueKey;
@@ -163,7 +163,7 @@
       if(true){
         const tr = document.createElement('tr');
         if(rowClass) tr.className = rowClass;
-        tr.innerHTML = `<td style="font-weight:700">${i+1}</td><td style="text-align:left;font-weight:600">${t.name}</td><td style="text-align:center">${t.pj}</td><td style="text-align:center;color:var(--success)">${t.w}</td><td style="text-align:center">${t.d}</td><td style="text-align:center;color:var(--danger)">${t.l}</td><td style="text-align:center">${t.gf}</td><td style="text-align:center">${t.ga}</td><td style="text-align:center;font-weight:700">${t.gd}</td><td class="pts-cell">${t.pts}</td>`;
+        tr.innerHTML = `<td style="font-weight:700">${i+1}</td><td class="col_team">${t.name}</td><td style="text-align:center">${t.pj}</td><td style="text-align:center;color:var(--success)">${t.w}</td><td style="text-align:center">${t.d}</td><td style="text-align:center;color:var(--danger)">${t.l}</td><td style="text-align:center">${t.gf}</td><td style="text-align:center">${t.ga}</td><td style="text-align:center;font-weight:700">${t.gd}</td><td class="pts-cell">${t.pts}</td>`;
         tbody.appendChild(tr);
       }
     });
@@ -292,8 +292,8 @@
     };
     
     const el = document.createElement('div');
-    el.className = 'event-item';
-    el.style.borderLeft = `3px solid ${colors[event.type] || 'var(--muted)'}`;
+    el.className = 'event_item';
+    el.style.borderLeft = `3px solid ${colors[event.type] || '#9ca3af'}`;
     
     const text = event.type === 'gol' ? `Gol: ${event.team} (${event.player})` : 
                  event.type === 'tarjeta_amarilla' ? `Tarjeta Amarilla: ${event.team} (${event.player})` :
@@ -301,7 +301,7 @@
                  event.type === 'parada' ? `¡Paradón del portero de ${event.team}!` :
                  event.type === 'poste' ? `¡Al palo! Ocasión de ${event.team}` :
                  `Cambio: ${event.team}`;
-    el.innerHTML = `<span style="font-size:16px;">${icons[event.type]}</span><div style="flex:1;"><span class="event-minute">${event.minute}'</span> ${text}</div>`;
+    el.innerHTML = `<span style="font-size:16px;">${icons[event.type]}</span><div style="flex:1;"><span class="event_minute">${event.minute}'</span> ${text}</div>`;
     container.prepend(el);
   }
 
@@ -325,9 +325,9 @@
       document.getElementById('minute-progress').style.width = '100%';
       if (matchesInProgress.includes(matchKey)) {
         simulateMatchDetailBtn.textContent = 'Simulando...';
-        document.getElementById('events-container').innerHTML = '<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Partido en curso en segundo plano...</p>';
+        document.getElementById('events-container').innerHTML = '<p class="text_muted_small text_center_p20">Partido en curso en segundo plano...</p>';
       } else {
-        document.getElementById('events-container').innerHTML = '<p style="color:var(--muted);font-size:13px;text-align:center;padding:20px;">Este partido ya se ha jugado.</p>';
+        document.getElementById('events-container').innerHTML = '<p class="text_muted_small text_center_p20">Este partido ya se ha jugado.</p>';
       }
     } else {
       simulateMatchDetailBtn.disabled = false;
@@ -336,7 +336,7 @@
       document.getElementById('match-away-score').textContent = '0';
       document.getElementById('current-minute').textContent = '0';
       document.getElementById('minute-progress').style.width = '0%';
-      document.getElementById('events-container').innerHTML = '<p style="color:var(--muted);font-size:13px;">Haz click en "Simular Partido" para ver eventos</p>';
+      document.getElementById('events-container').innerHTML = '<p class="text_muted_small">Haz click en "Simular Partido" para ver eventos</p>';
     }
     document.getElementById('match-detail-view').style.display = 'block';
     
@@ -451,12 +451,12 @@
     const result = homeG > awayG ? 'V' : homeG === awayG ? 'E' : 'D';
     const resultColor = result === 'V' ? 'var(--success)' : result === 'D' ? 'var(--danger)' : 'var(--muted)';
     const matchEl = document.createElement('div');
-    matchEl.className = 'match-card';
+    matchEl.className = 'match_card';
     matchEl.innerHTML = `
-      <div class="match-team" style="text-align:right">${homeTeam}</div>
-      <div class="match-score">${homeG} - ${awayG}</div>
-      <div class="match-team" style="text-align:left">${awayTeam}</div>
-      <div class="match-result-bar" style="background:${resultColor}"></div>
+      <div class="match_team" style="text-align:right">${homeTeam}</div>
+      <div class="match_score">${homeG} - ${awayG}</div>
+      <div class="match_team" style="text-align:left">${awayTeam}</div>
+      <div class="match_result_bar" style="background:${resultColor}"></div>
     `;
     container.prepend(matchEl);
   }
@@ -496,7 +496,7 @@
       }
     }
     const header = document.createElement('div');
-    header.style.cssText = "padding:10px;background:var(--accent);color:#0b1220;border-radius:8px;font-weight:800;text-align:center;margin-bottom:8px;";
+    header.style.cssText = "padding:10px;background:#22c55e;color:#0b1220;border-radius:8px;font-weight:800;text-align:center;margin-bottom:8px;";
     header.textContent = `Semana ${currentWeek + 1}`;
     matchesContainer.prepend(header);
 
@@ -530,12 +530,12 @@
     }
     
     const header = document.createElement('div');
-    header.style.cssText = "padding:10px;background:var(--accent2);color:#0b1220;border-radius:8px;font-weight:800;text-align:center;margin-bottom:8px;";
+    header.style.cssText = "padding:10px;background:#38bdf8;color:#0b1220;border-radius:8px;font-weight:800;text-align:center;margin-bottom:8px;";
     header.textContent = "Liga Simulada";
     matchesContainer.prepend(header);
     
     const info = document.createElement('p');
-    info.style.cssText = "text-align:center;color:var(--muted);font-size:13px;";
+    info.style.cssText = "text-align:center;color:#9ca3af;font-size:13px;";
     info.textContent = "Consulta el historial para ver los resultados.";
     matchesContainer.appendChild(info);
 
@@ -562,7 +562,7 @@
       dashView.classList.add('hidden');
       teamView.classList.add('hidden');
       if(globalView) globalView.classList.remove('hidden');
-      if(globalContainer) globalContainer.innerHTML = '<p style="text-align:center;color:var(--muted);grid-column:1/-1;">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
+      if(globalContainer) globalContainer.innerHTML = '<p class="text_center_p20 text_muted_small">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
       if(btnGlobalStart) btnGlobalStart.style.display = 'inline-block';
       if(btnGlobalSim) btnGlobalSim.style.display = 'none';
       if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
@@ -618,7 +618,7 @@
         const leagueCard = document.createElement('div');
         leagueCard.className = 'card';
         leagueCard.style.padding = '10px';
-        leagueCard.innerHTML = `<h4 style="margin:0 0 10px 0;color:var(--accent);text-align:center">${leagues[key].name} - Semana ${lWeek + 1}</h4>`;
+        leagueCard.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name} - Semana ${lWeek + 1}</h4>`;
         
         const list = document.createElement('div');
         list.style.display = 'flex';
@@ -649,9 +649,9 @@
           row.style.justifyContent = 'space-between';
           row.style.fontSize = '0.9rem';
           if (isPlayed) {
-            row.innerHTML = `<span>${home.name}</span> <span class="g-res" style="color:var(--success);font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
+            row.innerHTML = `<span>${home.name}</span> <span class="g-res" style="color:#10b981;font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
           } else {
-            row.innerHTML = `<span>${home.name}</span> <span class="g-res" style="font-weight:bold;color:var(--muted)">vs</span> <span>${away.name}</span>`;
+            row.innerHTML = `<span>${home.name}</span> <span class="g-res" style="font-weight:bold;color:#9ca3af">vs</span> <span>${away.name}</span>`;
           }
           list.appendChild(row);
         });
@@ -665,7 +665,7 @@
         btnGlobalSim.style.display = 'inline-block';
         if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'inline-block';
       } else {
-        globalContainer.innerHTML = '<p style="text-align:center;color:var(--muted);grid-column:1/-1;">Todas las ligas han finalizado.</p>';
+        globalContainer.innerHTML = '<p class="text_center_p20 text_muted_small">Todas las ligas han finalizado.</p>';
       }
     });
   }
@@ -676,10 +676,10 @@
     const el = document.getElementById(p.matchId);
     if(el) {
       el.querySelector('.g-res').textContent = `${homeGoals} - ${awayGoals}`;
-      el.querySelector('.g-res').style.color = 'var(--accent)';
-      if(homeGoals > awayGoals) el.style.borderLeft = '3px solid var(--success)';
-      else if(awayGoals > homeGoals) el.style.borderRight = '3px solid var(--success)';
-      else el.style.borderBottom = '2px solid var(--muted)';
+      el.querySelector('.g-res').style.color = '#22c55e';
+      if(homeGoals > awayGoals) el.style.borderLeft = '3px solid #10b981';
+      else if(awayGoals > homeGoals) el.style.borderRight = '3px solid #10b981';
+      else el.style.borderBottom = '2px solid #9ca3af';
     }
 
    
@@ -771,7 +771,7 @@
         const card = document.createElement('div');
         card.className = 'card';
         card.style.padding = '10px';
-        card.innerHTML = `<h4 style="margin:0 0 10px 0;color:var(--accent);text-align:center">${leagues[key].name}</h4>`;
+        card.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name}</h4>`;
 
         const tableEl = document.createElement('table');
         tableEl.style.fontSize = '0.85rem';
@@ -779,11 +779,11 @@
           <thead><tr><th style="padding:4px">#</th><th style="padding:4px;text-align:left">Equipo</th><th style="padding:4px">PJ</th><th style="padding:4px">Pts</th></tr></thead>
           <tbody>
             ${lTable.map((t, i) => `
-              <tr style="${i < 4 ? 'background:rgba(34,197,94,0.05)' : ''}">
+              <tr style="${i < 4 ? 'background:rgba(34,197,94,0.1)' : ''}">
                 <td style="padding:4px;text-align:center">${i+1}</td>
                 <td style="padding:4px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:120px;">${t.name}</td>
                 <td style="padding:4px;text-align:center">${t.pj}</td>
-                <td style="padding:4px;text-align:center;font-weight:bold;color:var(--accent)">${t.pts}</td>
+                <td style="padding:4px;text-align:center;font-weight:bold;color:#22c55e">${t.pts}</td>
               </tr>
             `).join('')}
           </tbody>
@@ -818,7 +818,7 @@
       });
 
       if (sortedWeeks.length === 0) {
-        globalContainer.innerHTML = '<p style="text-align:center;color:var(--muted);grid-column:1/-1;">No hay historial disponible.</p>';
+        globalContainer.innerHTML = '<p class="text_center_p20 text_muted_small">No hay historial disponible.</p>';
         return;
       }
 
@@ -854,7 +854,7 @@
             const card = document.createElement('div');
             card.className = 'card';
             card.style.padding = '10px';
-            card.innerHTML = `<h4 style="margin:0 0 10px 0;color:var(--accent);text-align:center">${leagues[key].name}</h4>`;
+            card.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name}</h4>`;
             const list = document.createElement('div');
             list.style.display = 'flex'; list.style.flexDirection = 'column'; list.style.gap = '6px';
             
@@ -950,9 +950,9 @@
   window.goBackToSelection = function(){ showSelection(); };
   window.goBackToDashboard = function(){ showDashboard(); };
 
-   const track = document.querySelector('.carousel-track');
-   const container = document.querySelector('.carousel-viewport');
-   const items = track ? Array.from(track.querySelectorAll('.league-item')) : [];
+   const track = document.querySelector('.carousel_track');
+   const container = document.querySelector('.carousel_viewport');
+   const items = track ? Array.from(track.querySelectorAll('.league_item')) : [];
  
    let slideIndex = 2;
  
@@ -995,7 +995,7 @@
    window.addEventListener('resize', updateCarousel);
    setTimeout(updateCarousel, 50);
 
-  const allLeagueItems = document.querySelectorAll('.league-item[data-key]');
+  const allLeagueItems = document.querySelectorAll('.league_item[data-key]');
   allLeagueItems.forEach(el => {
     el.addEventListener('click', () => {
       const key = el.dataset.key; 
@@ -1005,7 +1005,7 @@
 
   carouselSection.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-      const activeItem = document.querySelector('.league-item.active');
+      const activeItem = document.querySelector('.league_item.active');
       if (activeItem) {
         const key = activeItem.dataset.key;
         if (key) {
