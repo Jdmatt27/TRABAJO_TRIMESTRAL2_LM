@@ -9,96 +9,97 @@
 </head>
 <body>
 
-  <header class="furbo_header mb_0">
-    <div class="header_inner">
-      <div class="header_logo" onclick="window.location.href='frontera.html'">⚽</div>
-      <nav class="header_nav">
-        <a href="noticias.html" class="nav_link">Noticias</a>
-        <a href="apuestas.html" class="nav_link">Apuestas</a>
-        <a href="contacto.html" class="nav_link">Contacto</a>
+  <header class="cabecera_principal margen_0">
+    <div class="cabecera_interior">
+      <div class="logo_cabecera" onclick="window.location.href='frontera.html'">⚽</div>
+      <nav class="navegacion_cabecera">
+        <a href="noticias.html" class="enlace_nav">Noticias</a>
+        <a href="apuestas.html" class="enlace_nav">Apuestas</a>
+        <a href="contacto.html" class="enlace_nav">Contacto</a>
       </nav>
+      <button class="boton_pequeno" onclick="window.location.href='login.html'">Login</button>
     </div>
   </header>
 
-  <div class="hero_cover">
-    <div class="hero_overlay"></div>
+  <div class="portada_hero">
+    <div class="superposicion_hero"></div>
   </div>
 
-<main class="container">
+<main class="contenedor">
 
-  <section id="view-selection" class="p_section">
-    <div class="carousel_wrap card mt_18" id="carousel-section">
-      <div class="carousel_container">
-        <button class="carousel_btn prev" id="carousel-prev">&#10094;</button>
-        <div class="carousel_viewport">
-          <div class="carousel_track">
-            <div class="league_item league_premier flex_shrink_0" data-key="premier">
-              <div class="logo">PL</div>
+  <section id="vista-seleccion" class="relleno_20">
+    <div class="contenedor_carrusel tarjeta margen_sup_18" id="carousel-section">
+      <div class="carrusel_interno">
+        <button class="boton_carrusel prev" id="carousel-prev">&#10094;</button>
+        <div class="visor_carrusel">
+          <div class="pista_carrusel">
+            <div class="item_liga liga_premier flex_shrink_0" data-key="premier">
+              <div class="logo_liga">PL</div>
               <h4>Premier League</h4>
-              <p class="subtitle">Inglaterra</p>
+              <p class="subtitulo">Inglaterra</p>
             </div>
-            <div class="league_item league_laliga flex_shrink_0" data-key="laliga">
-              <div class="logo">LL</div>
+            <div class="item_liga liga_laliga flex_shrink_0" data-key="laliga">
+              <div class="logo_liga">LL</div>
               <h4>LaLiga</h4>
-              <p class="subtitle">España</p>
+              <p class="subtitulo">España</p>
             </div>
-            <div class="league_item league_seriea flex_shrink_0" data-key="seriea">
-              <div class="logo">SA</div>
+            <div class="item_liga liga_seriea flex_shrink_0" data-key="seriea">
+              <div class="logo_liga">SA</div>
               <h4>Serie A</h4>
-              <p class="subtitle">Italia</p>
+              <p class="subtitulo">Italia</p>
             </div>
-            <div class="league_item league_bundesliga flex_shrink_0" data-key="bundesliga">
-              <div class="logo">BL</div>
+            <div class="item_liga liga_bundesliga flex_shrink_0" data-key="bundesliga">
+              <div class="logo_liga">BL</div>
               <h4>Bundesliga</h4>
-              <p class="subtitle">Alemania</p>
+              <p class="subtitulo">Alemania</p>
             </div>
-            <div class="league_item league_ligue1 flex_shrink_0" data-key="ligue1">
-              <div class="logo">L1</div>
+            <div class="item_liga liga_ligue1 flex_shrink_0" data-key="ligue1">
+              <div class="logo_liga">L1</div>
               <h4>Ligue 1</h4>
-              <p class="subtitle">Francia</p>
+              <p class="subtitulo">Francia</p>
             </div>
           </div>
         </div>
-        <button class="carousel_btn next" id="carousel-next">&#10095;</button>
+        <button class="boton_carrusel next" id="carousel-next">&#10095;</button>
       </div>
     </div>
-    <button id="btn-global-view" class="btn_play btn_global_view">Simulación Global</button>
+    <button id="btn-global-view" class="boton_accion boton_vista_global">Simulación Global</button>
   </section>
 
-  <section id="view-dashboard" class="card hidden mt_18">
-    <div class="flex_between_center mb_12">
-      <h3 id="league-title">Liga</h3>
+  <section id="vista-panel" class="tarjeta oculto margen_sup_18">
+    <div class="flex_entre_centro margen_inf_12">
+      <h3 id="league-title" class="titulo_principal">Liga</h3>
       <div>
-        <button onclick="goBackToSelection()" class="mr_8">Volver</button>
-        <button id="reset-btn">Reiniciar datos</button>
+        <button onclick="goBackToSelection()" class="margen_der_8">Volver</button>
+        <button id="reset-btn" class="boton_reiniciar_global">Reiniciar datos</button>
       </div>
     </div>
 
-    <div class="grid">
+    <div class="rejilla">
       <div>
-        <div class="controls_bar">
-          <button id="simulate-match-btn" type="button" class="btn_small">Semana</button>
-          <button id="simulate-league-btn" type="button" class="btn_small">Liga</button>
-          <select id="team-selector" class="team_selector">
+        <div class="barra_controles">
+          <button id="simulate-match-btn" type="button" class="boton_pequeno">Semana</button>
+          <button id="simulate-league-btn" type="button" class="boton_pequeno">Liga</button>
+          <select id="team-selector" class="selector_equipo">
             <option value="">Selecciona equipo</option>
           </select>
-          <button id="view-team-btn" type="button" class="btn_small">Ver</button>
-          <button id="view-history-btn" type="button" class="btn_small btn_history">Historial</button>
+          <button id="view-team-btn" type="button" class="boton_pequeno">Ver</button>
+          <button id="view-history-btn" type="button" class="boton_pequeno boton_historial">Historial</button>
         </div>
         
         <table>
           <thead>
-            <tr><th>#</th><th class="col_team">Equipo</th><th>PJ</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>PTS</th></tr>
+            <tr><th>#</th><th class="columna_equipo">Equipo</th><th>PJ</th><th>W</th><th>D</th><th>L</th><th>GF</th><th>GA</th><th>GD</th><th>PTS</th></tr>
           </thead>
           <tbody id="table-body"></tbody>
         </table>
       </div>
 
       <aside>
-        <div class="card">
+        <div class="tarjeta">
           <h4>Enfrentamientos</h4>
-          <div id="matches-container" class="matches_container_inner">
-            <p class="text_muted_small">Los resultados aparecerán aquí</p>
+          <div id="matches-container" class="contenedor_partidos_interno">
+            <p class="texto_tenue_pequeno">Los resultados aparecerán aquí</p>
           </div>
         </div>
       </aside>
@@ -106,82 +107,82 @@
 
   </section>
 
-  <section id="view-team" class="card hidden mt_18">
-    <div class="flex_between_center mb_18">
-      <h3 id="team-name-title" class="m_0">Equipo</h3>
-      <button onclick="goBackToDashboard()" class="btn_small">Volver</button>
+  <section id="vista-equipo" class="tarjeta oculto margen_sup_18">
+    <div class="flex_entre_centro margen_inf_18">
+      <h3 id="team-name-title" class="margen_0">Equipo</h3>
+      <button onclick="goBackToDashboard()" class="boton_pequeno">Volver</button>
     </div>
 
-    <div class="match_selector_wrapper">
-      <select id="match-selector" class="match_selector">
+    <div class="flex_espacio_10 margen_inf_20">
+      <select id="match-selector" class="selector_partido">
         <option value="">Selecciona partido</option>
       </select>
-      <button id="view-match-detail-btn" type="button" class="btn_small btn_stadium">Ir al Estadio</button>
+      <button id="view-match-detail-btn" type="button" class="boton_pequeno boton_estadio">Ir al Estadio</button>
     </div>
 
-    <div id="match-detail-view" class="match_center" style="display:none;">
+    <div id="match-detail-view" class="centro_partido" style="display:none;">
       
-      <div class="scoreboard">
-        <div class="scoreboard_content">
-          <div class="team_display">
+      <div class="marcador">
+        <div class="contenido_marcador">
+          <div class="visualizacion_equipo">
             <h2 id="match-home">LOCAL</h2>
           </div>
-          <div class="flex_col_center">
-            <div class="score_display">
+          <div class="flex_columna_centro">
+            <div class="visualizacion_puntos">
               <span id="match-home-score">0</span>-<span id="match-away-score">0</span>
             </div>
-            <div class="match_timer"><span id="current-minute">0</span>'</div>
+            <div class="temporizador_partido"><span id="current-minute">0</span>'</div>
           </div>
-          <div class="team_display">
+          <div class="visualizacion_equipo">
             <h2 id="match-away">VISITANTE</h2>
           </div>
         </div>
-        <div class="progress_track">
-          <div id="minute-progress" class="progress_fill"></div>
+        <div class="pista_progreso">
+          <div id="minute-progress" class="relleno_progreso"></div>
         </div>
       </div>
 
-      <button id="simulate-match-detail-btn" type="button" class="btn_play">Iniciar Partido</button>
+      <button id="simulate-match-detail-btn" type="button" class="boton_accion">Iniciar Partido</button>
 
-      <div class="events_feed">
+      <div class="feed_eventos">
         <h4>Narración en vivo</h4>
-        <div id="events-container" class="events_container_inner">
-          <p class="text_muted_small text_center_p20">El partido está por comenzar...</p>
+        <div id="events-container" class="contenedor_eventos_interno">
+          <p class="texto_tenue_pequeno texto_centrado relleno_20">El partido está por comenzar...</p>
         </div>
       </div>
 
     </div>
   </section>
 
-  <section id="view-global" class="card hidden mt_18">
-    <div class="flex_between_center mb_18">
-      <h3 class="m_0">Panel Global de Ligas</h3>
-      <button onclick="goBackToSelection()" class="btn_small">Volver</button>
+  <section id="vista-global" class="tarjeta oculto margen_sup_18">
+    <div class="flex_entre_centro margen_inf_18">
+      <h3 class="margen_0">Panel Global de Ligas</h3>
+      <button onclick="goBackToSelection()" class="boton_pequeno">Volver</button>
     </div>
-    <div class="controls_bar controls_bar_center">
-      <button id="global-start-btn" class="btn_play btn_auto">Iniciar Semana</button>
-      <button id="global-sim-btn" class="btn_play btn_auto btn_sim_res">Simular Resultados</button>
-      <button id="global-sim-one-btn" class="btn_play btn_auto btn_sim_one">Simular 1 Partido</button>
-      <button id="global-standings-btn" class="btn_play btn_auto btn_standings">Clasificación</button>
-      <button id="global-history-btn" class="btn_play btn_auto btn_history">Historial</button>
-      <button id="global-reset-btn" class="btn_play btn_auto btn_reset_global">Resetear Todo</button>
+    <div class="barra_controles barra_controles_centro">
+      <button id="global-start-btn" class="boton_accion boton_auto">Iniciar Semana</button>
+      <button id="global-sim-btn" class="boton_accion boton_auto boton_simular_resultados">Simular Resultados</button>
+      <button id="global-sim-one-btn" class="boton_accion boton_auto boton_simular_uno">Simular 1 Partido</button>
+      <button id="global-standings-btn" class="boton_accion boton_auto boton_clasificacion">Clasificación</button>
+      <button id="global-history-btn" class="boton_accion boton_auto boton_historial">Historial</button>
+      <button id="global-reset-btn" class="boton_accion boton_auto boton_reiniciar_global">Resetear Todo</button>
     </div>
-    <div id="global-matches-container" class="global_grid"></div>
+    <div id="global-matches-container" class="rejilla_global"></div>
   </section>
 
 </main>
 
-<div id="history-modal" class="modal_overlay">
-  <div class="modal_content">
-    <div class="modal_header">
-      <h3 class="m_0">Historial de Resultados</h3>
-      <button class="close_modal" id="close-history-btn">&times;</button>
+<div id="history-modal" class="superposicion_modal">
+  <div class="contenido_modal">
+    <div class="cabecera_modal">
+      <h3 class="margen_0">Historial de Resultados</h3>
+      <button class="cerrar_modal" id="close-history-btn">&times;</button>
     </div>
-    <div class="modal_body" id="history-content"></div>
+    <div class="cuerpo_modal" id="history-content"></div>
   </div>
 </div>
 
-<div id="toast-container" class="toast_container"></div>
+<div id="toast-container" class="contenedor_notificaciones"></div>
 <canvas id="confetti-canvas"></canvas>
 
 <script src="js/frontera.js" defer></script>

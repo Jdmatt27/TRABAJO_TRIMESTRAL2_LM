@@ -15,14 +15,58 @@
     ligue1: { name: 'Ligue 1', teams: ['PSG','OGC Nice','AS Monaco','Lille OSC','Stade Brestois','Olympique Lyon'] }
   };
 
-  const selView = document.getElementById('view-selection');
-  const dashView = document.getElementById('view-dashboard');
-  const teamView = document.getElementById('view-team');
-  const globalView = document.getElementById('view-global');
+  const teamPlayers = {
+    'Man. City': ['Haaland', 'De Bruyne', 'Foden', 'Rodri', 'B. Silva', 'Ederson'],
+    'Arsenal': ['Saka', 'Odegaard', 'Rice', 'Martinelli', 'Jesus', 'Raya'],
+    'Liverpool': ['Salah', 'Van Dijk', 'Alisson', 'Trent AA', 'Nunez', 'Szoboszlai'],
+    'Aston Villa': ['Watkins', 'Bailey', 'Douglas Luiz', 'McGinn', 'Martinez'],
+    'Tottenham': ['Son', 'Maddison', 'Richarlison', 'Kulusevski', 'Vicario'],
+    'Man. Utd': ['Fernandes', 'Rashford', 'Hojlund', 'Garnacho', 'Onana'],
+    'Newcastle': ['Isak', 'Gordon', 'Guimaraes', 'Trippier', 'Pope'],
+    'Chelsea': ['Palmer', 'Jackson', 'Sterling', 'Gallagher', 'Petrovic'],
+    'West Ham': ['Bowen', 'Kudus', 'Paqueta', 'Ward-Prowse', 'Areola'],
+    'Brighton': ['Pedro', 'Mitoma', 'Gross', 'Adingra', 'Verbruggen'],
+    'Real Madrid': ['Vinicius Jr', 'Bellingham', 'Rodrygo', 'Valverde', 'Courtois'],
+    'FC Barcelona': ['Lewandowski', 'Yamal', 'Gundogan', 'Pedri', 'Ter Stegen'],
+    'Atlético Madrid': ['Griezmann', 'Morata', 'De Paul', 'Koke', 'Oblak'],
+    'Real Sociedad': ['Oyarzabal', 'Kubo', 'Merino', 'Zubimendi', 'Remiro'],
+    'Athletic Club': ['I. Williams', 'N. Williams', 'Sancet', 'Simon'],
+    'Girona FC': ['Dovbyk', 'Savio', 'Tsygankov', 'Gazzaniga'],
+    'Real Betis': ['Isco', 'Fekir', 'Willian Jose', 'Rui Silva'],
+    'Valencia CF': ['Duro', 'Pepelu', 'Guerra', 'Mamardashvili'],
+    'Villarreal CF': ['Sorloth', 'G. Moreno', 'Baena', 'Jorgensen'],
+    'Sevilla FC': ['En-Nesyri', 'Ocampos', 'Ramos', 'Nyland'],
+    'Inter': ['L. Martinez', 'Thuram', 'Calhanoglu', 'Sommer'],
+    'Juventus': ['Vlahovic', 'Chiesa', 'Rabiot', 'Szczesny'],
+    'AC Milan': ['Leao', 'Giroud', 'Pulisic', 'Maignan'],
+    'Atalanta': ['Scamacca', 'Koopmeiners', 'Lookman', 'Carnesecchi'],
+    'AS Roma': ['Dybala', 'Lukaku', 'Pellegrini', 'Svilar'],
+    'Napoli': ['Osimhen', 'Kvaratskhelia', 'Politano', 'Meret'],
+    'Lazio': ['Immobile', 'Luis Alberto', 'Anderson', 'Provedel'],
+    'Fiorentina': ['Gonzalez', 'Bonaventura', 'Beltran', 'Terracciano'],
+    'Bayern Munich': ['Kane', 'Musiala', 'Sane', 'Neuer'],
+    'Bayer Leverkusen': ['Wirtz', 'Boniface', 'Grimaldo', 'Hradecky'],
+    'RB Leipzig': ['Openda', 'Simons', 'Olmo', 'Gulacsi'],
+    'Borussia Dortmund': ['Fullkrug', 'Brandt', 'Sancho', 'Kobel'],
+    'VfB Stuttgart': ['Guirassy', 'Undav', 'Fuhrich', 'Nubel'],
+    'Eintracht Frankfurt': ['Marmoush', 'Chaibi', 'Gotze', 'Trapp'],
+    'PSG': ['Mbappe', 'Dembele', 'Hakimi', 'Donnarumma'],
+    'OGC Nice': ['Moffi', 'Laborde', 'Boga', 'Bulka'],
+    'AS Monaco': ['Ben Yedder', 'Minamino', 'Golovin', 'Kohn'],
+    'Lille OSC': ['David', 'Zhegrova', 'Gomes', 'Chevalier'],
+    'Stade Brestois': ['Del Castillo', 'Lees-Melou', 'Bizot'],
+    'Olympique Lyon': ['Lacazette', 'Cherki', 'Tolisso', 'Lopes']
+  };
+
+  const selView = document.getElementById('vista-seleccion');
+  const dashView = document.getElementById('vista-panel');
+  const teamView = document.getElementById('vista-equipo');
+  const globalView = document.getElementById('vista-global');
   const leagueTitle = document.getElementById('league-title');
   const tbody = document.getElementById('table-body');
   const homeSel = document.getElementById('home-team');
   const awaySel = document.getElementById('away-team');
+  const carouselSection = document.getElementById('carousel-section');
 
   let current = null;
   let table = [];
@@ -76,22 +120,23 @@
   }
 
   function showSelection(){ 
-    selView.classList.remove('hidden'); 
-    dashView.classList.add('hidden'); 
-    teamView.classList.add('hidden');
-    if(globalView) globalView.classList.add('hidden');
+    selView.classList.remove('oculto'); 
+    dashView.classList.add('oculto'); 
+    teamView.classList.add('oculto');
+    if(globalView) globalView.classList.add('oculto');
     if(typeof updateCarousel === 'function') setTimeout(updateCarousel, 50);
   }
-  function showDashboard(){ selView.classList.add('hidden'); dashView.classList.remove('hidden'); teamView.classList.add('hidden'); if(globalView) globalView.classList.add('hidden'); }
-  function showTeamView(){ selView.classList.add('hidden'); dashView.classList.add('hidden'); teamView.classList.remove('hidden'); if(globalView) globalView.classList.add('hidden'); }
+  function showDashboard(){ selView.classList.add('oculto'); dashView.classList.remove('oculto'); teamView.classList.add('oculto'); if(globalView) globalView.classList.add('oculto'); }
+  function showTeamView(){ selView.classList.add('oculto'); dashView.classList.add('oculto'); teamView.classList.remove('oculto'); if(globalView) globalView.classList.add('oculto'); }
 
   function load(leagueKey, el){
     if (!leagues[leagueKey]) return showToast('Liga no encontrada', 'error');
 
-    document.querySelectorAll('.league_item.selected').forEach(x=>x.classList.remove('selected'));
-    if (el && el.classList) el.classList.add('selected');
+    document.querySelectorAll('.item_liga.seleccionado').forEach(x=>x.classList.remove('seleccionado'));
+    if (el && el.classList) el.classList.add('seleccionado');
 
     current = leagueKey;
+    localStorage.setItem('frontera_active_league', leagueKey);
     leagueTitle.textContent = leagues[leagueKey].name;
     loadData(); generateFixtures(); 
    
@@ -105,8 +150,8 @@
     populateSelects(leagues[leagueKey].teams); populateTeamSelector(); render();
     showDashboard();
 
-    dashView.classList.add('fade-in');
-    setTimeout(()=>dashView.classList.remove('fade-in'),420);
+    dashView.classList.add('aparecer');
+    setTimeout(()=>dashView.classList.remove('aparecer'),420);
 
     updateSimButtons();
   }
@@ -157,13 +202,13 @@
     const sorted = [...table].sort((a,b)=> b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
     sorted.forEach((t,i)=>{
       let rowClass = '';
-      if (i < 4) rowClass = 'row-ucl';
-      else if (i >= sorted.length - 3) rowClass = 'row-relegation';
+      if (i < 4) rowClass = 'fila_champions';
+      else if (i >= sorted.length - 3) rowClass = 'fila_descenso';
 
       if(true){
         const tr = document.createElement('tr');
         if(rowClass) tr.className = rowClass;
-        tr.innerHTML = `<td style="font-weight:700">${i+1}</td><td class="col_team">${t.name}</td><td style="text-align:center">${t.pj}</td><td style="text-align:center;color:var(--success)">${t.w}</td><td style="text-align:center">${t.d}</td><td style="text-align:center;color:var(--danger)">${t.l}</td><td style="text-align:center">${t.gf}</td><td style="text-align:center">${t.ga}</td><td style="text-align:center;font-weight:700">${t.gd}</td><td class="pts-cell">${t.pts}</td>`;
+        tr.innerHTML = `<td style="font-weight:700">${i+1}</td><td class="columna_equipo">${t.name}</td><td style="text-align:center">${t.pj}</td><td style="text-align:center;color:#10b981">${t.w}</td><td style="text-align:center">${t.d}</td><td style="text-align:center;color:#ef4444">${t.l}</td><td style="text-align:center">${t.gf}</td><td style="text-align:center">${t.ga}</td><td style="text-align:center;font-weight:700">${t.gd}</td><td class="celda_puntos">${t.pts}</td>`;
         tbody.appendChild(tr);
       }
     });
@@ -238,6 +283,14 @@
 
   const eventTypes = ['gol', 'tarjeta_amarilla', 'tarjeta_roja', 'falta', 'cambio', 'parada', 'poste'];
 
+  function getPlayerName(teamName, position) {
+    const players = teamPlayers[teamName];
+    if (!players || players.length === 0) return 'Jugador ' + getRandomInt(1, 11);
+    if (position === 'gk') return players[players.length - 1];
+    const limit = players.length > 1 ? players.length - 1 : 1;
+    return players[Math.floor(Math.random() * limit)];
+  }
+
   function generateMatchEvent(homeTeam, awayTeam, minute){
     const homeRating = homeTeam.rating || 70;
     const awayRating = awayTeam.rating || 70;
@@ -250,19 +303,23 @@
       homeGoalProb = Math.max(0.1, Math.min(0.9, homeGoalProb));
       
       const scorer = Math.random() < homeGoalProb ? homeTeam : awayTeam;
-      return { type: 'gol', team: scorer.name, player: 'Jugador ' + getRandomInt(1, 11), minute };
+      const player = getPlayerName(scorer.name, 'field');
+      return { type: 'gol', team: scorer.name, player: player, minute };
     }
     
     if (eventChance < 0.075){ 
       const team = Math.random() < 0.5 ? homeTeam : awayTeam;
       const subType = Math.random() < 0.6 ? 'parada' : 'poste';
-      return { type: subType, team: team.name, minute };
+      const position = subType === 'parada' ? 'gk' : 'field';
+      const player = getPlayerName(team.name, position);
+      return { type: subType, team: team.name, player: player, minute };
     }
     
     if (eventChance < 0.115){ 
       const team = Math.random() < 0.5 ? homeTeam : awayTeam;
       const isRed = Math.random() < 0.05;
-      return { type: isRed ? 'tarjeta_roja' : 'tarjeta_amarilla', team: team.name, player: 'Jugador ' + getRandomInt(1, 11), minute };
+      const player = getPlayerName(team.name, 'field');
+      return { type: isRed ? 'tarjeta_roja' : 'tarjeta_amarilla', team: team.name, player: player, minute };
     }
     
     if (minute > 55 && eventChance > 0.98){ 
@@ -284,24 +341,24 @@
       'poste': 'PAL'
     };
     const colors = {
-      'gol': 'var(--success)',
+      'gol': '#10b981',
       'tarjeta_amarilla': '#f59e0b',
-      'tarjeta_roja': 'var(--danger)',
-      'parada': 'var(--accent2)',
-      'poste': 'var(--text)'
+      'tarjeta_roja': '#ef4444',
+      'parada': '#38bdf8',
+      'poste': '#e5e7eb'
     };
     
     const el = document.createElement('div');
-    el.className = 'event_item';
+    el.className = 'item_evento';
     el.style.borderLeft = `3px solid ${colors[event.type] || '#9ca3af'}`;
     
     const text = event.type === 'gol' ? `Gol: ${event.team} (${event.player})` : 
                  event.type === 'tarjeta_amarilla' ? `Tarjeta Amarilla: ${event.team} (${event.player})` :
                  event.type === 'tarjeta_roja' ? `Tarjeta Roja: ${event.team} (${event.player})` :
-                 event.type === 'parada' ? `¡Paradón del portero de ${event.team}!` :
-                 event.type === 'poste' ? `¡Al palo! Ocasión de ${event.team}` :
+                 event.type === 'parada' ? `¡Paradón de ${event.player} (${event.team})!` :
+                 event.type === 'poste' ? `¡Al palo! Ocasión de ${event.player} (${event.team})` :
                  `Cambio: ${event.team}`;
-    el.innerHTML = `<span style="font-size:16px;">${icons[event.type]}</span><div style="flex:1;"><span class="event_minute">${event.minute}'</span> ${text}</div>`;
+    el.innerHTML = `<span style="font-size:16px;">${icons[event.type]}</span><div style="flex:1;"><span class="minuto_evento">${event.minute}'</span> ${text}</div>`;
     container.prepend(el);
   }
 
@@ -325,9 +382,9 @@
       document.getElementById('minute-progress').style.width = '100%';
       if (matchesInProgress.includes(matchKey)) {
         simulateMatchDetailBtn.textContent = 'Simulando...';
-        document.getElementById('events-container').innerHTML = '<p class="text_muted_small text_center_p20">Partido en curso en segundo plano...</p>';
+        document.getElementById('events-container').innerHTML = '<p class="texto_tenue_pequeno texto_centrado relleno_20">Partido en curso en segundo plano...</p>';
       } else {
-        document.getElementById('events-container').innerHTML = '<p class="text_muted_small text_center_p20">Este partido ya se ha jugado.</p>';
+        document.getElementById('events-container').innerHTML = '<p class="texto_tenue_pequeno texto_centrado relleno_20">Este partido ya se ha jugado.</p>';
       }
     } else {
       simulateMatchDetailBtn.disabled = false;
@@ -336,7 +393,7 @@
       document.getElementById('match-away-score').textContent = '0';
       document.getElementById('current-minute').textContent = '0';
       document.getElementById('minute-progress').style.width = '0%';
-      document.getElementById('events-container').innerHTML = '<p class="text_muted_small">Haz click en "Simular Partido" para ver eventos</p>';
+      document.getElementById('events-container').innerHTML = '<p class="texto_tenue_pequeno">Haz click en "Simular Partido" para ver eventos</p>';
     }
     document.getElementById('match-detail-view').style.display = 'block';
     
@@ -449,14 +506,14 @@
   function displayMatch(homeTeam, awayTeam, homeG, awayG, container = matchesContainer){
     if (!container) return;
     const result = homeG > awayG ? 'V' : homeG === awayG ? 'E' : 'D';
-    const resultColor = result === 'V' ? 'var(--success)' : result === 'D' ? 'var(--danger)' : 'var(--muted)';
+    const resultColor = result === 'V' ? '#10b981' : result === 'D' ? '#ef4444' : '#9ca3af';
     const matchEl = document.createElement('div');
-    matchEl.className = 'match_card';
+    matchEl.className = 'tarjeta_partido';
     matchEl.innerHTML = `
-      <div class="match_team" style="text-align:right">${homeTeam}</div>
-      <div class="match_score">${homeG} - ${awayG}</div>
-      <div class="match_team" style="text-align:left">${awayTeam}</div>
-      <div class="match_result_bar" style="background:${resultColor}"></div>
+      <div class="equipo_partido" style="text-align:right">${homeTeam}</div>
+      <div class="marcador_partido">${homeG} - ${awayG}</div>
+      <div class="equipo_partido" style="text-align:left">${awayTeam}</div>
+      <div class="barra_resultado" style="background:${resultColor}"></div>
     `;
     container.prepend(matchEl);
   }
@@ -558,11 +615,11 @@
 
   if (btnGlobalView) {
     btnGlobalView.addEventListener('click', () => {
-      selView.classList.add('hidden');
-      dashView.classList.add('hidden');
-      teamView.classList.add('hidden');
-      if(globalView) globalView.classList.remove('hidden');
-      if(globalContainer) globalContainer.innerHTML = '<p class="text_center_p20 text_muted_small">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
+      selView.classList.add('oculto');
+      dashView.classList.add('oculto');
+      teamView.classList.add('oculto');
+      if(globalView) globalView.classList.remove('oculto');
+      if(globalContainer) globalContainer.innerHTML = '<p class="texto_centrado relleno_20 texto_tenue_pequeno">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
       if(btnGlobalStart) btnGlobalStart.style.display = 'inline-block';
       if(btnGlobalSim) btnGlobalSim.style.display = 'none';
       if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
@@ -616,7 +673,7 @@
 
         const jornada = lFixtures[lWeek];
         const leagueCard = document.createElement('div');
-        leagueCard.className = 'card';
+        leagueCard.className = 'tarjeta';
         leagueCard.style.padding = '10px';
         leagueCard.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name} - Semana ${lWeek + 1}</h4>`;
         
@@ -642,16 +699,16 @@
 
           const row = document.createElement('div');
           row.id = matchId;
-          row.style.background = 'var(--surface2)';
+          row.style.background = '#111c33';
           row.style.padding = '8px';
           row.style.borderRadius = '6px';
           row.style.display = 'flex';
           row.style.justifyContent = 'space-between';
           row.style.fontSize = '0.9rem';
           if (isPlayed) {
-            row.innerHTML = `<span>${home.name}</span> <span class="g-res" style="color:#10b981;font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
+            row.innerHTML = `<span>${home.name}</span> <span class="resultado_global" style="color:#10b981;font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
           } else {
-            row.innerHTML = `<span>${home.name}</span> <span class="g-res" style="font-weight:bold;color:#9ca3af">vs</span> <span>${away.name}</span>`;
+            row.innerHTML = `<span>${home.name}</span> <span class="resultado_global" style="font-weight:bold;color:#9ca3af">vs</span> <span>${away.name}</span>`;
           }
           list.appendChild(row);
         });
@@ -665,7 +722,7 @@
         btnGlobalSim.style.display = 'inline-block';
         if(btnGlobalSimOne) btnGlobalSimOne.style.display = 'inline-block';
       } else {
-        globalContainer.innerHTML = '<p class="text_center_p20 text_muted_small">Todas las ligas han finalizado.</p>';
+        globalContainer.innerHTML = '<p class="texto_centrado relleno_20 texto_tenue_pequeno">Todas las ligas han finalizado.</p>';
       }
     });
   }
@@ -675,8 +732,8 @@
     
     const el = document.getElementById(p.matchId);
     if(el) {
-      el.querySelector('.g-res').textContent = `${homeGoals} - ${awayGoals}`;
-      el.querySelector('.g-res').style.color = '#22c55e';
+      el.querySelector('.resultado_global').textContent = `${homeGoals} - ${awayGoals}`;
+      el.querySelector('.resultado_global').style.color = '#22c55e';
       if(homeGoals > awayGoals) el.style.borderLeft = '3px solid #10b981';
       else if(awayGoals > homeGoals) el.style.borderRight = '3px solid #10b981';
       else el.style.borderBottom = '2px solid #9ca3af';
@@ -769,7 +826,7 @@
         lTable.sort((a,b)=> b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
 
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = 'tarjeta';
         card.style.padding = '10px';
         card.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name}</h4>`;
 
@@ -818,7 +875,7 @@
       });
 
       if (sortedWeeks.length === 0) {
-        globalContainer.innerHTML = '<p class="text_center_p20 text_muted_small">No hay historial disponible.</p>';
+        globalContainer.innerHTML = '<p class="texto_centrado relleno_20 texto_tenue_pequeno">No hay historial disponible.</p>';
         return;
       }
 
@@ -831,7 +888,7 @@
 
       sortedWeeks.forEach(week => {
         const btn = document.createElement('button');
-        btn.className = 'btn-small';
+        btn.className = 'boton_pequeno';
         btn.style.fontSize = '14px';
         btn.style.padding = '12px 20px';
         btn.textContent = `Semana ${week}`;
@@ -841,7 +898,7 @@
           header.style.gridColumn = "1 / -1";
           header.style.textAlign = "center";
           header.style.marginBottom = "10px";
-          header.innerHTML = `<h3 style="margin:0">Resultados Semana ${week}</h3><button class="btn-small" onclick="document.getElementById('global-history-btn').click()" style="margin-top:10px">Volver</button>`;
+          header.innerHTML = `<h3 style="margin:0">Resultados Semana ${week}</h3><button class="boton_pequeno" onclick="document.getElementById('global-history-btn').click()" style="margin-top:10px">Volver</button>`;
           globalContainer.appendChild(header);
 
           Object.keys(leagues).forEach(key => {
@@ -852,7 +909,7 @@
             if (weekMatches.length === 0) return;
 
             const card = document.createElement('div');
-            card.className = 'card';
+            card.className = 'tarjeta';
             card.style.padding = '10px';
             card.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name}</h4>`;
             const list = document.createElement('div');
@@ -860,7 +917,7 @@
             
             weekMatches.forEach(m => {
               const row = document.createElement('div');
-              row.style.background = 'var(--surface2)'; row.style.padding = '8px'; row.style.borderRadius = '6px'; row.style.display = 'flex'; row.style.justifyContent = 'space-between'; row.style.fontSize = '0.9rem';
+              row.style.background = '#111c33'; row.style.padding = '8px'; row.style.borderRadius = '6px'; row.style.display = 'flex'; row.style.justifyContent = 'space-between'; row.style.fontSize = '0.9rem';
               row.innerHTML = `<span>${table[m.homeIdx]?.name || 'Local'}</span> <span style="font-weight:bold">${m.homeG} - ${m.awayG}</span> <span>${table[m.awayIdx]?.name || 'Visitante'}</span>`;
               list.appendChild(row);
             });
@@ -918,7 +975,7 @@
 
       Object.keys(weeks).sort((a,b) => b - a).forEach(weekNum => {
         const weekHeader = document.createElement('div');
-        weekHeader.style.cssText = "padding:8px;background:var(--surface2);color:var(--accent);border-radius:8px;font-weight:800;text-align:center;margin:15px 0 8px 0;border:1px solid var(--border)";
+        weekHeader.style.cssText = "padding:8px;background:#111c33;color:#22c55e;border-radius:8px;font-weight:800;text-align:center;margin:15px 0 8px 0;border:1px solid rgba(255,255,255,0.10)";
         weekHeader.textContent = `Semana ${weekNum}`;
         historyContent.appendChild(weekHeader);
 
@@ -929,20 +986,20 @@
         });
       });
 
-      historyModal.classList.add('open');
+      historyModal.classList.add('abierto');
     });
   }
 
   if (closeHistoryBtn) {
     closeHistoryBtn.addEventListener('click', () => {
-      historyModal.classList.remove('open');
+      historyModal.classList.remove('abierto');
     });
   }
   
 
   if (historyModal) {
     historyModal.addEventListener('click', (e) => {
-      if (e.target === historyModal) historyModal.classList.remove('open');
+      if (e.target === historyModal) historyModal.classList.remove('abierto');
     });
   }
 
@@ -950,9 +1007,9 @@
   window.goBackToSelection = function(){ showSelection(); };
   window.goBackToDashboard = function(){ showDashboard(); };
 
-   const track = document.querySelector('.carousel_track');
-   const container = document.querySelector('.carousel_viewport');
-   const items = track ? Array.from(track.querySelectorAll('.league_item')) : [];
+   const track = document.querySelector('.pista_carrusel');
+   const container = document.querySelector('.visor_carrusel');
+   const items = track ? Array.from(track.querySelectorAll('.item_liga')) : [];
  
    let slideIndex = 2;
  
@@ -971,9 +1028,9 @@
      
      items.forEach((item, i) => {
        if (i === slideIndex) {
-         item.classList.add('active');
+         item.classList.add('activo');
        } else {
-         item.classList.remove('active');
+         item.classList.remove('activo');
        }
      });
    }
@@ -995,7 +1052,7 @@
    window.addEventListener('resize', updateCarousel);
    setTimeout(updateCarousel, 50);
 
-  const allLeagueItems = document.querySelectorAll('.league_item[data-key]');
+  const allLeagueItems = document.querySelectorAll('.item_liga[data-key]');
   allLeagueItems.forEach(el => {
     el.addEventListener('click', () => {
       const key = el.dataset.key; 
@@ -1005,7 +1062,7 @@
 
   carouselSection.addEventListener('keydown', (e) => {
     if (e.key === 'Enter') {
-      const activeItem = document.querySelector('.league_item.active');
+      const activeItem = document.querySelector('.item_liga.activo');
       if (activeItem) {
         const key = activeItem.dataset.key;
         if (key) {
@@ -1021,7 +1078,7 @@
     if (!container) return;
     
     const toast = document.createElement('div');
-    toast.className = `toast ${type}`;
+    toast.className = `notificacion ${type === 'success' ? 'exito' : type === 'error' ? 'error' : 'info'}`;
  
     let icon = 'i';
     if (type === 'success') icon = 'OK';
@@ -1066,11 +1123,11 @@
   function triggerGoalAnimation(teamName) {
     const container = document.body;
     const overlay = document.createElement('div');
-    overlay.className = 'goal-overlay';
+    overlay.className = 'superposicion_gol';
     overlay.innerHTML = `
-      <div class="goal-text">¡GOL!</div>
-      <div class="goal-subtext">${teamName}</div>
-      <div class="goal-hands"></div>
+      <div class="texto_gol">¡GOL!</div>
+      <div class="subtexto_gol">${teamName}</div>
+      <div class="manos_gol"></div>
     `;
     container.appendChild(overlay);
     
