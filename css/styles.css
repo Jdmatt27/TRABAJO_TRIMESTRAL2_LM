@@ -1324,6 +1324,23 @@ footer {
     overflow: hidden;
 }
 
+[data-theme="light"] .wallet-card {
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .btn-withdraw {
+    background: white;
+    border-color: #cbd5e1;
+    color: var(--text);
+}
+
+[data-theme="light"] .btn-withdraw:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
 /* Efecto de fondo brillante sutil */
 .wallet-card::before {
     content: '';
@@ -1336,6 +1353,10 @@ footer {
     filter: blur(80px);
     opacity: 0.15;
     pointer-events: none;
+}
+
+[data-theme="light"] .wallet-card::before {
+    opacity: 0.1;
 }
 
 .wallet-label {
