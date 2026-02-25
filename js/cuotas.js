@@ -86,7 +86,7 @@ function renderizarDetallesPartido(partido) {
                 </div>
             </div>
 
-            <div class="match__markets--big" style="grid-template-columns: repeat(${isFutbol ? 3 : 2}, 1fr);">
+            <div class="match__markets--big">
                 ${marketsHTML}
             </div>
         `;

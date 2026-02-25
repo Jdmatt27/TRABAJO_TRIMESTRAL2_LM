@@ -29,24 +29,19 @@
     --hover-grad: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
 }
 
-[data-theme="light"] .market__btn.active::before,
-[data-theme="light"] .market__btn:hover::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: -1;
-    border-radius: inherit;
-    background: linear-gradient(90deg, #dbeafe, #ede9fe, #dbeafe);
-    background-size: 200% 100%;
-    animation: gradientMove 3s linear infinite;
-    display: block !important;
+/* Estilos específicos para tema claro en botones base */
+[data-theme="light"] .market__btn:hover,
+[data-theme="light"] .outcome-btn:hover {
+    border-color: #8b5cf6;
+    background: rgba(139, 92, 246, 0.05);
+    box-shadow: 0 4px 12px rgba(139, 92, 246, 0.1);
 }
 
-[data-theme="light"] .market__btn:hover,
-[data-theme="light"] .market__btn.active {
-    background: transparent;
-    border-color: #3b82f6;
-    color: #1e40af;
+[data-theme="light"] .market__btn.active,
+[data-theme="light"] .outcome-btn.active {
+    background: rgba(34, 197, 94, 0.1);
+    border-color: #22c55e;
+    color: #15803d;
 }
 
 [data-theme="light"] .match__overlay {
@@ -600,27 +595,7 @@ body {
     border-color: var(--line);
 }
 
-/* Estado activo para botones de mercado */
-.market__btn.active {
-    border-color: transparent;
-    background: var(--panel2);
-}
-
-.market__btn.active::before {
-    content: "";
-    position: absolute;
-    inset: -1px; 
-    z-index: -1;
-    border-radius: inherit;
-    padding: 1px; 
-    background: 
-        linear-gradient(var(--panel2), var(--panel2)) content-box,
-        linear-gradient(90deg, #4ade80, #22d3ee, #a78bfa, #4ade80) border-box;
-    background-size: 100% 100%, 300% 100%;
-    animation: gradientMove 3s linear infinite;
-    pointer-events: none; 
-}
-
+/* El estado activo ahora se define junto con los botones base */
 .card--full {
     grid-column: 1 / -1;
 }
@@ -708,12 +683,13 @@ body {
 
 .match__markets,
 .match__markets--big {
-    padding: 1.25rem;
+    padding: 1rem;
     display: grid;
-    gap: 0.75rem;
-    background: var(--bg); 
+    gap: 0.6rem;
+    background: var(--panel); 
     flex-grow: 1;
     margin-top: auto; 
+    border-top: 1px solid var(--line);
 }
 
 .match__markets {
@@ -727,55 +703,55 @@ body {
 
 [data-theme="light"] .match__markets,
 [data-theme="light"] .match__markets--big {
-    background: white;
+    background: rgba(0,0,0,0.02);
 }
 
 .market__btn {
-    background: var(--panel);
+    background: var(--bg);
     border: 1px solid var(--line); 
     border-radius: 12px;
-    padding: 0.75rem 0.5rem;
+    padding: 0.85rem 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
     cursor: pointer;
-    transition: transform 0.2s, border-color 0.2s;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     position: relative;
     z-index: 0;
-    background-clip: padding-box; 
-    transition: transform 0.1s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .market__btn:hover {
-    border-color: transparent;
-    transform: translateY(-2px); 
+    transform: translateY(-3px);
+    border-color: var(--neon);
+    box-shadow: 0 6px 15px rgba(168, 85, 247, 0.2);
 }
 
-.market__btn:hover::before {
-    content: "";
-    position: absolute;
-    inset: -1px; 
-    z-index: -1;
-    border-radius: inherit;
-    padding: 1px; 
-    background: 
-        linear-gradient(var(--panel), var(--panel)) content-box,
-        linear-gradient(90deg, #4ade80, #22d3ee, #a78bfa, #4ade80) border-box;
-    background-size: 100% 100%, 300% 100%;
-    animation: gradientMove 3s linear infinite;
-    pointer-events: none; 
+.market__btn.active {
+    border-color: var(--neon2);
+    background: rgba(33, 219, 64, 0.1);
+    box-shadow: 0 0 15px rgba(33, 219, 64, 0.2);
+    transform: translateY(0);
 }
 
 .market__name {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .market__odds {
-    font-size: 1.25rem;
+    font-size: 1.3rem;
     font-weight: 900;
     color: var(--text);
+    line-height: 1.2;
 }
 
 .progress__bar {
@@ -881,33 +857,61 @@ a.btn {
 }
 
 .outcome-btn {
-    padding: 1rem;
+    background: var(--bg);
+    border: 1px solid var(--line); 
     border-radius: 12px;
-    border: 1px solid var(--line);
-    cursor: pointer;
+    padding: 0.85rem 0.5rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transition: 0.2s;
+    gap: 2px;
+    cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    z-index: 0;
 }
 
-.outcome-btn--yes {
-    background: #22c55e; 
-    color: white;
-    border: none;
+.outcome-btn:hover {
+    transform: translateY(-3px);
+    border-color: var(--neon);
+    box-shadow: 0 6px 15px rgba(168, 85, 247, 0.2);
 }
 
+.outcome-btn.active {
+    border-color: var(--neon2);
+    background: rgba(33, 219, 64, 0.1);
+    box-shadow: 0 0 15px rgba(33, 219, 64, 0.2);
+    transform: translateY(0);
+}
+
+.outcome-btn--yes,
 .outcome-btn--no {
-    background: var(--panel2);
+    /* Eliminamos colores por defecto */
+    background: var(--bg);
     color: var(--text);
+    border: 1px solid var(--line);
 }
 
-.outcome-label { font-size: 0.8rem; opacity: 0.9; }
-.hero__card .outcome-btn.active {
-    outline: 2px solid var(--neon2);
-    outline-offset: 2px;
-    transform: scale(0.98);
+.outcome-label { 
+    font-size: 0.7rem; 
+    color: var(--muted);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    width: 100%;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
+
+.outcome-price {
+    font-size: 1.3rem;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.2;
+}
+
 
 .q-btn {
     flex: 1;
