@@ -150,16 +150,13 @@ function updateHero(p) {
     hero.querySelector('.hero__title').textContent = `${p.equipo1} vs ${p.equipo2}`;
     hero.querySelector('.hero__text').textContent = generarDescripcionAleatoria(p);
     
-    // Hacer que el Hero redirija a la página de cuotas al hacer click en el contenido
-    const heroContent = hero.querySelector('.hero__content');
-    if (heroContent) {
-        heroContent.style.cursor = 'pointer';
-        heroContent.onclick = (e) => {
-            if (e.target.closest('.hero__actions') || e.target.closest('.hero__card')) return;
-            sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p));
-            window.location.href = 'html/páginaCuotasApuesta.html';
-        };
-    }
+    // REDIRECCIÓN: Si pulsas la tarjeta (pero no los botones), vas a cuotas
+    hero.style.cursor = 'pointer';
+    hero.onclick = (e) => {
+        if (e.target.closest('.hero__actions') || e.target.closest('.hero__card')) return;
+        sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p));
+        window.location.href = 'html/páginaCuotasApuesta.html';
+    };
 
     const teams = hero.querySelectorAll('.hero__team');
     if (teams.length === 2) {
@@ -177,31 +174,28 @@ function updateHero(p) {
         btn.querySelector('.outcome-price').textContent = cuota;
         btn.onclick = (e) => {
             e.stopPropagation();
+            const wasActive = btn.classList.contains('active');
             btns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            heroSelection = { name, cuota, match: p };
+            
+            if (wasActive) {
+                heroSelection = null;
+            } else {
+                btn.classList.add('active');
+                heroSelection = { name, cuota, match: p };
+            }
         };
     };
     setupBtn(btns[0], p.equipo1, p.cuota1);
     setupBtn(btns[1], p.equipo2, p.cuota2);
 }
 
-window.addAmountHero = (amt) => {
-    const input = document.getElementById('heroAmount');
-    input.value = (parseFloat(input.value) || 0) + amt;
-};
-
-window.maxAmountHero = () => {
-    document.getElementById('heroAmount').value = window.obtenerSaldo();
-};
-
 window.apostarHero = () => {
-    if (!heroSelection) return alert('Selecciona un equipo.');
+    if (!heroSelection) return window.showToast('Selecciona un equipo primero.');
     const amount = parseFloat(document.getElementById('heroAmount').value);
     const saldo = window.obtenerSaldo();
 
-    if (isNaN(amount) || amount <= 0) return alert('Cantidad inválida.');
-    if (amount > saldo) return alert('Saldo insuficiente.');
+    if (isNaN(amount) || amount <= 0) return window.showToast('Cantidad inválida.');
+    if (amount > saldo) return window.showToast('Saldo insuficiente.');
     if (localStorage.getItem('isLoggedIn') !== 'true') return window.location.href = 'html/loginApuesta.html';
 
     window.actualizarSaldo(saldo - amount);
@@ -213,7 +207,7 @@ window.apostarHero = () => {
         cuota: heroSelection.cuota, importe: amount, estado: 'pendiente', timestamp: new Date().toISOString()
     });
     localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
-    alert('¡Apuesta realizada!');
+    window.showToast('¡Apuesta realizada con éxito!', 'success');
     document.getElementById('heroAmount').value = '';
     document.querySelectorAll('.outcome-btn').forEach(b => b.classList.remove('active'));
     heroSelection = null;

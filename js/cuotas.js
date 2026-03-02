@@ -26,7 +26,7 @@ function renderizarDetallesPartido(partido) {
     const card = document.querySelector('.match__card--cuotas');
     const isFutbol = partido.deporte === 'Fútbol';
 
-    // Generar mercados dinámicos
+    // GENERADOR DE CUOTAS DINÁMICO
     let marketsHTML = `
         <button class="market__btn" id="btnCuota1" data-cuota="${partido.cuota1}" data-nombre="${partido.equipo1}">
             <span class="market__name">${partido.equipo1}</span>
@@ -168,7 +168,7 @@ function configurarEventosApuesta(partido) {
 
     btnApostar.addEventListener('click', () => {
         if (!seleccionActual) {
-            alert('Por favor, selecciona un resultado para apostar.');
+            window.showToast('Selecciona un resultado primero.');
             return;
         }
 
@@ -176,22 +176,21 @@ function configurarEventosApuesta(partido) {
         const saldoActual = window.obtenerSaldo();
 
         if (isNaN(cantidad) || cantidad <= 0) {
-            alert('Introduce una cantidad válida.');
+            window.showToast('Introduce una cantidad válida.');
             return;
         }
 
         if (cantidad > saldoActual) {
-            alert('No tienes suficiente saldo.');
+            window.showToast('No tienes suficiente saldo.');
             return;
         }
 
         if (localStorage.getItem('isLoggedIn') !== 'true') {
-            alert('Debes iniciar sesión para apostar.');
-            window.location.href = 'loginApuesta.html';
+            window.showToast('Inicia sesión para apostar.');
+            setTimeout(() => window.location.href = 'loginApuesta.html', 1500);
             return;
         }
 
-        // GUARDAR APUESTA PENDIENTE
         guardarApuesta(seleccionActual, cantidad, partido);
     });
 }
@@ -199,9 +198,8 @@ function configurarEventosApuesta(partido) {
 function guardarApuesta(seleccion, cantidad, partido) {
     const btnApostar = document.querySelector('.trade-btn');
     btnApostar.disabled = true;
-    btnApostar.textContent = 'Registrando apuesta...';
+    btnApostar.textContent = 'Registrando...';
 
-    // Reducir saldo inmediatamente
     const saldoActual = window.obtenerSaldo();
     window.actualizarSaldo(saldoActual - cantidad);
 
@@ -225,8 +223,8 @@ function guardarApuesta(seleccion, cantidad, partido) {
     apuestas.push(nuevaApuesta);
     localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
 
+    window.showToast('¡Apuesta registrada!', 'success');
     setTimeout(() => {
-        alert(`¡Apuesta registrada con éxito! Deberás simular el partido en Omar para ver el resultado.`);
         window.location.href = '../index.html';
-    }, 1000);
+    }, 1500);
 }

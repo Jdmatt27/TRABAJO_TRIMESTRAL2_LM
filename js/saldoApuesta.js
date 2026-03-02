@@ -10,9 +10,9 @@
             document.getElementById('depositAmount').value = val;
         }
 
-        // Manejar el formulario de depósito
+        // FORMULARIO DE DEPÓSITO
         document.addEventListener('DOMContentLoaded', function() {
-            // Mostrar saldo actual
+            // MOSTRAR SALDO ACTUAL
             if (window.actualizarSaldo) window.actualizarSaldo(window.obtenerSaldo());
 
             const depositForm = document.getElementById('depositForm');
@@ -29,7 +29,7 @@
                     let nuevoSaldo = saldoActual + cantidad;
                     window.actualizarSaldo(nuevoSaldo);
                     input.value = '';
-                    alert('Saldo añadido correctamente.');
+                    window.showToast('¡Saldo añadido correctamente!', 'success');
                 });
             }
         });

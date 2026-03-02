@@ -1,10 +1,7 @@
-/**
- * core.js - El "Cerebro" Global de FurboBet
- */
 
 window.CONFIG = { equipos: {}, ligas: {} };
 
-// Fallbacks de imágenes por defecto
+// IMÁGENES POR DEFECTO EN CASO QUE NO SE ENCUENTREN LAS ACTUALES
 const DEFAULT_LOGO = 'https://crests.football-data.org/65.png'; // Logo genérico
 const DEFAULT_STADIUM = 'https://www.thesportsdb.com/images/media/team/stadium/1v67tu1550917228.jpg';
 
@@ -16,8 +13,7 @@ async function loadConfig() {
         const data = await response.json();
         window.CONFIG = data;
         window.LIGAS_CONFIG = data.ligas;
-        
-        // Una vez cargada la config, validamos apuestas automáticamente
+
         validarApuestasGlobal();
         
         document.dispatchEvent(new CustomEvent('configReady'));
@@ -26,6 +22,24 @@ async function loadConfig() {
     }
 }
 
+// --- SISTEMA DE NOTIFICACIONES (TOAST) ---
+window.showToast = (message, type = 'error') => {
+    let toast = document.getElementById('global-toast');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'global-toast';
+        toast.className = 'toast';
+        document.body.appendChild(toast);
+    }
+
+    toast.textContent = message;
+    toast.className = `toast ${type === 'success' ? 'toast--success' : ''} show`;
+
+    setTimeout(() => {
+        toast.classList.remove('show');
+    }, 3500);
+};
+
 // --- VALIDACIÓN GLOBAL DE APUESTAS ---
 function validarApuestasGlobal() {
     const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');
@@ -33,7 +47,6 @@ function validarApuestasGlobal() {
 
     apuestas.forEach(a => {
         if (a.estado === 'pendiente') {
-            // Intentamos buscar el resultado en el historial de Omar
             const histRaw = localStorage.getItem(`frontera_${a.leagueKey}_historial`);
             if (histRaw) {
                 const historial = JSON.parse(histRaw);
@@ -60,14 +73,13 @@ function validarApuestasGlobal() {
         localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
         if (premioTotal > 0) {
             window.actualizarSaldo(window.obtenerSaldo() + premioTotal);
-            console.log(`[FurboBet] ¡Has ganado ${premioTotal.toFixed(2)}€ en apuestas recientes!`);
+            window.showToast(`¡Has ganado ${premioTotal.toFixed(2)}€!`, 'success');
         }
-        // Notificar a otras páginas (como perfil) que los datos han cambiado
         document.dispatchEvent(new CustomEvent('betsUpdated'));
     }
 }
 
-// --- MANEJO DE IMÁGENES (FALLBACKS) ---
+// 
 window.imgError = (el) => {
     el.onerror = null; // Evitar bucle infinito
     el.src = DEFAULT_LOGO;
@@ -75,7 +87,7 @@ window.imgError = (el) => {
 
 window.getEquipoData = (nombre) => window.CONFIG.equipos[nombre] || window.CONFIG.equipos['Default'];
 
-// --- GESTIÓN DE TEMA ---
+// GESTIÓN DEL TEMA CLARO Y OSCURRO
 function initTheme() {
     const body = document.documentElement;
     const savedTheme = localStorage.getItem('theme') || 'dark';
@@ -91,7 +103,7 @@ function initTheme() {
     }
 }
 
-// --- GESTIÓN DE SALDO ---
+// GESTIÓN DE SALDO
 window.obtenerSaldo = () => parseFloat(localStorage.getItem('saldo') || '0');
 window.actualizarSaldo = (nuevoSaldo) => {
     localStorage.setItem('saldo', String(nuevoSaldo));
@@ -100,7 +112,7 @@ window.actualizarSaldo = (nuevoSaldo) => {
     });
 };
 
-// --- GESTIÓN DE SESIÓN ---
+// GESTIÓN DE SESIÓN
 function initSession() {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const headerRight = document.querySelector('.header__right');

@@ -35,26 +35,19 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // --- AQUÍ COMPROBAMOS EL USUARIO Y CONTRASEÑA ---
             if (email === 'admin@furbo.com' && password === '1234') {
-                
-                // === SI TODO ESTÁ BIEN ===
                 localStorage.setItem('isLoggedIn', 'true');
                 localStorage.setItem('userEmail', email);
 
                 loginBtn.textContent = '¡Entrando!';
-                loginBtn.style.background = '#22c55e'; // Se pone verde
+                loginBtn.style.background = '#22c55e';
+                window.showToast('¡Bienvenido de nuevo!', 'success');
                 
-                // Esperamos medio segundo y redirigimos
                 setTimeout(() => {
-                    // 👇👇 CAMBIA ESTO POR LA PÁGINA A LA QUE QUIERES IR 👇👇
                     window.location.href = '../index.html'; 
-                }, 500);
+                }, 1000);
 
             } else {
-                
-                // === SI LA CONTRASEÑA ESTÁ MAL ===
-                showToast('❌ Correo o contraseña incorrectos');
-                
-                // Devolvemos el botón a la normalidad
+                window.showToast('❌ Correo o contraseña incorrectos');
                 loginBtn.classList.remove('btn--loading');
                 loginBtn.textContent = originalText;
             }

@@ -934,7 +934,7 @@ a.btn {
 
 .toast {
     position: fixed;
-    top: 20px;
+    top: 100px; /* Debajo del header de 80px + 20px de margen */
     right: 20px;
     background: rgba(20, 20, 30, 0.95);
     color: #fb7185;
@@ -945,15 +945,97 @@ a.btn {
     z-index: 9999;
     font-weight: 600;
     opacity: 0;
-    transform: translateY(-20px) scale(0.95);
-    min-width: 140px;
-    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform: translateX(50px);
+    min-width: 250px;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     pointer-events: none;
+    display: flex;
+    align-items: center;
+    gap: 10px;
 }
 
 .toast.show {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    transform: translateX(0);
+}
+
+.toast--success {
+    color: var(--neon2);
+    border-color: rgba(33, 219, 64, 0.3);
+}
+
+/* --- MEDIA QUERIES --- */
+@media (max-width: 1240px) {
+    .page, .page--cuotas, .header__content {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+    .hero__card {
+        max-width: 100%;
+    }
+    .matches__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hero__title {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header__content {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        gap: 15px;
+    }
+    .header {
+        height: auto;
+        position: relative;
+    }
+    .toast {
+        top: 20px; /* En móvil el header no es sticky, lo ponemos arriba */
+    }
+    .nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .matches__grid {
+        grid-template-columns: 1fr;
+    }
+    .hero__match-display {
+        gap: 1rem;
+    }
+    .hero__team-logo {
+        width: 60px;
+        height: 60px;
+    }
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .brand__name {
+        font-size: 1.1rem;
+    }
+    .hero__title {
+        font-size: 1.5rem;
+    }
+    .wallet-balance {
+        font-size: 2rem;
+    }
+    .wallet-actions {
+        flex-direction: column;
+    }
 }
 
 footer {
@@ -1264,15 +1346,7 @@ footer {
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 700;
-    margin-bottom: 2rem;
     border: 1px solid rgba(251, 113, 133, 0.3);
-}
-
-.profile-menu {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: 0.5rem;
 }
 
 .menu-item {
