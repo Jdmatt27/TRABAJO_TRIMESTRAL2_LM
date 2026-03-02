@@ -29,14 +29,14 @@ body{
 
 #vista-panel,
 #vista-equipo,
-#vista-global {
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  border-radius: 0;
-  border-left: none;
-  border-right: none;
-  box-shadow: none;
-  padding: 24px max(14px, calc(50vw - 550px));
+#vista-global{
+  width:100vw;
+  margin-left:calc(50% - 50vw);
+  border-radius:0;
+  border-left:none;
+  border-right:none;
+  box-shadow:none;
+  padding:24px max(14px, calc(50vw - 550px));
 }
 
 .cabecera_principal{
@@ -78,9 +78,14 @@ body{
   cursor:pointer;
   transition:transform .2s;
 }
-.logo_cabecera:hover{transform:scale(1.1)}
 
-.oculto{display:none}
+.logo_cabecera:hover{
+  transform:scale(1.1);
+}
+
+.oculto{
+  display:none;
+}
 
 .rejilla{
   display:grid;
@@ -89,23 +94,68 @@ body{
 }
 
 @media (max-width:850px){
-  .rejilla{grid-template-columns:1fr}
+  .rejilla{
+    grid-template-columns:1fr;
+  }
 }
 
-.margen_sup_18{margin-top:18px}
-.margen_inf_12{margin-bottom:12px}
-.margen_inf_18{margin-bottom:18px}
-.margen_inf_20{margin-bottom:20px}
-.margen_0{margin:0}
-.margen_der_8{margin-right:8px}
-.relleno_20{padding:20px}
-.texto_centrado{text-align:center}
+.margen_sup_18{
+  margin-top:18px;
+}
 
-.flex_entre_centro{display:flex;justify-content:space-between;align-items:center}
-.flex_columna_centro{display:flex;flex-direction:column;align-items:center}
-.flex_espacio_10{display:flex;gap:10px}
+.margen_inf_12{
+  margin-bottom:12px;
+}
 
-.texto_tenue_pequeno{color:#9ca3af;font-size:13px}
+.margen_inf_18{
+  margin-bottom:18px;
+}
+
+.margen_inf_20{
+  margin-bottom:20px;
+}
+
+.margen_0{
+  margin:0;
+}
+
+.margen_der_8{
+  margin-right:8px;
+}
+
+.relleno_20{
+  padding:20px;
+}
+
+.texto_centrado{
+  text-align:center;
+}
+
+.flex_entre_centro{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+
+.flex_columna_centro{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.flex_espacio_10{
+  display:flex;
+  gap:10px;
+}
+
+.flex_shrink_0{
+  flex-shrink:0;
+}
+
+.texto_tenue_pequeno{
+  color:#9ca3af;
+  font-size:13px;
+}
 
 .navegacion_cabecera{
   display:flex;
@@ -170,7 +220,8 @@ button:hover,
   margin-top:12px;
 }
 
-#reset-btn, .boton_reiniciar_global{
+#reset-btn,
+.boton_reiniciar_global{
   background:#ef4444;
   color:#fff;
 }
@@ -206,7 +257,10 @@ input:focus{
   border-color:#22c55e;
 }
 
-.selector_equipo{flex:1;min-width:150px}
+.selector_equipo{
+  flex:1;
+  min-width:150px;
+}
 
 .selector_partido{
   flex:1;
@@ -218,7 +272,9 @@ input:focus{
   font-size:14px;
 }
 
-.boton_estadio{padding:0 20px}
+.boton_estadio{
+  padding:0 20px;
+}
 
 .barra_controles{
   background:#0f172a;
@@ -232,7 +288,9 @@ input:focus{
   margin-bottom:20px;
 }
 
-.barra_controles_centro{justify-content:center}
+.barra_controles_centro{
+  justify-content:center;
+}
 
 .boton_auto{
   width:auto;
@@ -245,7 +303,7 @@ input:focus{
   display:none;
 }
 
-.boton_simular_uno{
+.boton_simularUno{
   background:#22c55e;
   color:#0b1220;
   display:none;
@@ -316,7 +374,6 @@ input:focus{
   align-items:center;
   gap:10px;
   text-align:center;
-  flex-shrink:0;
   transition:all .3s;
 }
 
@@ -355,15 +412,39 @@ input:focus{
   font-weight:800;
   color:#fff;
   background:#111c33;
+  padding:8px;
 }
 
-.liga_premier .logo_liga{background:linear-gradient(135deg,#0ea5a3,#06b6d4)}
-.liga_laliga .logo_liga{background:linear-gradient(135deg,#ef4444,#fb7185)}
-.liga_seriea .logo_liga{background:linear-gradient(135deg,#f59e0b,#f97316)}
-.liga_bundesliga .logo_liga{background:linear-gradient(135deg,#2563eb,#7c3aed)}
-.liga_ligue1 .logo_liga{background:linear-gradient(135deg,#10b981,#06b6d4)}
+.item_liga .logo_liga img{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  filter:drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+}
 
-.item_liga .llamada_accion{display:none}
+.liga_premier .logo_liga{
+  background:linear-gradient(135deg,#0ea5a3,#06b6d4);
+}
+
+.liga_laliga .logo_liga{
+  background:#ffffff;
+}
+
+.liga_seriea .logo_liga{
+  background:#ffffff;
+}
+
+.liga_bundesliga .logo_liga{
+  background:linear-gradient(135deg,#2563eb,#7c3aed);
+}
+
+.liga_ligue1 .logo_liga{
+  background:#ffffff;
+}
+
+.item_liga .llamada_accion{
+  display:none;
+}
 
 .boton_carrusel{
   width:40px;
@@ -419,7 +500,9 @@ td{
   color:#fff;
 }
 
-tbody tr:last-child td{border-bottom:none}
+tbody tr:last-child td{
+  border-bottom:none;
+}
 
 .celda_puntos{
   font-weight:700;
@@ -427,8 +510,13 @@ tbody tr:last-child td{border-bottom:none}
   background:rgba(34,197,94,.05);
 }
 
-.fila_champions td:first-child{border-left:3px solid #10b981}
-.fila_descenso td:first-child{border-left:3px solid #ef4444}
+.fila_champions td:first-child{
+  border-left:3px solid #10b981;
+}
+
+.fila_descenso td:first-child{
+  border-left:3px solid #ef4444;
+}
 
 .contenedor_partidos_interno{
   display:flex;
@@ -586,7 +674,9 @@ tbody tr:last-child td{border-bottom:none}
   justify-content:center;
 }
 
-.superposicion_modal.abierto{display:flex}
+.superposicion_modal.abierto{
+  display:flex;
+}
 
 .contenido_modal{
   background:#0f172a;
@@ -644,9 +734,17 @@ tbody tr:last-child td{border-bottom:none}
   border-left:4px solid #38bdf8;
 }
 
-.notificacion.exito{border-left-color:#10b981}
-.notificacion.error{border-left-color:#ef4444}
-.notificacion.info{border-left-color:#38bdf8}
+.notificacion.exito{
+  border-left-color:#10b981;
+}
+
+.notificacion.error{
+  border-left-color:#ef4444;
+}
+
+.notificacion.info{
+  border-left-color:#38bdf8;
+}
 
 .rejilla_global{
   display:grid;
@@ -661,6 +759,15 @@ tbody tr:last-child td{border-bottom:none}
   border-radius:14px;
   padding:20px;
   margin-bottom:16px;
+}
+
+.imagen_global_header{
+  width:100%;
+  height:180px;
+  object-fit:cover;
+  border-radius:14px;
+  margin-bottom:20px;
+  border:1px solid rgba(255,255,255,0.10);
 }
 
 .cabecera_partido{
@@ -698,8 +805,15 @@ tbody tr:last-child td{border-bottom:none}
   border-color:#22c55e;
 }
 
-.valor_cuota{font-weight:800;font-size:1.1rem}
-.etiqueta_cuota{font-size:.75rem;opacity:.85}
+.valor_cuota{
+  font-weight:800;
+  font-size:1.1rem;
+}
+
+.etiqueta_cuota{
+  font-size:.75rem;
+  opacity:.85;
+}
 
 .acciones_apuesta{
   display:flex;
@@ -709,20 +823,31 @@ tbody tr:last-child td{border-bottom:none}
   padding-top:15px;
 }
 
-.entrada_apuesta{max-width:120px}
+.entrada_apuesta{
+  max-width:120px;
+}
 
-#confetti-canvas,
-.superposicion_gol{
+.oculto_canvas{
   display:none;
+}
+
+#confetti-canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  pointer-events:none;
+  z-index:5000;
 }
 
 .portada_hero{
   width:100%;
-  height:500px;
-  background-image:url('https://images.unsplash.com/photo-1522778119026-d647f0565c6a?q=80&w=1470&auto=format&fit=crop');
+  height:380px;
+  background-color:#0f172a;
   background-size:cover;
   background-position:center;
+  transition:background-image .5s ease-in-out;
   position:relative;
+  overflow:hidden;
 }
 
 .superposicion_hero{
@@ -732,8 +857,303 @@ tbody tr:last-child td{border-bottom:none}
   width:100%;
   height:100%;
   background:linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.5));
+  z-index:1;
 }
 
-.aparecer{animation:fadeInUp .38s ease both}
-.texto_gol{font-size:8rem;font-weight:900;color:#fbbf24}
-.subtexto_gol{font-size:3rem;color:white;font-weight:800;margin-top:10px}
+.superposicion_gol,
+.superposicion_evento{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.85);
+  z-index:4000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  animation:fadeIn .3s ease-out;
+}
+
+.evento_titulo{
+  font-size:3rem;
+  font-weight:900;
+  margin-bottom:20px;
+  text-transform:uppercase;
+  text-align:center;
+  animation:scaleIn .5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.evento_subtitulo{
+  font-size:2rem;
+  color:#fff;
+  font-weight:700;
+  margin-top:10px;
+}
+
+.evento_detalle{
+  font-size:1.5rem;
+  color:#9ca3af;
+  margin-top:5px;
+}
+
+.evento_icono_tarjeta{
+  width:60px;
+  height:90px;
+  border-radius:6px;
+  margin:20px;
+  box-shadow:0 0 20px rgba(0,0,0,0.5);
+  animation:rotateIn .5s;
+}
+
+.evento_icono_guante{
+  font-size:5rem;
+  margin:10px;
+  animation:bounceIn .5s;
+}
+
+.evento_marcador{
+  display:flex;
+  gap:40px;
+  align-items:center;
+  font-size:2rem;
+  font-weight:700;
+  margin-top:20px;
+  color:#fff;
+}
+
+.evento_score{
+  font-size:4rem;
+  color:#22c55e;
+}
+
+.aparecer{
+  animation:fadeInUp .38s ease both;
+}
+
+.texto_gol{
+  font-size:8rem;
+  font-weight:900;
+  color:#fbbf24;
+  animation:scaleIn .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.subtexto_gol{
+  font-size:3rem;
+  color:#fff;
+  font-weight:800;
+  margin-top:10px;
+  animation:fadeInUp .5s ease .2s both;
+}
+
+.manos_gol{
+  font-size:6rem;
+  margin-top:20px;
+  animation:bounceIn 1s both;
+}
+
+.manos_gol::after{
+  content:'🙌';
+}
+
+@keyframes scaleIn{
+  from{
+    transform:scale(0);
+    opacity:0;
+  }
+  to{
+    transform:scale(1);
+    opacity:1;
+  }
+}
+
+@keyframes rotateIn{
+  from{
+    transform:rotate(-90deg) scale(0);
+  }
+  to{
+    transform:rotate(0) scale(1);
+  }
+}
+
+@keyframes bounceIn{
+  0%{
+    transform:scale(0);
+  }
+  50%{
+    transform:scale(1.2);
+  }
+  100%{
+    transform:scale(1);
+  }
+}
+
+@keyframes fadeIn{
+  from{
+    opacity:0;
+  }
+  to{
+    opacity:1;
+  }
+}
+
+@keyframes fadeInUp{
+  from{
+    opacity:0;
+    transform:translateY(14px);
+  }
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+@keyframes fadeOut{
+  from{
+    opacity:1;
+    transform:translateY(0);
+  }
+  to{
+    opacity:0;
+    transform:translateY(8px);
+  }
+}
+
+@media (max-width:900px){
+  .cabecera_interior{
+    height:auto;
+    min-height:70px;
+    padding:10px 14px;
+    gap:10px;
+  }
+
+  .navegacion_cabecera{
+    position:static;
+    transform:none;
+    order:3;
+    width:100%;
+    justify-content:center;
+    flex-wrap:wrap;
+    margin-top:6px;
+  }
+
+  .portada_hero{
+    height:260px;
+  }
+
+  .carrusel_interno{
+    height:300px;
+    gap:10px;
+  }
+
+  .item_liga{
+    width:200px;
+  }
+
+  .evento_titulo{
+    font-size:2rem;
+  }
+
+  .evento_subtitulo{
+    font-size:1.3rem;
+  }
+
+  .evento_detalle{
+    font-size:1rem;
+  }
+
+  .evento_marcador{
+    gap:16px;
+    font-size:1rem;
+    flex-direction:column;
+    text-align:center;
+  }
+
+  .evento_score{
+    font-size:2.4rem;
+  }
+
+  .texto_gol{
+    font-size:4rem;
+  }
+
+  .subtexto_gol{
+    font-size:1.5rem;
+  }
+}
+
+@media (max-width:600px){
+  .contenedor{
+    padding:16px 10px;
+  }
+
+  .tarjeta{
+    padding:16px;
+    border-radius:12px;
+  }
+
+  #vista-panel,
+  #vista-equipo,
+  #vista-global{
+    padding:16px 10px;
+  }
+
+  .barra_controles{
+    gap:8px;
+    padding:10px;
+  }
+
+  .selector_equipo,
+  .selector_partido{
+    min-width:100%;
+    width:100%;
+  }
+
+  .boton_estadio{
+    padding:10px 14px;
+  }
+
+  .visualizacion_equipo h2{
+    font-size:1rem;
+  }
+
+  .visualizacion_puntos{
+    font-size:2.2rem;
+  }
+
+  .marcador{
+    padding:16px;
+  }
+
+  .contenido_marcador{
+    gap:8px;
+  }
+
+  th,
+  td{
+    padding:8px 6px;
+    font-size:12px;
+  }
+
+  .columna_equipo{
+    max-width:110px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .contenedor_notificaciones{
+    right:10px;
+    left:10px;
+    bottom:10px;
+  }
+
+  .notificacion{
+    width:100%;
+  }
+
+  .imagen_global_header{
+    height:130px;
+  }
+}
