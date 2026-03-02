@@ -1,3 +1,5 @@
+/*OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR*/
+
 (function () {
   const teamRatings = {
     'Man. City': 95, 'Arsenal': 92, 'Liverpool': 90, 'Man. Utd': 85, 'Tottenham': 83, 'Aston Villa': 80, 'Newcastle': 78, 'Chelsea': 76, 'West Ham': 72, 'Brighton': 70,
@@ -1497,5 +1499,29 @@
     setTimeout(() => overlay.remove(), 3500);
   }
 
-  showSelection();
+    function openFromUrlOrLastLeague() {
+    const params = new URLSearchParams(window.location.search);
+
+    const leagueKey =
+      params.get("league") ||
+      localStorage.getItem("frontera_active_league");
+
+    if (leagueKey && leagues[leagueKey]) {
+      const item = document.querySelector(`.item_liga[data-key="${leagueKey}"]`);
+      load(leagueKey, item);
+
+      const goto = params.get("goto");
+      if (goto === "clasificacion") {
+        setTimeout(() => {
+          document.getElementById("vista-panel")?.scrollIntoView({ behavior: "smooth" });
+        }, 120);
+      }
+    } else {
+      showSelection();
+    }
+  }
+
+  openFromUrlOrLastLeague();
 })();
+
+

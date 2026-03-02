@@ -1,3 +1,4 @@
+/*JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA*/
 const menu = document.getElementById("leaguesMenu");
 const panelLeft = document.getElementById("panelLeft");
 const panelRight = document.getElementById("panelRight");
@@ -45,7 +46,7 @@ const contenido = {
         `
   },
 
-  Supercopa: {
+  BundesLiga: {
     left: `
       <article >
         <div class="adMedia">
@@ -68,7 +69,7 @@ const contenido = {
 
   },
 
-  EuropaLeague: {
+  Ligue1: {
     left: `
       <article >
         <div class="adMedia">
@@ -90,7 +91,7 @@ const contenido = {
     `
   },
 
-  Mundialito: {
+  SerieA: {
     left: `
       <article >
         <div class="adMedia">
@@ -112,7 +113,7 @@ const contenido = {
     `
   },
 
-  CopaRey: {
+  PremierLeague: {
     left: `
       <article >
         <div class="adMedia">
@@ -134,41 +135,6 @@ const contenido = {
     `
   },
 
-  ChampionsLeague: {
-    left: `
-      <article >
-        <div class="adMedia">
-          <video class="adVideo" autoplay muted loop playsinline preload="metadata">
-            <source src="Videos/Champions.mp4" type="video/mp4">
-          </video>
-          <button class="adMute" type="button" aria-label="Silenciar/Activar sonido">🔇</button>
-        </div>
-      </article>
-    `,
-    right: `
-    <article class="adCard">
-      <span >Patrocinado</span>
-      <h3>Entradas oficiales</h3>
-      <p>Compra entradas para los próximos partidos y vive el estadio.</p>
-
-      <a class="adBtn" href="https://www.uefa.com/uefachampionsleague/fixtures-results/#/d/2026-02-17" target="_blank">Ver oferta</a>
-    </article>
-    `,
-     news:
-      `
-      <div class="container_newsLeft">
-            <img class="newsLeft__img" src="Images/Barça_Fuera.png" alt="">
-        </div>
-        <div class="container_newsRight">
-            <h1 class="new__title">Ahora si que el Barça no ganara la 6ª</h1>
-            <p class="new__text">
-                Debido a la corrupcion del vicepresidente del comite de arbitros Negreira. El Barcelona no podra jugar en la competicion mas prestigiosa a nivel europeo,
-                la Uefa Champions leauge, durante un año completo. Esto se debe a que el Barcelona ha sido acusado de sobornar a los arbitros para que le favorezcan en los partidos importantes.
-                Y debido a este comportamiento, la Uefa ha decidido expulsar al equipo durante un año completo.
-            </p>
-        </div>
-        `
-  }
 };
 
 function render(id) {
@@ -179,11 +145,26 @@ function render(id) {
 
 render("Liga");
 
+const mapBtnToLeagueKey = {
+  Liga: "laliga",
+  BundesLiga: "bundesliga",
+  Ligue1: "ligue1",
+  SerieA: "seriea",
+  PremierLeague: "premier",
+};
+
 menu.addEventListener("click", (e) => {
   const btn = e.target.closest("button");
   if (!btn) return;
 
   render(btn.id);
+
+  const leagueKey = mapBtnToLeagueKey[btn.id];
+  if (leagueKey) {
+    localStorage.setItem("frontera_active_league", leagueKey);
+    updateProximosLink();
+  }
+
   return true;
 });
 
@@ -203,4 +184,27 @@ document.addEventListener("click", () => {
   document.querySelectorAll(".adMute").forEach(btn => btn.textContent = "🔊");
   
 }, { once: true });
+
+const linkProximos = document.getElementById("link-proximos");
+const linkProximosMobile = document.getElementById("link-proximos-mobile");
+
+function updateProximosLink() {
+
+  const leagueKey = localStorage.getItem("frontera_active_league") || "laliga";
+
+  const url = `frontera.html?league=${leagueKey}&goto=clasificacion`;
+
+  if (linkProximos) linkProximos.href = url;
+  if (linkProximosMobile) linkProximosMobile.href = url;
+}
+
+updateProximosLink();
+
+window.addEventListener("focus", updateProximosLink);
+
+window.addEventListener("storage", (e) => {
+  if (e.key === "frontera_active_league") updateProximosLink();
+});
+
+/*JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA JUANDA*/
 
