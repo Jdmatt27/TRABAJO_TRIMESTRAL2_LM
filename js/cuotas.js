@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('configReady', () => {
     const partidoJson = sessionStorage.getItem('partidoSeleccionado');
     if (!partidoJson) {
         window.location.href = '../index.html';
@@ -56,11 +56,11 @@ function renderizarDetallesPartido(partido) {
                 <div class="match__overlay"></div>
                 <div class="match__top">
                     <span class="badge" style="display: flex; align-items: center; gap: 6px;">
-                        <img src="${partido.ligaLogo}" style="width: 16px; height: 16px; object-fit: contain;">
+                        <img src="${partido.ligaLogo}" onerror="window.imgError(this)" style="width: 16px; height: 16px; object-fit: contain;">
                         ${partido.liga}
                     </span>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <a href="http://127.0.0.1:5500/Trabajos%20Finales/Segundo%20Trimestre/P%C3%A1gina%20Web%20Omar/frontera.html" class="pill" style="background: #001933; color: white; border: 1px solid #00a9e0; text-decoration: none; font-weight: bold; cursor: pointer; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 4px 12px;">
+                        <a href="../frontera.html" class="pill" style="background: #001933; color: white; border: 1px solid #00a9e0; text-decoration: none; font-weight: bold; cursor: pointer; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 4px 12px;">
                             <img src="../Fuentes/movistar.svg" style="width: 16px; height: 16px; object-fit: contain;">
                             Ver Partido
                         </a>
@@ -70,7 +70,7 @@ function renderizarDetallesPartido(partido) {
 
                 <div class="match__teams">
                     <div class="team">
-                        ${partido.logo1 ? `<img src="${partido.logo1}" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
+                        ${partido.logo1 ? `<img src="${partido.logo1}" onerror="window.imgError(this)" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
                         <span class="team__name">${partido.equipo1}</span>
                     </div>
 
@@ -80,7 +80,7 @@ function renderizarDetallesPartido(partido) {
                     </div>
 
                     <div class="team">
-                        ${partido.logo2 ? `<img src="${partido.logo2}" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
+                        ${partido.logo2 ? `<img src="${partido.logo2}" onerror="window.imgError(this)" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
                         <span class="team__name">${partido.equipo2}</span>
                     </div>
                 </div>

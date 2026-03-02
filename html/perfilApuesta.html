@@ -5,13 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FurboBet - Perfil</title>
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/stylesApuestas.css">
 </head>
 
 <body>
     <header class="header">
         <div class="header__content">
-            <a href="../index.html" class="brand">
+            <a href="../indexApuesta.html" class="brand">
                 <img src="../Fuentes/Logo Furbo Bet.png" alt="FurboBet Logo" class="brand__logo">
             </a>
 
@@ -106,15 +106,8 @@
     </footer>
     
     <button id="theme-toggle" class="theme-toggle-floating" aria-label="Cambiar tema">🌓</button>
-    <script src="../js/theme.js"></script>
-    <script src="../js/sesion.js"></script>
+    <script src="../js/core.js"></script>
     <script src="../js/perfil.js"></script>
-    <script>
-    // Mostrar el saldo actualizado al cargar
-    document.addEventListener('DOMContentLoaded', function() {
-        if (window.actualizarSaldo) window.actualizarSaldo(window.obtenerSaldo());
-    });
-    </script>
 </body>
 
 </html>

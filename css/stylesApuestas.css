@@ -29,7 +29,6 @@
     --hover-grad: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
 }
 
-/* Estilos específicos para tema claro en botones base */
 [data-theme="light"] .market__btn:hover,
 [data-theme="light"] .outcome-btn:hover {
     border-color: #8b5cf6;
@@ -152,10 +151,6 @@ body {
     font-size: 1.2rem;
 }
 
-.hero--main {
-    /* Eliminamos esto para que la hero grid funcione de nuevo */
-}
-
 .header__content {
     width: 100%;
     max-width: 1200px;
@@ -171,7 +166,7 @@ body {
     gap: 12px;
     text-decoration: none; 
     color: var(--text);
-    width: 200px; /* Ancho fijo para equilibrar con el lado derecho */
+    width: 200px; 
 }
 
 .brand__logo {
@@ -181,7 +176,7 @@ body {
 }
 
 .header__right {
-    width: 200px; /* Mismo ancho que .brand para centrar el .nav */
+    width: 200px;
     display: flex;
     justify-content: flex-end;
 }
@@ -595,7 +590,6 @@ body {
     border-color: var(--line);
 }
 
-/* El estado activo ahora se define junto con los botones base */
 .card--full {
     grid-column: 1 / -1;
 }
@@ -886,7 +880,6 @@ a.btn {
 
 .outcome-btn--yes,
 .outcome-btn--no {
-    /* Eliminamos colores por defecto */
     background: var(--bg);
     color: var(--text);
     border: 1px solid var(--line);
@@ -1220,7 +1213,6 @@ footer {
     gap: 0.5rem;
 }
 
-/* Layout del Dashboard */
 .dashboard-grid {
     display: grid;
     grid-template-columns: 300px 1fr;
@@ -1230,7 +1222,6 @@ footer {
     margin: 0 auto;
 }
 
-/* --- Tarjeta de Usuario (Izquierda) --- */
 .profile-card {
     background: var(--panel);
     border: 1px solid var(--line);
@@ -1267,7 +1258,7 @@ footer {
 }
 
 .profile-badge {
-    background: rgba(251, 113, 133, 0.15); /* Hot color var */
+    background: rgba(251, 113, 133, 0.15); 
     color: var(--hot);
     padding: 4px 12px;
     border-radius: 20px;
@@ -1302,16 +1293,12 @@ footer {
 .text-danger { color: #ef4444; }
 .text-danger:hover { background: rgba(239, 68, 68, 0.1); }
 
-
-
-/* --- Contenido (Derecha) --- */
 .profile-content {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
 
-/* Tarjeta de Billetera */
 .wallet-card {
     background: linear-gradient(135deg, rgba(7, 10, 20, 0.9), rgba(20, 30, 50, 0.9));
     border: 1px solid var(--line);
@@ -1341,7 +1328,6 @@ footer {
     border-color: #94a3b8;
 }
 
-/* Efecto de fondo brillante sutil */
 .wallet-card::before {
     content: '';
     position: absolute;
@@ -1408,7 +1394,6 @@ footer {
 
 .btn-action:hover { transform: translateY(-2px); }
 
-/* Estadísticas Grid */
 .stats-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -1444,7 +1429,166 @@ footer {
 
 .text-green { color: #22c55e; }
 
-/* Responsive */
+.dashboard-analysis {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 1.5rem;
+    align-items: start;
+    margin-top: 1rem;
+}
+
+.analysis-panel {
+    background: rgba(255, 255, 255, .04);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2rem;
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.panel-tabs {
+    display: flex;
+    gap: 2rem;
+    border-bottom: 1px solid var(--line);
+    margin-bottom: 1rem;
+}
+
+.panel-tab {
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-weight: 700;
+    padding-bottom: 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.panel-tab.active {
+    color: var(--text);
+}
+
+.panel-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: var(--neon);
+    box-shadow: 0 0 15px var(--neon);
+}
+
+.stat-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+}
+
+.stat-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    color: var(--text);
+    font-weight: 700;
+}
+
+.stat-label-center {
+    color: var(--muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-bar-container {
+    height: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 20px;
+    overflow: hidden;
+    display: flex;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.stat-fill {
+    height: 455px;
+    transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.stat-fill--home { 
+    background: linear-gradient(90deg, #a855f7, #6366f1);
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.4);
+} 
+
+.stat-fill--away { 
+    background: linear-gradient(90deg, #22d3ee, #06b6d4);
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.4);
+}
+
+.potential-win-box {
+    max-height: 0;
+    opacity: 0;
+    margin-top: 0;
+    padding: 0 1.25rem;
+    overflow: hidden;
+    background: rgba(33, 219, 64, 0.05);
+    border: 1px solid rgba(33, 219, 64, 0);
+    border-radius: 16px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    pointer-events: none;
+}
+
+.potential-win-box.show {
+    max-height: 120px;
+    opacity: 1;
+    margin-top: 1.5rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(33, 219, 64, 0.2);
+    pointer-events: auto;
+}
+
+.win-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--neon2);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 0.5rem;
+}
+
+.win-amount {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #fff;
+    text-shadow: 0 0 15px rgba(33, 219, 64, 0.6);
+}
+
+.win-amount::after {
+    content: ' €';
+    font-size: 1rem;
+    color: var(--neon2);
+}
+
+.analysis-panel h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    font-weight: 800;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 @media (max-width: 768px) {
     .dashboard-grid {
         grid-template-columns: 1fr;
@@ -1460,11 +1604,10 @@ footer {
     .btn-action { flex: 1; }
     
     .stats-grid {
-        grid-template-columns: 1fr; /* Una columna en móvil */
+        grid-template-columns: 1fr; 
     }
 }
 
-/* Eliminar flechas del input number */
 input[type=number]::-webkit-inner-spin-button, 
 input[type=number]::-webkit-outer-spin-button { 
     -webkit-appearance: none; 
