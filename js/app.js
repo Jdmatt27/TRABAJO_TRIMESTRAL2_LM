@@ -162,10 +162,9 @@ function updateHero(p) {
     if (teams.length === 2) {
         teams[0].querySelector('.hero__team-logo').src = p.logo1;
         teams[0].querySelector('.hero__team-logo').onerror = function() { window.imgError(this); };
-        teams[0].querySelector('.hero__team-name').textContent = p.equipo1;
+        
         teams[1].querySelector('.hero__team-logo').src = p.logo2;
         teams[1].querySelector('.hero__team-logo').onerror = function() { window.imgError(this); };
-        teams[1].querySelector('.hero__team-name').textContent = p.equipo2;
     }
 
     const btns = hero.querySelectorAll('.outcome-btn');

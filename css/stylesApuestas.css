@@ -1,3 +1,7 @@
+/* ==========================================================================
+   1. VARIABLES & THEMES
+   ========================================================================== */
+
 :root {
     --bg: #070a14;
     --panel: rgba(255, 255, 255, .06);
@@ -29,6 +33,7 @@
     --hover-grad: linear-gradient(90deg, #3b82f6, #8b5cf6, #3b82f6);
 }
 
+/* Light Theme Specific Overrides */
 [data-theme="light"] .market__btn:hover,
 [data-theme="light"] .outcome-btn:hover {
     border-color: #8b5cf6;
@@ -52,6 +57,49 @@
     background: white;
 }
 
+[data-theme="light"] .hero {
+    background: white;
+}
+
+[data-theme="light"] .hero:hover {
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+}
+
+[data-theme="light"] .match__markets,
+[data-theme="light"] .match__markets--big {
+    background: rgba(0,0,0,0.02);
+}
+
+[data-theme="light"] .deposit-card {
+    background: white;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+}
+
+[data-theme="light"] .wallet-card {
+    background: linear-gradient(135deg, #ffffff, #f1f5f9);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.05);
+}
+
+[data-theme="light"] .wallet-card::before {
+    opacity: 0.1;
+}
+
+[data-theme="light"] .btn-withdraw {
+    background: white;
+    border-color: #cbd5e1;
+    color: var(--text);
+}
+
+[data-theme="light"] .btn-withdraw:hover {
+    background: #f8fafc;
+    border-color: #94a3b8;
+}
+
+/* ==========================================================================
+   2. BASE STYLES
+   ========================================================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -71,31 +119,15 @@ body {
     transition: background-color 0.3s ease;
 }
 
-.theme-toggle-floating {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    width: 3.5rem;
-    height: 3.5rem;
-    border-radius: 50%;
-    background: var(--panel2);
-    border: 1px solid var(--line);
-    color: var(--text);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    z-index: 100;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-    backdrop-filter: blur(10px);
-    transition: transform 0.2s, background-color 0.3s;
+input[type=number]::-webkit-inner-spin-button, 
+input[type=number]::-webkit-outer-spin-button { 
+    -webkit-appearance: none; 
+    margin: 0; 
 }
 
-.theme-toggle-floating:hover {
-    transform: scale(1.1);
-    background: var(--line);
-}
+/* ==========================================================================
+   3. LAYOUT & WRAPPERS
+   ========================================================================== */
 
 .page {
     width: 1200px;
@@ -127,6 +159,34 @@ body {
     gap: 20px;
 }
 
+.section {
+    border: 1px solid var(--line);
+    background: rgba(255, 255, 255, .04);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+}
+
+.section__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.section__title {
+    font-size: 1.25rem;
+}
+
+.section__desc {
+    color: var(--muted);
+    line-height: 1.4;
+}
+
+/* ==========================================================================
+   4. HEADER & NAVIGATION
+   ========================================================================== */
+
 .header {
     position: sticky;
     gap: 20px;
@@ -143,14 +203,6 @@ body {
     width: 100%;
 }
 
-.btn--icon {
-    padding: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.2rem;
-}
-
 .header__content {
     width: 100%;
     max-width: 1200px;
@@ -158,6 +210,12 @@ body {
     gap: 20px;
     justify-content: space-between;
     align-items: center;
+}
+
+.header__right {
+    width: 200px;
+    display: flex;
+    justify-content: flex-end;
 }
 
 .brand {
@@ -173,12 +231,6 @@ body {
     height: 50px;
     width: auto;
     object-fit: contain;
-}
-
-.header__right {
-    width: 200px;
-    display: flex;
-    justify-content: flex-end;
 }
 
 .brand__mark {
@@ -217,14 +269,7 @@ body {
     font-weight: 500;
 }
 
-.nav__link {
-    text-decoration: none;
-    color: var(--muted);
-    padding: .55rem .75rem;
-    border-radius: 14px;
-    border: 1px solid transparent;
-}
-
+.nav__link,
 .nav__link--saldo-usuario {
     text-decoration: none;
     color: var(--muted);
@@ -233,14 +278,8 @@ body {
     border: 1px solid transparent;
 }
 
+.nav__link:hover,
 .nav__link--saldo-usuario:hover {
-    color: var(--text);
-    background: var(--panel);
-    border-color: rgba(255, 255, 255, .10);
-}
-
-
-.nav__link:hover {
     color: var(--text);
     background: var(--panel);
     border-color: rgba(255, 255, 255, .10);
@@ -257,29 +296,144 @@ body {
     font-size: .85rem;
 }
 
-.section {
-    border: 1px solid var(--line);
-    background: rgba(255, 255, 255, .04);
-    border-radius: var(--radius);
-    padding: 1.25rem;
-}
+/* ==========================================================================
+   5. BUTTONS
+   ========================================================================== */
 
-.section__head {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-bottom: 1rem;
-}
-
-.section__title {
-    font-size: 1.25rem;
-}
-
-.section__desc {
+.btn {
+    border: 1px solid transparent;
+    background: rgba(255, 255, 255, .08);
     color: var(--muted);
-    line-height: 1.4;
+    padding: 10px 18px;
+    border-radius: 14px;
+    cursor: pointer;
+    font-weight: 600;
+    letter-spacing: .15px;
+    font-family: inherit;
+    font-size: 1rem;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
+
+.btn:hover, .btn:focus {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+    color: var(--text);
+    background: rgba(30, 172, 11, 0.12);
+    border-color: rgba(255, 255, 255, .10);
+    outline: none;
+}
+
+.btn:active {
+    transform: translateY(1px);
+}
+
+a.btn {
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn--icon {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+}
+
+.theme-toggle-floating {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 3.5rem;
+    height: 3.5rem;
+    border-radius: 50%;
+    background: var(--panel2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    z-index: 100;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    transition: transform 0.2s, background-color 0.3s;
+}
+
+.theme-toggle-floating:hover {
+    transform: scale(1.1);
+    background: var(--line);
+}
+
+.q-btn {
+    flex: 1;
+    background: var(--panel2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 0.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 0.85rem;
+}
+
+.trade-btn {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 12px;
+    background: #0095ff;
+    color: white;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.trade-btn:active { transform: scale(0.98); }
+
+.chip {
+    flex: 1;
+    background: var(--panel2);
+    border: 1px solid var(--line);
+    color: var(--text);
+    padding: 0.4rem;
+    border-radius: 50px; 
+    font-weight: 700;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: transform 0.1s;
+}
+
+.chip:hover {
+    background: var(--line);
+    border-color: var(--muted);
+}
+
+.chip:active {
+    transform: scale(0.95);
+}
+
+.tab {
+    background: none;
+    border: none;
+    color: var(--muted);
+    padding-bottom: 0.5rem;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.tab--active {
+    color: var(--text);
+    border-bottom: 2px solid var(--text);
+}
+
+/* ==========================================================================
+   6. HERO SECTIONS
+   ========================================================================== */
 
 .hero {
     border: 1px solid var(--line);
@@ -298,59 +452,6 @@ body {
     border-color: var(--neon);
     box-shadow: 0 10px 40px rgba(168, 85, 247, 0.1);
     transform: translateY(-2px);
-}
-
-.hero__match-display {
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-    margin: 1.5rem 0;
-}
-
-.hero__team {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.hero__team-logo {
-    width: 80px;
-    height: 80px;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
-    transition: transform 0.3s ease;
-}
-
-.hero:hover .hero__team-logo {
-    transform: scale(1.1);
-}
-
-.hero__team-name {
-    font-weight: 800;
-    font-size: 1.1rem;
-}
-
-.hero__vs {
-    font-size: 2rem;
-    font-weight: 900;
-    color: var(--neon);
-    font-style: italic;
-    opacity: 0.8;
-}
-
-.hero__title {
-    font-size: 2.5rem;
-    letter-spacing: -0.5px;
-    margin-bottom: 0.5rem;
-}
-
-[data-theme="light"] .hero {
-    background: white;
-}
-
-[data-theme="light"] .hero:hover {
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
 }
 
 .hero--main {
@@ -403,6 +504,12 @@ body {
 }
 
 .hero__title {
+    font-size: 2.5rem;
+    letter-spacing: -0.5px;
+    margin-bottom: 0.5rem;
+}
+
+.hero__title {
     font-size: 2.2rem;
     letter-spacing: .2px;
 }
@@ -412,6 +519,49 @@ body {
     line-height: 1.55;
     max-width: 58ch;
 }
+
+.hero__match-display {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 1.5rem 0;
+}
+
+.hero__team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.hero__team-logo {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+    filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+    transition: transform 0.3s ease;
+}
+
+.hero:hover .hero__team-logo {
+    transform: scale(1.1);
+}
+
+.hero__team-name {
+    font-weight: 800;
+    font-size: 1.1rem;
+}
+
+.hero__vs {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--neon);
+    font-style: italic;
+    opacity: 0.8;
+}
+
+/* ==========================================================================
+   7. CARDS (Generic & Hero Cards)
+   ========================================================================== */
 
 .hero__card,
 .hero__card-login {
@@ -436,17 +586,6 @@ body {
     gap: 1.5rem;
 }
 
-.login--section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
-    width: 370px;
-    min-width: 370px;
-    max-width: 370px;
-    height: auto;
-}
-
 .card__title {
     font-size: 1.1rem;
     margin-bottom: .75rem;
@@ -464,20 +603,6 @@ body {
     gap: 1rem;
     margin-bottom: 1.5rem;
     border-bottom: 1px solid var(--line);
-}
-
-.tab {
-    background: none;
-    border: none;
-    color: var(--muted);
-    padding-bottom: 0.5rem;
-    cursor: pointer;
-    font-weight: bold;
-}
-
-.tab--active {
-    color: var(--text);
-    border-bottom: 2px solid var(--text);
 }
 
 .card__outcome {
@@ -498,26 +623,13 @@ body {
     margin-bottom: 1.5rem;
 }
 
-.quick {
-    text-decoration: none;
-    color: var(--text);
-    border: 1px solid var(--line);
-    background: var(--panel);
-    border-radius: 14px;
-    padding: .85rem;
-    display: flex;
-    flex-direction: column;
-    gap: .25rem;
+.card--full {
+    grid-column: 1 / -1;
 }
 
-.quick__k {
-    color: var(--muted);
-    font-size: .9rem;
-}
-
-.quick__v {
-    font-weight: 900;
-}
+/* ==========================================================================
+   8. MATCH CARDS & GRIDS
+   ========================================================================== */
 
 .matches__grid {
     display: grid;
@@ -526,27 +638,7 @@ body {
     width: 100%;
 }
 
-.match__card {
-    background: var(--bg);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    overflow: hidden; 
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-}
-
-.match__card:hover {
-    transform: translateY(-5px);
-    border-color: var(--neon);
-    box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
-}
-
-.match__card:hover .team__logo {
-    transform: scale(1.15);
-}
-
+.match__card,
 .match__card--cuotas {
     background: var(--bg);
     border: 1px solid var(--line);
@@ -554,27 +646,24 @@ body {
     overflow: hidden; 
     display: flex;
     flex-direction: column;
-    width: 100%;
     cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
 }
 
+.match__card--cuotas {
+    width: 100%;
+}
+
+.match__card:hover,
 .match__card--cuotas:hover {
     transform: translateY(-5px);
     border-color: var(--neon);
     box-shadow: 0 10px 30px rgba(168, 85, 247, 0.2);
 }
 
+.match__card:hover .team__logo,
 .match__card--cuotas:hover .team__logo {
     transform: scale(1.15);
-}
-
-.team__logo {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .page--cuotas .match__card--cuotas {
@@ -588,10 +677,6 @@ body {
     transform: none;
     box-shadow: none;
     border-color: var(--line);
-}
-
-.card--full {
-    grid-column: 1 / -1;
 }
 
 .match__header {
@@ -651,6 +736,7 @@ body {
     height: 60px;
     object-fit: contain;
     filter: drop-shadow(0 4px 6px rgba(0,0,0,0.5));
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 .team__name {
@@ -675,6 +761,10 @@ body {
     font-size: 0.85rem;
 }
 
+/* ==========================================================================
+   9. MATCH MARKETS & ODDS
+   ========================================================================== */
+
 .match__markets,
 .match__markets--big {
     padding: 1rem;
@@ -695,12 +785,8 @@ body {
     grid-auto-columns: 1fr;
 }
 
-[data-theme="light"] .match__markets,
-[data-theme="light"] .match__markets--big {
-    background: rgba(0,0,0,0.02);
-}
-
-.market__btn {
+.market__btn,
+.outcome-btn {
     background: var(--bg);
     border: 1px solid var(--line); 
     border-radius: 12px;
@@ -715,20 +801,23 @@ body {
     z-index: 0;
 }
 
-.market__btn:hover {
+.market__btn:hover,
+.outcome-btn:hover {
     transform: translateY(-3px);
     border-color: var(--neon);
     box-shadow: 0 6px 15px rgba(168, 85, 247, 0.2);
 }
 
-.market__btn.active {
+.market__btn.active,
+.outcome-btn.active {
     border-color: var(--neon2);
     background: rgba(33, 219, 64, 0.1);
     box-shadow: 0 0 15px rgba(33, 219, 64, 0.2);
     transform: translateY(0);
 }
 
-.market__name {
+.market__name,
+.outcome-label {
     font-size: 0.7rem;
     color: var(--muted);
     font-weight: 500;
@@ -741,11 +830,19 @@ body {
     white-space: nowrap;
 }
 
-.market__odds {
+.market__odds,
+.outcome-price {
     font-size: 1.3rem;
     font-weight: 900;
     color: var(--text);
     line-height: 1.2;
+}
+
+.outcome-btn--yes,
+.outcome-btn--no {
+    background: var(--bg);
+    color: var(--text);
+    border: 1px solid var(--line);
 }
 
 .progress__bar {
@@ -762,6 +859,21 @@ body {
 .active__bar {
     background: #22c55e; 
     box-shadow: 0 0 8px #22c55e;
+}
+
+/* ==========================================================================
+   10. FORMS & INPUTS
+   ========================================================================== */
+
+.login--section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+    width: 370px;
+    min-width: 370px;
+    max-width: 370px;
+    height: auto;
 }
 
 .form__label {
@@ -815,369 +927,6 @@ body {
     color: var(--muted);
 }
 
-.btn {
-    border: 1px solid transparent;
-    background: rgba(255, 255, 255, .08);
-    color: var(--muted);
-    padding: 10px 18px;
-    border-radius: 14px;
-    cursor: pointer;
-    font-weight: 600;
-    letter-spacing: .15px;
-    font-family: inherit;
-    font-size: 1rem;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-}
-
-.btn:hover, .btn:focus {
-    transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-    color: var(--text);
-    background: rgba(30, 172, 11, 0.12);
-    border-color: rgba(255, 255, 255, .10);
-    outline: none;
-}
-
-.btn:active {
-    transform: translateY(1px);
-}
-
-a.btn {
-    display: inline-block;
-    text-align: center;
-    text-decoration: none;
-}
-
-.outcome-btn {
-    background: var(--bg);
-    border: 1px solid var(--line); 
-    border-radius: 12px;
-    padding: 0.85rem 0.5rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2px;
-    cursor: pointer;
-    transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
-    position: relative;
-    z-index: 0;
-}
-
-.outcome-btn:hover {
-    transform: translateY(-3px);
-    border-color: var(--neon);
-    box-shadow: 0 6px 15px rgba(168, 85, 247, 0.2);
-}
-
-.outcome-btn.active {
-    border-color: var(--neon2);
-    background: rgba(33, 219, 64, 0.1);
-    box-shadow: 0 0 15px rgba(33, 219, 64, 0.2);
-    transform: translateY(0);
-}
-
-.outcome-btn--yes,
-.outcome-btn--no {
-    background: var(--bg);
-    color: var(--text);
-    border: 1px solid var(--line);
-}
-
-.outcome-label { 
-    font-size: 0.7rem; 
-    color: var(--muted);
-    font-weight: 500;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-    width: 100%;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
-.outcome-price {
-    font-size: 1.3rem;
-    font-weight: 900;
-    color: var(--text);
-    line-height: 1.2;
-}
-
-
-.q-btn {
-    flex: 1;
-    background: var(--panel2);
-    border: 1px solid var(--line);
-    color: var(--text);
-    padding: 0.5rem;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 0.85rem;
-}
-
-.trade-btn {
-    width: 100%;
-    padding: 1rem;
-    border-radius: 12px;
-    background: #0095ff;
-    color: white;
-    border: none;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-
-.trade-btn:active { transform: scale(0.98); }
-
-.toast {
-    position: fixed;
-    top: 100px; /* Debajo del header de 80px + 20px de margen */
-    right: 20px;
-    background: rgba(20, 20, 30, 0.95);
-    color: #fb7185;
-    padding: 1rem 1.5rem;
-    border-radius: 12px;
-    border: 1px solid rgba(251, 113, 133, 0.3);
-    box-shadow: 0 10px 40px rgba(0,0,0,0.5);
-    z-index: 9999;
-    font-weight: 600;
-    opacity: 0;
-    transform: translateX(50px);
-    min-width: 250px;
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-    pointer-events: none;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.toast.show {
-    opacity: 1;
-    transform: translateX(0);
-}
-
-.toast--success {
-    color: var(--neon2);
-    border-color: rgba(33, 219, 64, 0.3);
-}
-
-/* --- MEDIA QUERIES --- */
-@media (max-width: 1240px) {
-    .page, .page--cuotas, .header__content {
-        width: 100%;
-        max-width: 100%;
-        padding: 0 15px;
-    }
-}
-
-@media (max-width: 992px) {
-    .hero {
-        grid-template-columns: 1fr;
-        padding: 1.5rem;
-        gap: 1.5rem;
-    }
-    .hero__card {
-        max-width: 100%;
-    }
-    .matches__grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-    .hero__title {
-        font-size: 1.8rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .header__content {
-        flex-direction: column;
-        height: auto;
-        padding: 15px;
-        gap: 15px;
-    }
-    .header {
-        height: auto;
-        position: relative;
-    }
-    .toast {
-        top: 20px; /* En móvil el header no es sticky, lo ponemos arriba */
-    }
-    .nav {
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    .matches__grid {
-        grid-template-columns: 1fr;
-    }
-    .hero__match-display {
-        gap: 1rem;
-    }
-    .hero__team-logo {
-        width: 60px;
-        height: 60px;
-    }
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-@media (max-width: 480px) {
-    .brand__name {
-        font-size: 1.1rem;
-    }
-    .hero__title {
-        font-size: 1.5rem;
-    }
-    .wallet-balance {
-        font-size: 2rem;
-    }
-    .wallet-actions {
-        flex-direction: column;
-    }
-}
-
-footer {
-    border-top: 1px solid var(--line);
-    background: var(--header-bg);
-    backdrop-filter: blur(10px);
-    padding: 2.5rem 0;
-    margin-top: 4rem;
-}
-
-.footer__content {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 0 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-}
-
-.footer__text {
-    color: var(--muted);
-    font-size: 0.9rem;
-    text-align: center;
-    line-height: 1.6;
-}
-
-.footer__links {
-    display: flex;
-    gap: 1.5rem;
-    margin-bottom: 0.5rem;
-}
-
-.footer__link {
-    color: var(--muted);
-    text-decoration: none;
-    font-size: 0.85rem;
-    transition: color 0.2s;
-}
-
-.footer__link:hover {
-    color: var(--text);
-}
-
-.deposit-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-    width: 100%;
-    max-width: 460px;
-    margin: 0 auto;
-}
-
-.deposit-card {
-    background: rgba(20, 20, 30, 0.6);
-    border: 1px solid var(--line);
-    border-radius: 20px;
-    padding: 1.25rem;
-    width: 100%;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-}
-
-[data-theme="light"] .deposit-card {
-    background: white;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-}
-
-.deposit-header {
-    text-align: center;
-    margin-bottom: 1rem;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 0.75rem;
-}
-
-.deposit-title {
-    font-size: 1.25rem;
-    font-weight: 800;
-    margin-bottom: 0.25rem;
-    letter-spacing: -0.5px;
-}
-
-.deposit-balance {
-    color: var(--muted);
-    font-size: 0.8rem;
-}
-
-.deposit-balance .highlight {
-    color: var(--neon2);
-    font-weight: 700;
-}
-
-.section-label {
-    display: block;
-    font-size: 0.7rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--muted);
-    margin-bottom: 0.4rem;
-    font-weight: 700;
-}
-
-.payment-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    margin-bottom: 1.25rem;
-}
-
-.payment-option {
-    background: var(--panel);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 0.6rem 0.4rem;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.25rem;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.payment-option:hover {
-    background: var(--panel2);
-}
-
-.payment-option.active {
-    background: rgba(34, 211, 238, 0.1);
-    border-color: var(--neon2);
-    box-shadow: 0 0 10px rgba(34, 211, 238, 0.1);
-}
-
-.pay-icon {
-    font-size: 1.2rem;
-}
-
-.payment-option span {
-    font-size: 0.7rem;
-    font-weight: 600;
-}
-
 .amount-control {
     position: relative;
     margin-bottom: 1rem;
@@ -1212,88 +961,9 @@ footer {
     box-shadow: 0 0 0 4px rgba(168, 85, 247, 0.1);
 }
 
-.quick-chips {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.4rem;
-    margin-bottom: 1.25rem;
-}
-
-.chip {
-    flex: 1;
-    background: var(--panel2);
-    border: 1px solid var(--line);
-    color: var(--text);
-    padding: 0.4rem;
-    border-radius: 50px; 
-    font-weight: 700;
-    font-size: 0.8rem;
-    cursor: pointer;
-    transition: transform 0.1s;
-}
-
-.chip:hover {
-    background: var(--line);
-    border-color: var(--muted);
-}
-
-.chip:active {
-    transform: scale(0.95);
-}
-
-.deposit-btn {
-    width: 100%;
-    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); 
-    color: white;
-    border: none;
-    padding: 1.2rem;
-    border-radius: 16px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    box-shadow: 0 4px 20px rgba(22, 163, 74, 0.4);
-    transition: all 0.3s;
-}
-
-.deposit-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.5);
-    filter: brightness(1.1);
-}
-
-.deposit-btn:active {
-    transform: scale(0.98);
-}
-
-.btn-text {
-    font-size: 1.1rem;
-    font-weight: 900;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-}
-
-.btn-sub {
-    font-size: 0.7rem;
-    opacity: 0.8;
-    margin-top: 2px;
-    font-weight: 500;
-}
-
-.deposit-info {
-    display: flex;
-    gap: 1.5rem;
-    color: var(--muted);
-    font-size: 0.8rem;
-    opacity: 0.7;
-    text-align: center;
-}
-
-.info-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
+/* ==========================================================================
+   11. DASHBOARD & PROFILE
+   ========================================================================== */
 
 .dashboard-grid {
     display: grid;
@@ -1364,109 +1034,11 @@ footer {
     color: var(--text);
 }
 
-.text-danger { color: #ef4444; }
-.text-danger:hover { background: rgba(239, 68, 68, 0.1); }
-
 .profile-content {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
 }
-
-.wallet-card {
-    background: linear-gradient(135deg, rgba(7, 10, 20, 0.9), rgba(20, 30, 50, 0.9));
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 2rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-}
-
-[data-theme="light"] .wallet-card {
-    background: linear-gradient(135deg, #ffffff, #f1f5f9);
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
-    border-color: rgba(0, 0, 0, 0.05);
-}
-
-[data-theme="light"] .btn-withdraw {
-    background: white;
-    border-color: #cbd5e1;
-    color: var(--text);
-}
-
-[data-theme="light"] .btn-withdraw:hover {
-    background: #f8fafc;
-    border-color: #94a3b8;
-}
-
-.wallet-card::before {
-    content: '';
-    position: absolute;
-    top: -50%;
-    right: -10%;
-    width: 200px;
-    height: 200px;
-    background: var(--neon2);
-    filter: blur(80px);
-    opacity: 0.15;
-    pointer-events: none;
-}
-
-[data-theme="light"] .wallet-card::before {
-    opacity: 0.1;
-}
-
-.wallet-label {
-    color: var(--muted);
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-.wallet-balance {
-    font-size: 2.8rem;
-    font-weight: 900;
-    color: var(--text);
-    line-height: 1.1;
-    margin-top: 5px;
-}
-
-.wallet-balance .currency {
-    color: var(--neon2);
-    font-size: 1.5rem;
-    vertical-align: super;
-}
-
-.wallet-actions {
-    display: flex;
-    gap: 1rem;
-    z-index: 2;
-}
-
-.btn-action {
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-weight: 700;
-    cursor: pointer;
-    border: none;
-    transition: transform 0.2s;
-}
-
-.btn-deposit {
-    background: var(--neon2);
-    color: #000;
-}
-
-.btn-withdraw {
-    background: var(--panel2);
-    color: var(--text);
-    border: 1px solid var(--line);
-}
-
-.btn-action:hover { transform: translateY(-2px); }
 
 .stats-grid {
     display: grid;
@@ -1501,8 +1073,6 @@ footer {
     color: var(--muted);
 }
 
-.text-green { color: #22c55e; }
-
 .dashboard-analysis {
     display: grid;
     grid-template-columns: 1fr 380px;
@@ -1520,6 +1090,13 @@ footer {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+}
+
+.analysis-panel h3 {
+    font-size: 1.25rem;
+    margin-bottom: 1.5rem;
+    color: var(--text);
+    font-weight: 800;
 }
 
 .panel-tabs {
@@ -1651,41 +1228,416 @@ footer {
     color: var(--neon2);
 }
 
-.analysis-panel h3 {
-    font-size: 1.25rem;
-    margin-bottom: 1.5rem;
-    color: var(--text);
-    font-weight: 800;
+/* ==========================================================================
+   12. DEPOSIT & WALLET
+   ========================================================================== */
+
+.wallet-card {
+    background: linear-gradient(135deg, rgba(7, 10, 20, 0.9), rgba(20, 30, 50, 0.9));
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
 }
+
+.wallet-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -10%;
+    width: 200px;
+    height: 200px;
+    background: var(--neon2);
+    filter: blur(80px);
+    opacity: 0.15;
+    pointer-events: none;
+}
+
+.wallet-label {
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.wallet-balance {
+    font-size: 2.8rem;
+    font-weight: 900;
+    color: var(--text);
+    line-height: 1.1;
+    margin-top: 5px;
+}
+
+.wallet-balance .currency {
+    color: var(--neon2);
+    font-size: 1.5rem;
+    vertical-align: super;
+}
+
+.wallet-actions {
+    display: flex;
+    gap: 1rem;
+    z-index: 2;
+}
+
+.btn-action {
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    transition: transform 0.2s;
+}
+
+.btn-deposit {
+    background: var(--neon2);
+    color: #000;
+}
+
+.btn-withdraw {
+    background: var(--panel2);
+    color: var(--text);
+    border: 1px solid var(--line);
+}
+
+.btn-action:hover { transform: translateY(-2px); }
+
+.deposit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+}
+
+.deposit-card {
+    background: rgba(20, 20, 30, 0.6);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    padding: 1.25rem;
+    width: 100%;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.deposit-header {
+    text-align: center;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.75rem;
+}
+
+.deposit-title {
+    font-size: 1.25rem;
+    font-weight: 800;
+    margin-bottom: 0.25rem;
+    letter-spacing: -0.5px;
+}
+
+.deposit-balance {
+    color: var(--muted);
+    font-size: 0.8rem;
+}
+
+.deposit-balance .highlight {
+    color: var(--neon2);
+    font-weight: 700;
+}
+
+.section-label {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    margin-bottom: 0.4rem;
+    font-weight: 700;
+}
+
+.payment-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+}
+
+.payment-option {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 0.6rem 0.4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.25rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.payment-option:hover {
+    background: var(--panel2);
+}
+
+.payment-option.active {
+    background: rgba(34, 211, 238, 0.1);
+    border-color: var(--neon2);
+    box-shadow: 0 0 10px rgba(34, 211, 238, 0.1);
+}
+
+.pay-icon {
+    font-size: 1.2rem;
+}
+
+.payment-option span {
+    font-size: 0.7rem;
+    font-weight: 600;
+}
+
+.quick-chips {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.4rem;
+    margin-bottom: 1.25rem;
+}
+
+.deposit-btn {
+    width: 100%;
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%); 
+    color: white;
+    border: none;
+    padding: 1.2rem;
+    border-radius: 16px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0 4px 20px rgba(22, 163, 74, 0.4);
+    transition: all 0.3s;
+}
+
+.deposit-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.5);
+    filter: brightness(1.1);
+}
+
+.deposit-btn:active {
+    transform: scale(0.98);
+}
+
+.btn-text {
+    font-size: 1.1rem;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.btn-sub {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-top: 2px;
+    font-weight: 500;
+}
+
+.deposit-info {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--muted);
+    font-size: 0.8rem;
+    opacity: 0.7;
+    text-align: center;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ==========================================================================
+   13. TOASTS
+   ========================================================================== */
+
+.toast {
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    background: rgba(15, 15, 25, 0.98);
+    backdrop-filter: blur(15px);
+    color: var(--text);
+    padding: 1rem;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(168, 85, 247, 0.1);
+    z-index: 10000;
+    opacity: 0;
+    transform: translateX(120%);
+    min-width: 320px;
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    pointer-events: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.toast.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.toast--success {
+    border-color: rgba(33, 219, 64, 0.4);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.6), 0 0 20px rgba(33, 219, 64, 0.1);
+}
+
+.toast__header {
+    font-size: 0.75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--muted);
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 8px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.toast__match {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.toast__team {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    flex: 1;
+}
+
+.toast__logo {
+    width: 35px;
+    height: 35px;
+    object-fit: contain;
+}
+
+.toast__name {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 80px;
+}
+
+.toast__score {
+    background: var(--bg);
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 900;
+    font-size: 1.1rem;
+    border: 1px solid var(--line);
+    color: var(--neon2);
+}
+
+.toast__footer {
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-align: center;
+    padding-top: 5px;
+}
+
+/* ==========================================================================
+   14. FOOTER
+   ========================================================================== */
+
+footer {
+    border-top: 1px solid var(--line);
+    background: var(--header-bg);
+    backdrop-filter: blur(10px);
+    padding: 2.5rem 0;
+    margin-top: 4rem;
+}
+
+.footer__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.footer__text {
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+    line-height: 1.6;
+}
+
+.footer__links {
+    display: flex;
+    gap: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.footer__link {
+    color: var(--muted);
+    text-decoration: none;
+    font-size: 0.85rem;
+    transition: color 0.2s;
+}
+
+.footer__link:hover {
+    color: var(--text);
+}
+
+/* ==========================================================================
+   15. MISC & UTILITIES
+   ========================================================================== */
+
+.quick {
+    text-decoration: none;
+    color: var(--text);
+    border: 1px solid var(--line);
+    background: var(--panel);
+    border-radius: 14px;
+    padding: .85rem;
+    display: flex;
+    flex-direction: column;
+    gap: .25rem;
+}
+
+.quick__k {
+    color: var(--muted);
+    font-size: .9rem;
+}
+
+.quick__v {
+    font-weight: 900;
+}
+
+.text-danger { color: #ef4444; }
+.text-danger:hover { background: rgba(239, 68, 68, 0.1); }
+.text-green { color: #22c55e; }
+
+/* ==========================================================================
+   16. ANIMATIONS
+   ========================================================================== */
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(10px); }
     to { opacity: 1; transform: translateY(0); }
-}
-
-@media (max-width: 768px) {
-    .dashboard-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .wallet-card {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 1.5rem;
-    }
-    
-    .wallet-actions { width: 100%; }
-    .btn-action { flex: 1; }
-    
-    .stats-grid {
-        grid-template-columns: 1fr; 
-    }
-}
-
-input[type=number]::-webkit-inner-spin-button, 
-input[type=number]::-webkit-outer-spin-button { 
-    -webkit-appearance: none; 
-    margin: 0; 
 }
 
 @keyframes gradientMove {
@@ -1693,8 +1645,95 @@ input[type=number]::-webkit-outer-spin-button {
     100% { background-position: 100% 50%; }
 }
 
+/* ==========================================================================
+   17. MEDIA QUERIES
+   ========================================================================== */
+
+@media (max-width: 1240px) {
+    .page, .page--cuotas, .header__content {
+        width: 100%;
+        max-width: 100%;
+        padding: 0 15px;
+    }
+}
+
+@media (max-width: 992px) {
+    .hero {
+        grid-template-columns: 1fr;
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+    .hero__card {
+        max-width: 100%;
+    }
+    .matches__grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .hero__title {
+        font-size: 1.8rem;
+    }
+}
+
 @media (max-width: 900px) {
     .matches__grid {
         grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .header__content {
+        flex-direction: column;
+        height: auto;
+        padding: 15px;
+        gap: 15px;
+    }
+    .header {
+        height: auto;
+        position: relative;
+    }
+    .toast {
+        top: 20px; 
+    }
+    .nav {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .matches__grid {
+        grid-template-columns: 1fr;
+    }
+    .hero__match-display {
+        gap: 1rem;
+    }
+    .hero__team-logo {
+        width: 60px;
+        height: 60px;
+    }
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+    .wallet-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+    .wallet-actions { width: 100%; }
+    .btn-action { flex: 1; }
+    .stats-grid {
+        grid-template-columns: 1fr; 
+    }
+}
+
+@media (max-width: 480px) {
+    .brand__name {
+        font-size: 1.1rem;
+    }
+    .hero__title {
+        font-size: 1.5rem;
+    }
+    .wallet-balance {
+        font-size: 2rem;
+    }
+    .wallet-actions {
+        flex-direction: column;
     }
 }

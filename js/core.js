@@ -23,7 +23,7 @@ async function loadConfig() {
 }
 
 // --- SISTEMA DE NOTIFICACIONES (TOAST) ---
-window.showToast = (message, type = 'error') => {
+window.showToast = (content, type = 'error', isHTML = false) => {
     let toast = document.getElementById('global-toast');
     if (!toast) {
         toast = document.createElement('div');
@@ -32,18 +32,25 @@ window.showToast = (message, type = 'error') => {
         document.body.appendChild(toast);
     }
 
-    toast.textContent = message;
+    if (isHTML) {
+        toast.innerHTML = content;
+    } else {
+        toast.textContent = content;
+    }
+
     toast.className = `toast ${type === 'success' ? 'toast--success' : ''} show`;
 
+    // Auto-ocultar después de un tiempo
     setTimeout(() => {
         toast.classList.remove('show');
-    }, 3500);
+    }, 4500);
 };
 
 // --- VALIDACIÓN GLOBAL DE APUESTAS ---
 function validarApuestasGlobal() {
     const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');
     let procesadas = 0, premioTotal = 0;
+    let resultadosDetallados = [];
 
     apuestas.forEach(a => {
         if (a.estado === 'pendiente') {
@@ -58,11 +65,16 @@ function validarApuestasGlobal() {
                 if (res) {
                     procesadas++;
                     const ganador = res.homeG > res.awayG ? a.equipo1 : (res.awayG > res.homeG ? a.equipo2 : 'Empate');
-                    if (a.eleccion === ganador) {
+                    const gano = a.eleccion === ganador;
+
+                    if (gano) {
                         a.estado = 'ganada';
-                        premioTotal += (a.importe * a.cuota);
+                        const premio = (a.importe * a.cuota);
+                        premioTotal += premio;
+                        resultadosDetallados.push({ ...a, res, gano: true, premio });
                     } else {
                         a.estado = 'perdida';
+                        resultadosDetallados.push({ ...a, res, gano: false });
                     }
                 }
             }
@@ -71,14 +83,41 @@ function validarApuestasGlobal() {
 
     if (procesadas > 0) {
         localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
-        if (premioTotal > 0) {
-            window.actualizarSaldo(window.obtenerSaldo() + premioTotal);
-            window.showToast(`¡Has ganado ${premioTotal.toFixed(2)}€!`, 'success');
-        }
+        if (premioTotal > 0) window.actualizarSaldo(window.obtenerSaldo() + premioTotal);
+
+        // Mostrar un Toast rico para cada resultado (o el más importante)
+        resultadosDetallados.forEach((rd, index) => {
+            setTimeout(() => {
+                const hData = window.getEquipoData(rd.equipo1);
+                const aData = window.getEquipoData(rd.equipo2);
+
+                const toastHTML = `
+                    <div class="toast__header">
+                        <span>Resultado Final</span>
+                        <span style="color:${rd.gano ? '#22c55e' : '#fb7185'}">${rd.gano ? '¡GANASTE!' : 'PERDIDA'}</span>
+                    </div>
+                    <div class="toast__match">
+                        <div class="toast__team">
+                            <img src="${hData.logo}" class="toast__logo">
+                            <span class="toast__name">${rd.equipo1}</span>
+                        </div>
+                        <div class="toast__score">${rd.res.homeG} - ${rd.res.awayG}</div>
+                        <div class="toast__team">
+                            <img src="${aData.logo}" class="toast__logo">
+                            <span class="toast__name">${rd.equipo2}</span>
+                        </div>
+                    </div>
+                    <div class="toast__footer" style="color:${rd.gano ? '#22c55e' : 'inherit'}">
+                        ${rd.gano ? `+${rd.premio.toFixed(2)}€ acreditados` : `Apuesta a ${rd.eleccion} fallida`}
+                    </div>
+                `;
+                window.showToast(toastHTML, rd.gano ? 'success' : 'error', true);
+            }, index * 5000); // Espaciar los toasts si hay varios
+        });
+
         document.dispatchEvent(new CustomEvent('betsUpdated'));
     }
 }
-
 // 
 window.imgError = (el) => {
     el.onerror = null; // Evitar bucle infinito
