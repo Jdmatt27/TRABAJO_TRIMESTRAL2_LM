@@ -1,5 +1,16 @@
 /*OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR OMAR*/
 
+document.addEventListener("DOMContentLoaded", () => {
+  const params = new URLSearchParams(location.search);
+  if (params.get("view") === "seleccion") {
+    document.getElementById("vista-seleccion")?.classList.remove("is__hidden");
+    document.getElementById("vista-panel")?.classList.add("is__hidden");
+    document.getElementById("vista-equipo")?.classList.add("is__hidden");
+    document.getElementById("vista-global")?.classList.add("is__hidden");
+    history.replaceState({}, "", "frontera.html");
+    return;
+  }
+});
 (function () {
   const teamRatings = {
     'Man. City': 95, 'Arsenal': 92, 'Liverpool': 90, 'Man. Utd': 85, 'Tottenham': 83, 'Aston Villa': 80, 'Newcastle': 78, 'Chelsea': 76, 'West Ham': 72, 'Brighton': 70,
@@ -118,45 +129,45 @@
   }
 
   function showSelection() {
-    if (selView) selView.classList.remove('oculto');
-    if (dashView) dashView.classList.add('oculto');
-    if (teamView) teamView.classList.add('oculto');
-    if (globalView) globalView.classList.add('oculto');
+    if (selView) selView.classList.remove('is__hidden');
+    if (dashView) dashView.classList.add('is__hidden');
+    if (teamView) teamView.classList.add('is__hidden');
+    if (globalView) globalView.classList.add('is__hidden');
     if (typeof updateCarousel === 'function') setTimeout(updateCarousel, 50);
   }
 
   function showDashboard() {
-    if (selView) selView.classList.add('oculto');
-    if (dashView) dashView.classList.remove('oculto');
-    if (teamView) teamView.classList.add('oculto');
-    if (globalView) globalView.classList.add('oculto');
+    if (selView) selView.classList.add('is__hidden');
+    if (dashView) dashView.classList.remove('is__hidden');
+    if (teamView) teamView.classList.add('is__hidden');
+    if (globalView) globalView.classList.add('is__hidden');
   }
 
   function showTeamView() {
-    if (selView) selView.classList.add('oculto');
-    if (dashView) dashView.classList.add('oculto');
-    if (teamView) teamView.classList.remove('oculto');
-    if (globalView) globalView.classList.add('oculto');
+    if (selView) selView.classList.add('is__hidden');
+    if (dashView) dashView.classList.add('is__hidden');
+    if (teamView) teamView.classList.remove('is__hidden');
+    if (globalView) globalView.classList.add('is__hidden');
   }
 
   function load(leagueKey, el) {
     if (!leagues[leagueKey]) return showToast('Liga no encontrada', 'error');
 
-    document.querySelectorAll('.item_liga.seleccionado').forEach(x => x.classList.remove('seleccionado'));
-    if (el && el.classList) el.classList.add('seleccionado');
+    document.querySelectorAll('.league__item.is__selected').forEach(x => x.classList.remove('is__selected'));
+    if (el && el.classList) el.classList.add('is__selected');
 
     current = leagueKey;
     localStorage.setItem('frontera_active_league', leagueKey);
     if (leagueTitle) leagueTitle.textContent = leagues[leagueKey].name;
 
-    const hero = document.querySelector('.portada_hero');
+    const hero = document.querySelector('.hero__cover');
     if (hero) {
       const images = {
-        premier: 'imagenes/Premier.jpg',
-        laliga: 'imagenes/laLiga.jpg',
-        seriea: 'imagenes/serie a.jpg',
-        bundesliga: 'imagenes/bundesliga.jpg',
-        ligue1: 'imagenes/League 1.jpg'
+        premier: 'Images/Premier.jpeg',
+        laliga: 'Images/laLiga.jpg',
+        seriea: 'Images/serie a.jpg',
+        bundesliga: 'Images/bundesliga.webp',
+        ligue1: 'Images/league one.webp',
       };
       if (images[leagueKey]) hero.style.backgroundImage = `url('${images[leagueKey]}')`;
     }
@@ -176,8 +187,8 @@
     showDashboard();
 
     if (dashView) {
-      dashView.classList.add('aparecer');
-      setTimeout(() => dashView.classList.remove('aparecer'), 420);
+      dashView.classList.add('is__appearing');
+      setTimeout(() => dashView.classList.remove('is__appearing'), 420);
     }
 
     updateSimButtons();
@@ -259,12 +270,12 @@
     const sorted = [...table].sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
     sorted.forEach((t, i) => {
       let rowClass = '';
-      if (i < 4) rowClass = 'fila_champions';
-      else if (i >= sorted.length - 3) rowClass = 'fila_descenso';
+      if (i < 4) rowClass = 'row__champions';
+      else if (i >= sorted.length - 3) rowClass = 'row__relegation';
 
       const tr = document.createElement('tr');
       if (rowClass) tr.className = rowClass;
-      tr.innerHTML = `<td style="font-weight:700">${i + 1}</td><td class="columna_equipo">${t.name}</td><td style="text-align:center">${t.pj}</td><td style="text-align:center;color:#10b981">${t.w}</td><td style="text-align:center">${t.d}</td><td style="text-align:center;color:#ef4444">${t.l}</td><td style="text-align:center">${t.gf}</td><td style="text-align:center">${t.ga}</td><td style="text-align:center;font-weight:700">${t.gd}</td><td class="celda_puntos">${t.pts}</td>`;
+      tr.innerHTML = `<td style="font-weight:700">${i + 1}</td><td class="team__col">${t.name}</td><td style="text-align:center">${t.pj}</td><td style="text-align:center;color:#10b981">${t.w}</td><td style="text-align:center">${t.d}</td><td style="text-align:center;color:#ef4444">${t.l}</td><td style="text-align:center">${t.gf}</td><td style="text-align:center">${t.ga}</td><td style="text-align:center;font-weight:700">${t.gd}</td><td class="points__cell">${t.pts}</td>`;
       tbody.appendChild(tr);
     });
   }
@@ -413,7 +424,7 @@
     };
 
     const el = document.createElement('div');
-    el.className = 'item_evento';
+    el.className = 'event__item';
     el.style.borderLeft = `3px solid ${colors[event.type] || '#9ca3af'}`;
 
     const text = event.type === 'gol' ? `Gol: ${event.team} (${event.player})` :
@@ -423,7 +434,7 @@
       event.type === 'poste' ? `¡Al palo! Ocasión de ${event.player} (${event.team})` :
       `Cambio: ${event.team}`;
 
-    el.innerHTML = `<span style="font-size:16px;">${icons[event.type]}</span><div style="flex:1;"><span class="minuto_evento">${event.minute}'</span> ${text}</div>`;
+    el.innerHTML = `<span style="font-size:16px;">${icons[event.type]}</span><div style="flex:1;"><span class="event__time">${event.minute}'</span> ${text}</div>`;
     container.prepend(el);
   }
 
@@ -470,9 +481,9 @@
         if (eventsEl) {
           if (matchesInProgress.includes(matchKey)) {
             if (simulateMatchDetailBtn) simulateMatchDetailBtn.textContent = 'Simulando...';
-            eventsEl.innerHTML = '<p class="texto_tenue_pequeno texto_centrado relleno_20">Partido en curso en segundo plano...</p>';
+            eventsEl.innerHTML = '<p class="text__muted text__center padding__box">Partido en curso en segundo plano...</p>';
           } else {
-            eventsEl.innerHTML = '<p class="texto_tenue_pequeno texto_centrado relleno_20">Este partido ya se ha jugado.</p>';
+            eventsEl.innerHTML = '<p class="text__muted text__center padding__box">Este partido ya se ha jugado.</p>';
           }
         }
       } else {
@@ -484,7 +495,7 @@
         if (awayScoreEl) awayScoreEl.textContent = '0';
         if (minuteEl) minuteEl.textContent = '0';
         if (progressEl) progressEl.style.width = '0%';
-        if (eventsEl) eventsEl.innerHTML = '<p class="texto_tenue_pequeno">Haz click en "Simular Partido" para ver eventos</p>';
+        if (eventsEl) eventsEl.innerHTML = '<p class="text__muted">Haz click en "Simular Partido" para ver eventos</p>';
       }
 
       if (detailView) detailView.style.display = 'block';
@@ -646,12 +657,12 @@
     const resultColor = result === 'V' ? '#10b981' : result === 'D' ? '#ef4444' : '#9ca3af';
 
     const matchEl = document.createElement('div');
-    matchEl.className = 'tarjeta_partido';
+    matchEl.className = 'match__card';
     matchEl.innerHTML = `
-      <div class="equipo_partido" style="text-align:right">${homeTeam}</div>
-      <div class="marcador_partido">${homeG} - ${awayG}</div>
-      <div class="equipo_partido" style="text-align:left">${awayTeam}</div>
-      <div class="barra_resultado" style="background:${resultColor}"></div>
+      <div class="match__team" style="text-align:right">${homeTeam}</div>
+      <div class="match__score">${homeG} - ${awayG}</div>
+      <div class="match__team" style="text-align:left">${awayTeam}</div>
+      <div class="result__bar" style="background:${resultColor}"></div>
     `;
     container.prepend(matchEl);
   }
@@ -764,12 +775,12 @@
 
   if (btnGlobalView) {
     btnGlobalView.addEventListener('click', () => {
-      if (selView) selView.classList.add('oculto');
-      if (dashView) dashView.classList.add('oculto');
-      if (teamView) teamView.classList.add('oculto');
-      if (globalView) globalView.classList.remove('oculto');
+      if (selView) selView.classList.add('is__hidden');
+      if (dashView) dashView.classList.add('is__hidden');
+      if (teamView) teamView.classList.add('is__hidden');
+      if (globalView) globalView.classList.remove('is__hidden');
 
-      if (globalContainer) globalContainer.innerHTML = '<p class="texto_centrado relleno_20 texto_tenue_pequeno">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
+      if (globalContainer) globalContainer.innerHTML = '<p class="text__center padding__box text__muted">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
       if (btnGlobalStart) btnGlobalStart.style.display = 'inline-block';
       if (btnGlobalSim) btnGlobalSim.style.display = 'none';
       if (btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
@@ -843,7 +854,7 @@
 
         const jornada = lFixtures[lWeek];
         const leagueCard = document.createElement('div');
-        leagueCard.className = 'tarjeta';
+        leagueCard.className = 'card__box';
         leagueCard.style.padding = '10px';
         leagueCard.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name} - Semana ${lWeek + 1}</h4>`;
 
@@ -883,9 +894,9 @@
           row.style.fontSize = '0.9rem';
 
           if (isPlayed) {
-            row.innerHTML = `<span>${home.name}</span> <span class="resultado_global" style="color:#10b981;font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
+            row.innerHTML = `<span>${home.name}</span> <span class="global__result" style="color:#10b981;font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
           } else {
-            row.innerHTML = `<span>${home.name}</span> <span class="resultado_global" style="font-weight:bold;color:#9ca3af">vs</span> <span>${away.name}</span>`;
+            row.innerHTML = `<span>${home.name}</span> <span class="global__result" style="font-weight:bold;color:#9ca3af">vs</span> <span>${away.name}</span>`;
           }
 
           list.appendChild(row);
@@ -900,7 +911,7 @@
         if (btnGlobalSim) btnGlobalSim.style.display = 'inline-block';
         if (btnGlobalSimOne) btnGlobalSimOne.style.display = 'inline-block';
       } else {
-        globalContainer.innerHTML = '<p class="texto_centrado relleno_20 texto_tenue_pequeno">Todas las ligas han finalizado.</p>';
+        globalContainer.innerHTML = '<p class="text__center padding__box text__muted">Todas las ligas han finalizado.</p>';
       }
     });
   }
@@ -911,7 +922,7 @@
     
     const finish = () => {
       if (el) {
-        const resultEl = el.querySelector('.resultado_global');
+        const resultEl = el.querySelector('.global__result');
         if (resultEl) {
           resultEl.textContent = `${homeGoals} - ${awayGoals}`;
           resultEl.style.color = '#22c55e';
@@ -981,7 +992,7 @@
 
     if (el) {
       let h = 0, a = 0;
-      const resultEl = el.querySelector('.resultado_global');
+      const resultEl = el.querySelector('.global__result');
       if (resultEl) {
         resultEl.style.color = '#e5e7eb';
         resultEl.textContent = '0 - 0';
@@ -1084,7 +1095,7 @@
         lTable.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
 
         const card = document.createElement('div');
-        card.className = 'tarjeta';
+        card.className = 'card__box';
         card.style.padding = '10px';
         card.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name}</h4>`;
 
@@ -1137,7 +1148,7 @@
       });
 
       if (sortedWeeks.length === 0) {
-        globalContainer.innerHTML = '<p class="texto_centrado relleno_20 texto_tenue_pequeno">No hay historial disponible.</p>';
+        globalContainer.innerHTML = '<p class="text__center padding__box text__muted">No hay historial disponible.</p>';
         return;
       }
 
@@ -1150,7 +1161,7 @@
 
       sortedWeeks.forEach(week => {
         const btn = document.createElement('button');
-        btn.className = 'boton_pequeno';
+        btn.className = 'btn__small';
         btn.style.fontSize = '14px';
         btn.style.padding = '12px 20px';
         btn.textContent = `Semana ${week}`;
@@ -1193,7 +1204,7 @@
             if (weekMatches.length === 0) return;
 
             const card = document.createElement('div');
-            card.className = 'tarjeta';
+            card.className = 'card__box';
             card.style.padding = '10px';
             card.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name}</h4>`;
 
@@ -1286,28 +1297,28 @@
         });
       });
 
-      if (historyModal) historyModal.classList.add('abierto');
+      if (historyModal) historyModal.classList.add('is__open');
     });
   }
 
   if (closeHistoryBtn && historyModal) {
     closeHistoryBtn.addEventListener('click', () => {
-      historyModal.classList.remove('abierto');
+      historyModal.classList.remove('is__open');
     });
   }
 
   if (historyModal) {
     historyModal.addEventListener('click', (e) => {
-      if (e.target === historyModal) historyModal.classList.remove('abierto');
+      if (e.target === historyModal) historyModal.classList.remove('is__open');
     });
   }
 
   window.goBackToSelection = function () { showSelection(); };
   window.goBackToDashboard = function () { showDashboard(); };
 
-  const track = document.querySelector('.pista_carrusel');
-  const container = document.querySelector('.visor_carrusel');
-  const items = track ? Array.from(track.querySelectorAll('.item_liga')) : [];
+  const track = document.querySelector('.carousel__track');
+  const container = document.querySelector('.carousel__viewer');
+  const items = track ? Array.from(track.querySelectorAll('.league__item')) : [];
 
   let slideIndex = 2;
 
@@ -1325,8 +1336,8 @@
     track.style.transform = `translateX(${translateX}px)`;
 
     items.forEach((item, i) => {
-      if (i === slideIndex) item.classList.add('activo');
-      else item.classList.remove('activo');
+      if (i === slideIndex) item.classList.add('is__active');
+      else item.classList.remove('is__active');
     });
   }
 
@@ -1347,7 +1358,7 @@
   window.addEventListener('resize', updateCarousel);
   setTimeout(updateCarousel, 50);
 
-  const allLeagueItems = document.querySelectorAll('.item_liga[data-key]');
+  const allLeagueItems = document.querySelectorAll('.league__item[data-key]');
   allLeagueItems.forEach(el => {
     el.addEventListener('click', () => {
       const key = el.dataset.key;
@@ -1358,7 +1369,7 @@
   if (carouselSection) {
     carouselSection.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        const activeItem = document.querySelector('.item_liga.activo');
+        const activeItem = document.querySelector('.league__item.is__active');
         if (activeItem) {
           const key = activeItem.dataset.key;
           if (key) load(key, activeItem);
@@ -1373,7 +1384,7 @@
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = `notificacion ${type === 'success' ? 'exito' : type === 'error' ? 'error' : 'info'}`;
+    toast.className = `toast__item ${type === 'success' ? 'is__success' : type === 'error' ? 'is__error' : 'is__info'}`;
 
     let icon = 'i';
     if (type === 'success') icon = 'OK';
@@ -1434,11 +1445,11 @@
     if (!container) return;
 
     const overlay = document.createElement('div');
-    overlay.className = 'superposicion_gol';
+    overlay.className = 'overlay__goal';
     overlay.innerHTML = `
-      <div class="texto_gol">¡GOL!</div>
-      <div class="subtexto_gol">${teamName}</div>
-      <div class="manos_gol"></div>
+      <div class="text__goal">¡GOL!</div>
+      <div class="subtext__goal">${teamName}</div>
+      <div class="hands__goal"></div>
     `;
     container.appendChild(overlay);
 
@@ -1451,15 +1462,15 @@
     if (!container) return;
 
     const overlay = document.createElement('div');
-    overlay.className = 'superposicion_evento';
+    overlay.className = 'overlay__event';
     const color = type === 'tarjeta_amarilla' ? '#f59e0b' : '#ef4444';
     const title = type === 'tarjeta_amarilla' ? 'TARJETA AMARILLA' : 'TARJETA ROJA';
 
     overlay.innerHTML = `
-      <div class="evento_titulo" style="color:${color}">${title}</div>
-      <div class="evento_icono_tarjeta" style="background:${color}"></div>
-      <div class="evento_subtitulo">${player}</div>
-      <div class="evento_detalle">${team}</div>
+      <div class="event__title" style="color:${color}">${title}</div>
+      <div class="event__card" style="background:${color}"></div>
+      <div class="event__subtitle">${player}</div>
+      <div class="event__detail">${team}</div>
     `;
     container.appendChild(overlay);
     setTimeout(() => overlay.remove(), 2000);
@@ -1470,12 +1481,12 @@
     if (!container) return;
 
     const overlay = document.createElement('div');
-    overlay.className = 'superposicion_evento';
+    overlay.className = 'overlay__event';
     overlay.innerHTML = `
-      <div class="evento_titulo" style="color:#38bdf8">¡PARADÓN!</div>
-      <div class="evento_icono_guante">🧤</div>
-      <div class="evento_subtitulo">${player}</div>
-      <div class="evento_detalle">${team}</div>
+      <div class="event__title" style="color:#38bdf8">¡PARADÓN!</div>
+      <div class="event__glove">🧤</div>
+      <div class="event__subtitle">${player}</div>
+      <div class="event__detail">${team}</div>
     `;
     container.appendChild(overlay);
     setTimeout(() => overlay.remove(), 2000);
@@ -1486,12 +1497,12 @@
     if (!container) return;
 
     const overlay = document.createElement('div');
-    overlay.className = 'superposicion_evento';
+    overlay.className = 'overlay__event';
     overlay.innerHTML = `
-      <div class="evento_titulo" style="color:#fff">FINAL DEL PARTIDO</div>
-      <div class="evento_marcador">
+      <div class="event__title" style="color:#fff">FINAL DEL PARTIDO</div>
+      <div class="event__score">
         <div>${home}</div>
-        <div class="evento_score">${homeScore} - ${awayScore}</div>
+        <div class="score__text">${homeScore} - ${awayScore}</div>
         <div>${away}</div>
       </div>
     `;

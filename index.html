@@ -4,48 +4,50 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
     <header class="header">
         <div class="header_container">
-            <img class="header--img" src="Images/Logo.png" alt="Logo">
+            <p class="header__logo">⚽</p>
         </div>
         
-        <nav class="header--nav">
+        <nav class="header__nav">
         
-            <a id="link-proximos" class="header--nav__item" href="frontera.html"> Proximos partido </a>
-            <a class="header--nav__item" href="">Estado de competiciones</a>
-            <a class="header--nav__item" href="#">Canales</a>
-            <a class="header--nav__item" href="#">Patrocinadores</a>
+            <a id="link-proximos" class="nav__link" href="frontera.html"> Proximos partidos </a>
+            <a class="nav__link" href="">Estado de competiciones</a>
+            <a href="frontera.html?view=seleccion" class="nav__link">Ligas</a>
+            <a class="nav__link" href="#">Patrocinadores</a>
             
 
         </nav>
 
-        <nav class="nav nav--mobile">
+        <nav class="nav nav__mobile">
             <details class="dropdown">
                 <summary class="dropdown__btn">⇒Menú </summary>
                 <ul class="dropdown__list">
-                    <a id="link-proximos-mobile" class="header--nav__item" href="frontera.html">Próximos partidos</a>
-                    <a class="header--nav__item" href="#">Estado de competiciones</a>
-                    <a class="header--nav__item" href="#">Canales</a>
-                    <a class="header--nav__item" href="#">Patrocinadores</a>
+                    <a id="link-proximos-mobile" class="nav__link" href="frontera.html">Próximos partidos</a>
+                    <a class="nav__link" href="#">Estado de competiciones</a>
+                    <a class="nav__link" href="#">Canales</a>
+                    <a class="nav__link" href="#">Patrocinadores</a>
                 </ul>
             </details>
         </nav>
 
-        <a class="header--nav__item" href="#">Iniciar sesion</a>
+        <button class="btn__small" onclick="window.location.href='login.html'">Login</button>
 
     </header>
 
     <section class="leagues__Container">
-        <div class="leagues__Container_buttons" id="leaguesMenu">
-            <button class="leagues__Container_buttons--b b1" id="Liga" type="button">Liga</button>
-            <button class="leagues__Container_buttons--b b2" id="BundesLiga" type="button">BundesLiga</button>
-            <button class="leagues__Container_buttons--b b3" id="Ligue1" type="button">Ligue1</button>
-            <button class="leagues__Container_buttons--b b4" id="SerieA" type="button">Serie A</button>
-            <button class="leagues__Container_buttons--b b5" id="PremierLeague" type="button">PremierLeague</button>
-        </div>
+        <section class="leagues__container">
+  <div class="leagues__buttons" id="leaguesMenu">
+    <button class="leagues__button" id="Liga" type="button">Liga</button>
+    <button class="leagues__button" id="BundesLiga" type="button">Bundesliga</button>
+    <button class="leagues__button" id="Ligue1" type="button">Ligue 1</button>
+    <button class="leagues__button" id="SerieA" type="button">Serie A</button>
+    <button class="leagues__button" id="PremierLeague" type="button">Premier League</button>
+  </div>
+</section>
 
         
     </section>
