@@ -409,34 +409,25 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     const icons = {
-      gol: 'GOL',
-      tarjeta_amarilla: 'AMA',
-      tarjeta_roja: 'ROJ',
-      cambio: 'CAM',
-      parada: 'PAR',
-      poste: 'PAL'
-    };
-
-    const colors = {
-      gol: '#10b981',
-      tarjeta_amarilla: '#f59e0b',
-      tarjeta_roja: '#ef4444',
-      parada: '#38bdf8',
-      poste: '#e5e7eb'
+      gol: '⚽',
+      tarjeta_amarilla: '🟨',
+      tarjeta_roja: '🟥',
+      cambio: '🔄',
+      parada: '🧤',
+      poste: '💥'
     };
 
     const el = document.createElement('div');
-    el.className = 'event__item';
-    el.style.borderLeft = `3px solid ${colors[event.type] || '#9ca3af'}`;
+    el.className = 'item_evento';
 
-    const text = event.type === 'gol' ? `Gol: ${event.team} (${event.player})` :
-      event.type === 'tarjeta_amarilla' ? `Tarjeta Amarilla: ${event.team} (${event.player})` :
-      event.type === 'tarjeta_roja' ? `Tarjeta Roja: ${event.team} (${event.player})` :
+    const text = event.type === 'gol' ? `Gol de ${event.player} (${event.team})` :
+      event.type === 'tarjeta_amarilla' ? `Tarjeta Amarilla: ${event.player} (${event.team})` :
+      event.type === 'tarjeta_roja' ? `Tarjeta Roja: ${event.player} (${event.team})` :
       event.type === 'parada' ? `¡Paradón de ${event.player} (${event.team})!` :
       event.type === 'poste' ? `¡Al palo! Ocasión de ${event.player} (${event.team})` :
-      `Cambio: ${event.team}`;
+      `Cambio en ${event.team}`;
 
-    el.innerHTML = `<span style="font-size:16px;">${icons[event.type]}</span><div style="flex:1;"><span class="event__time">${event.minute}'</span> ${text}</div>`;
+    el.innerHTML = `<span class="minuto_evento">${event.minute}'</span> <span style="font-size:16px;">${icons[event.type]}</span> <div style="flex:1;">${text}</div>`;
     container.prepend(el);
   }
 
@@ -659,12 +650,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const resultColor = result === 'V' ? '#10b981' : result === 'D' ? '#ef4444' : '#9ca3af';
 
     const matchEl = document.createElement('div');
-    matchEl.className = 'match__card';
+    matchEl.className = 'tarjeta_partido';
     matchEl.innerHTML = `
-      <div class="match__team" style="text-align:right">${homeTeam}</div>
-      <div class="match__score">${homeG} - ${awayG}</div>
-      <div class="match__team" style="text-align:left">${awayTeam}</div>
-      <div class="result__bar" style="background:${resultColor}"></div>
+      <div class="equipo_partido" style="text-align:right">${homeTeam}</div>
+      <div class="marcador_partido">${homeG} - ${awayG}</div>
+      <div class="equipo_partido" style="text-align:left">${awayTeam}</div>
+      <div class="barra_resultado" style="background:${resultColor}"></div>
     `;
     container.prepend(matchEl);
   }
@@ -1447,10 +1438,10 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     const overlay = document.createElement('div');
-    overlay.className = 'overlay__goal';
+    overlay.className = 'superposicion_evento';
     overlay.innerHTML = `
-      <div class="text__goal">¡GOL!</div>
-      <div class="subtext__goal">${teamName}</div>
+      <div class="evento_titulo">¡GOL!</div>
+      <div class="evento_subtitulo">${teamName}</div>
       <div class="hands__goal"></div>
     `;
     container.appendChild(overlay);
@@ -1464,15 +1455,15 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     const overlay = document.createElement('div');
-    overlay.className = 'overlay__event';
+    overlay.className = 'superposicion_evento';
     const color = type === 'tarjeta_amarilla' ? '#f59e0b' : '#ef4444';
     const title = type === 'tarjeta_amarilla' ? 'TARJETA AMARILLA' : 'TARJETA ROJA';
 
     overlay.innerHTML = `
-      <div class="event__title" style="color:${color}">${title}</div>
-      <div class="event__card" style="background:${color}"></div>
-      <div class="event__subtitle">${player}</div>
-      <div class="event__detail">${team}</div>
+      <div class="evento_titulo" style="color:${color}">${title}</div>
+      <div class="evento_icono_tarjeta" style="background:${color}"></div>
+      <div class="evento_subtitulo">${player}</div>
+      <div class="evento_detalle">${team}</div>
     `;
     container.appendChild(overlay);
     setTimeout(() => overlay.remove(), 2000);
@@ -1483,12 +1474,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     const overlay = document.createElement('div');
-    overlay.className = 'overlay__event';
+    overlay.className = 'superposicion_evento';
     overlay.innerHTML = `
-      <div class="event__title" style="color:#38bdf8">¡PARADÓN!</div>
-      <div class="event__glove">🧤</div>
-      <div class="event__subtitle">${player}</div>
-      <div class="event__detail">${team}</div>
+      <div class="evento_titulo" style="color:#38bdf8">¡PARADÓN!</div>
+      <div class="evento_icono_guante">🧤</div>
+      <div class="evento_subtitulo">${player}</div>
+      <div class="evento_detalle">${team}</div>
     `;
     container.appendChild(overlay);
     setTimeout(() => overlay.remove(), 2000);
@@ -1499,12 +1490,12 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     const overlay = document.createElement('div');
-    overlay.className = 'overlay__event';
+    overlay.className = 'superposicion_evento';
     overlay.innerHTML = `
-      <div class="event__title" style="color:#fff">FINAL DEL PARTIDO</div>
-      <div class="event__score">
+      <div class="evento_titulo" style="color:#fff">FINAL DEL PARTIDO</div>
+      <div class="evento_marcador">
         <div>${home}</div>
-        <div class="score__text">${homeScore} - ${awayScore}</div>
+        <div class="evento_score">${homeScore} - ${awayScore}</div>
         <div>${away}</div>
       </div>
     `;

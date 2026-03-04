@@ -1,0 +1,264 @@
+:root{
+  --bg: #0b1220;
+  --surface: #0f172a;
+  --surface2: #111c33;
+  --text: #e5e7eb;
+  --muted: #9ca3af;
+  --border: rgba(255,255,255,0.10);
+  --accent: #22c55e; 
+  --accent2: #38bdf8;    
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 600px at 15% 0%, #10224a 0%, var(--bg) 55%);
+  color: var(--text);
+}
+
+/* HEADER */
+.header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 22px;
+  background: rgba(15, 23, 42, 0.85);
+  border-bottom: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  position: sticky;
+}
+
+.header--img{
+  width: 68px;
+  height: auto;
+}
+
+.header--nav{
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.nav--mobile{
+
+  display: none;
+}
+
+.dropdown{
+  display: flex;
+}
+
+.dropdown__btn{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dropdown__list{
+  display: flex;
+  flex-direction: column;
+}
+
+.header--nav__item{
+  color: var(--text);
+  text-decoration: none;
+  font-size: 15px;
+  opacity: .9;
+  padding: 8px 10px;
+  border-radius: 10px;
+}
+
+.header--nav__item:hover{
+  background: rgba(255,255,255,0.06);
+  opacity: 1;
+  transform: translateY(-1px);
+}
+
+.header--nav__item--cta{
+  border: 1px solid rgba(34,197,94,0.35);
+  background: rgba(34,197,94,0.12);
+}
+
+.leagues__Container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 24px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.leagues__Container_buttons{
+  width: min(980px, 100%);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.leagues__Container_buttons--b{
+  padding: 12px 12px;
+  font-size: 14px;
+  color: var(--text);
+  background: rgba(15, 23, 42, 0.75);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  cursor: pointer;
+}
+
+.leagues__Container_buttons--b:hover{
+  transform: translateY(-1px);
+  border-color: rgba(56,189,248,0.35);
+  background: rgba(17, 28, 51, 0.85);
+}
+
+.leagues__Container_buttons--b.is-active{
+  border-color: rgba(34,197,94,0.55);
+  background: rgba(34,197,94,0.12);
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.08);
+}
+
+.container_advertisement{
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 22px 14px 40px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  height: 500px;
+}
+
+.container_advertisementLeft,
+.container_advertisementRight{
+  display: flex;
+  align-items: center;
+  min-height: 140px;
+}
+
+.container_news{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 50px;
+  padding: 0px 0px 40px;
+  width: 95%;
+  height: 400px;
+}
+
+.container_newsLeft{
+  width: 35%;
+
+}
+
+.newsLeft__img{
+  width: 100%;
+  height: 400px;
+  border-radius: 14px;
+}
+
+.new__title{
+  text-align: center;
+  font-size: 22px;
+  color: var(--accent);
+  padding-bottom: 20px;
+}
+
+.new__text{
+  max-width: 400px;
+  text-align: center;
+  color: var(--muted);
+}
+
+.adMedia{
+  position: relative;
+  width: 100%;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.10);
+  background: rgba(0,0,0,0.25);
+}
+
+.adVideo{
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+.adMute{
+  position: absolute;
+  top: 12px;
+  border: 1px solid rgba(255,255,255,0.18);
+  background: rgba(0,0,0,0.45);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 10px;
+  cursor: pointer;
+  right: 12px;
+}
+
+.adBtn{
+  display: inline-block;
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #fff;
+  background: rgba(34,197,94,0.18);
+  border: 1px solid rgba(34,197,94,0.35);
+}
+.adBtn:hover{
+  background: rgba(34,197,94,0.28);
+}
+
+
+@media (max-width: 850px){
+
+  .header--nav{
+    display: none;
+  }
+
+  .nav--mobile{
+    display: block;
+    
+  }
+
+
+  .leagues__Container_buttons{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .container_advertisement{
+    grid-template-columns: 1fr;
+  }
+
+  .container_news{
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .container_newsLeft{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .container_newsRight{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    width: 85%;
+  }
+
+  .newsLeft__img{
+    width: 90%;
+  }
+
+
+}
+
+
