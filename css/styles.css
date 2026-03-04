@@ -216,49 +216,7 @@ body{
 }
 
 
-@media (max-width: 850px){
 
-  .header__nav{
-    display: none;
-  }
-
-  .nav__mobile{
-    display: block;
-    
-  }
-
-
-  .leagues__buttons{
-    grid-template-columns: repeat(2, 1fr);
-  }
-  .container_advertisement{
-    grid-template-columns: 1fr;
-  }
-
-  .container_news{
-    width: 100%;
-    flex-direction: column;
-    height: auto;
-  }
-
-  .container_newsLeft{
-    display: flex;
-    justify-content: center;
-    width: 100%;
-  }
-
-  .container_newsRight{
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    text-align: center;
-    width: 85%;
-  }
-
-  .newsLeft__img{
-    width: 90%;
-  }
-}
 
 
 .main__container{
@@ -342,11 +300,7 @@ body{
   gap:16px;
 }
 
-@media (max-width:850px){
-  .grid__layout{
-    grid-template-columns:1fr;
-  }
-}
+
 
 .margin__top{
   margin-top:18px;
@@ -1303,13 +1257,6 @@ tbody tr:last-child td{
   }
 }
 
-@media (max-width:900px){
-  .header__inner{
-    height:auto;
-    min-height:70px;
-    padding:10px 14px;
-    gap:10px;
-  }
 
   .header__inner .header__nav{
     position:static;
@@ -1364,7 +1311,7 @@ tbody tr:last-child td{
   .subtext__goal{
     font-size:1.5rem;
   }
-}
+
 
 @media (max-width:600px){
   .main__container{
@@ -1443,5 +1390,64 @@ tbody tr:last-child td{
 
   .global__img{
     height:130px;
+  }
+}
+
+@media (max-width: 850px){
+
+  .header__nav{
+    display: none;
+  }
+
+  .nav__mobile{
+    display: block;
+    
+  }
+
+
+  .leagues__buttons{
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .container_advertisement{
+    grid-template-columns: 1fr;
+  }
+
+  .container_news{
+    width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .container_newsLeft{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+  }
+
+  .container_newsRight{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    width: 85%;
+  }
+
+  .newsLeft__img{
+    width: 90%;
+  }
+}
+
+@media (max-width:850px){
+  .grid__layout{
+    grid-template-columns:1fr;
+  }
+}
+
+@media (max-width:900px){
+  .header__inner{
+    height:auto;
+    min-height:70px;
+    padding:10px 14px;
+    gap:10px;
   }
 }
