@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FurboBet - Inicio</title>
+    <link rel="stylesheet" href="css/stylesApuestas.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__content">
+            <a href="indexApuesta.html" class="brand">
+                <img src="Fuentes/Logo Furbo Bet.png" alt="FurboBet Logo" class="brand__logo">
+            </a>
+
+            <nav class="nav">
+                <a class="nav__link" href="">Estadisticas</a>
+                <a class="nav__link" href="">Ligas</a>
+                <a class="nav__link" href="">Futdraft</a>
+                <a class="nav__link" href="">Más opciones</a>
+            </nav>
+
+            <div class="header__right">
+                <a class="btn" href="html/loginApuesta.html">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page">
+        <section class="hero">
+            <div class="hero__inner">
+                <p class="pill">Selección del día</p>
+                
+                <div class="hero__match-display">
+                    <div class="hero__team">
+                        <img src="" alt="" class="hero__team-logo">
+                        <span class="hero__team-name"></span>
+                    </div>
+                    
+                    <div class="hero__vs">VS</div>
+                    
+                    <div class="hero__team">
+                        <img src="" alt="" class="hero__team-logo">
+                        <span class="hero__team-name"></span>
+                    </div>
+                </div>
+
+                <h1 class="hero__title"></h1>
+                <p class="hero__text">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Vero quas possimus laborum obcaecati blanditiis neque dolorem enim, aspernatur necessitatibus, nam, doloribus sequi. Facilis temporibus, expedita hic maxime ad sequi inventore!
+                </p>
+            </div>
+
+            <aside class="hero__card">
+                <div class="card__outcome">
+                    <button class="outcome-btn" onclick="seleccionarMercadoHero()">
+                        <span class="outcome-label"></span>
+                        <span class="outcome-price"></span>
+                    </button>
+                    <button class="outcome-btn" onclick="seleccionarMercadoHero()">
+                        <span class="outcome-label"></span>
+                        <span class="outcome-price"></span>
+                    </button>
+                </div>
+
+                <div class="card__amount-section">
+                    <label>Cantidad</label>
+                    <div class="amount-input-wrapper">
+                        <span class="currency">€</span>
+                        <input type="number" placeholder="0" class="amount-input" id="heroAmount">
+                    </div>
+                </div>
+
+                <div class="card__quick-amounts">
+                    <button class="q-btn" onclick="addAmountHero(1)">+$1</button>
+                    <button class="q-btn" onclick="addAmountHero(20)">+$20</button>
+                    <button class="q-btn" onclick="addAmountHero(100)">+$100</button>
+                    <button class="q-btn" onclick="maxAmountHero()">Max</button>
+                </div>
+
+                <button class="trade-btn" onclick="apostarHero()">Apostar</button>
+            </aside>
+        </section>
+
+        <section class="matches__grid">
+           
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="#" class="footer__link">Privacidad</a>
+                <a href="#" class="footer__link">Términos</a>
+                <a href="#" class="footer__link">Soporte</a>
+                <a href="#" class="footer__link">Contacto</a>
+            </div>
+            <div class="footer__text">
+                <p>© 2026 FurboBet. Todos los derechos reservados.</p>
+                <p>FurboBet es una marca registrada de Furbo Entertainment Ltd. Juega con responsabilidad.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="theme-toggle" class="theme-toggle-floating" aria-label="Cambiar tema">🌓</button>
+    <script src="js/core.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

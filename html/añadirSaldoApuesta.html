@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/stylesApuestas.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__content">
+            <a href="../indexApuesta.html" class="brand">
+                <img src="../Fuentes/Logo Furbo Bet.png" alt="FurboBet Logo" class="brand__logo">
+            </a>
+
+            <nav class="nav">
+                <a class="nav__link" href="">Estadisticas</a>
+                <a class="nav__link" href="">Ligas</a>
+                <a class="nav__link" href="">Futdraft</a>
+                <a class="nav__link" href="">Más opciones</a>
+            </nav>
+
+            <div class="header__right">
+                <a class="btn" href="loginApuesta.html">Login</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="page--añadirSaldo">
+    <section class="deposit-container">
+        
+        <div class="deposit-card">
+            
+            <div class="deposit-header">
+                <h1 class="deposit-title">Depositar Fondos</h1>
+                <span class="deposit-balance">Saldo actual: <span class="highlight saldo-usuario">0.00 €</span></span>
+            </div>
+
+            <form id="depositForm">
+                
+                <label class="section-label">Método de pago</label>
+                <div class="payment-grid">
+                    <div class="payment-option active" onclick="selectMethod(this)">
+                        <div class="pay-icon">💳</div>
+                        <span>Tarjeta</span>
+                    </div>
+                    <div class="payment-option" onclick="selectMethod(this)">
+                        <div class="pay-icon">🅿️</div>
+                        <span>PayPal</span>
+                    </div>
+                    <div class="payment-option" onclick="selectMethod(this)">
+                        <div class="pay-icon">₿</div>
+                        <span>Crypto</span>
+                    </div>
+                </div>
+
+                <label class="section-label">Importe a ingresar</label>
+                <div class="amount-control">
+                    <span class="currency-symbol">€</span>
+                    <input type="number" id="depositAmount" class="amount-huge" placeholder="0" min="5">
+                </div>
+
+                <div class="quick-chips">
+                    <button type="button" class="chip" onclick="addAmount(10)">+10</button>
+                    <button type="button" class="chip" onclick="addAmount(20)">+20</button>
+                    <button type="button" class="chip" onclick="addAmount(50)">+50</button>
+                    <button type="button" class="chip" onclick="addAmount(100)">+100</button>
+                </div>
+
+                <button type="submit" class="deposit-btn">
+                    <span class="btn-text">DEPOSITAR AHORA</span>
+                    <span class="btn-sub">Transacción Segura SSL</span>
+                </button>
+
+            </form>
+        </div>
+
+        <div class="deposit-info">
+            <div class="info-item">
+                <span class="info-icon">⚡</span>
+                <p>Depósito instantáneo para apuestas en vivo.</p>
+            </div>
+            <div class="info-item">
+                <span class="info-icon">🔒</span>
+                <p>Tus fondos están protegidos por normativa europea.</p>
+            </div>
+        </div>
+
+    </section>
+</main>
+
+
+    <footer>
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="#" class="footer__link">Privacidad</a>
+                <a href="#" class="footer__link">Términos</a>
+                <a href="#" class="footer__link">Soporte</a>
+                <a href="#" class="footer__link">Contacto</a>
+            </div>
+            <div class="footer__text">
+                <p>© 2026 FurboBet. Todos los derechos reservados.</p>
+                <p>Juega con responsabilidad.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="theme-toggle" class="theme-toggle-floating" aria-label="Cambiar tema">🌓</button>
+    <script src="../js/core.js"></script>
+    <script src="../js/saldoApuesta.js"></script>
+</body>
+
+</html>

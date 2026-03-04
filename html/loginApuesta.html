@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FurboBet - Iniciar Sesión</title>
+    <link rel="stylesheet" href="../css/stylesApuestas.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__content">
+            <a href="../indexApuesta.html" class="brand">
+                <img src="../Fuentes/Logo Furbo Bet.png" alt="FurboBet Logo" class="brand__logo">
+            </a>
+
+            <nav class="nav">
+                <a class="nav__link" href="#">Estadísticas</a>
+                <a class="nav__link" href="#">Ligas</a>
+                <a class="nav__link" href="#">Futdraft</a>
+            </nav>
+            <div class="header__right"></div>
+        </div>
+    </header>
+
+    <main class="page--login">
+        <section class="login--section">
+            <h1 class="page__title">Iniciar sesión</h1>
+            
+            <form class="form" id="loginForm" novalidate>
+                <div class="form__group">
+                    <label for="email" class="form__label">Correo electrónico</label>
+                    <input type="email" id="email" name="email" class="form__input" required placeholder="admin@furbo.com" autocomplete="off">
+                </div>
+
+                <div class="form__group">
+                    <label for="password" class="form__label">Contraseña</label>
+                    <input type="password" id="password" name="password" class="form__input" required placeholder="1234">
+                </div>
+
+                <div class="form__actions">
+                    <button type="submit" class="btn" id="loginBtn">Iniciar sesión</button>
+                    <button type="button" class="btn">Olvidé mi contraseña</button>
+                </div>
+            </form>
+        </section>
+    </main>
+
+    <div id="toast" class="toast">Error message here</div>
+
+    <footer>
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="#" class="footer__link">Privacidad</a>
+                <a href="#" class="footer__link">Términos</a>
+                <a href="#" class="footer__link">Soporte</a>
+                <a href="#" class="footer__link">Contacto</a>
+            </div>
+            <div class="footer__text">
+                <p>© 2026 FurboBet. Todos los derechos reservados.</p>
+                <p>Juega con responsabilidad.</p>
+            </div>
+        </div>
+    </footer>
+
+    <button id="theme-toggle" class="theme-toggle-floating" aria-label="Cambiar tema">🌓</button>
+    <script src="../js/core.js"></script>
+    <script src="../js/loginApuesta.js"></script>
+</body>
+</html>
