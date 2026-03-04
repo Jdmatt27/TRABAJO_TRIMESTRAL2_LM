@@ -105,9 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
             if (confirm(`¿Confirmas el retiro de ${cant.toFixed(2)}€?`)) {
                 window.actualizarSaldo(saldo - cant);
-                const retiros = JSON.parse(localStorage.getItem('furboBet_withdrawals') || '[]');
+                
+                // Hacemos que desaparezca la actividad reciente limpiando el historial de apuestas
+                localStorage.setItem('furboBet_bets', JSON.stringify([]));
+                
+                // Limpiamos retiros anteriores para mostrar solo el actual
+                const retiros = [];
                 retiros.push({ id: Date.now(), importe: cant, timestamp: new Date().toISOString() });
                 localStorage.setItem('furboBet_withdrawals', JSON.stringify(retiros));
+                
                 window.showToast('Retiro procesado con éxito.', 'success');
                 actualizarVista();
             }

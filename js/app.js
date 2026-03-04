@@ -199,46 +199,62 @@ const contenido = {
 
 };
 
-function render(id) {
-  panelLeft.innerHTML = contenido[id].left;
-  panelRight.innerHTML = contenido[id].right;
-  news.innerHTML = contenido[id].news;
-}
-
-render("Liga");
-
 const mapBtnToLeagueKey = {
-  Liga: "laliga",
-  BundesLiga: "bundesliga",
-  Ligue1: "ligue1",
-  SerieA: "seriea",
-  PremierLeague: "premier",
+    Liga: "laliga",
+    BundesLiga: "bundesliga",
+    Ligue1: "ligue1",
+    SerieA: "seriea",
+    PremierLeague: "premier",
 };
 
-menu.addEventListener("click", (e) => {
-  const btn = e.target.closest("button");
-  if (!btn) return;
+function updateProximosLink() {
+    const leagueKey = localStorage.getItem("frontera_active_league") || "laliga";
+    const links = [document.getElementById("link-proximos"), document.getElementById("link-proximos-mobile")];
+    
+    links.forEach(link => {
+        if (link) {
+            const isSubFolder = window.location.pathname.includes('/html/');
+            const prefix = isSubFolder ? '' : 'html/';
+            link.href = `${prefix}frontera.html?league=${leagueKey}&goto=clasificacion`;
+        }
+    });
+}
 
-  render(btn.id);
+/* LOGICA DE NOTICIAS (Solo si existen los elementos) */
+if (menu && panelLeft && panelRight && news) {
+    function render(id) {
+        if (contenido[id]) {
+            panelLeft.innerHTML = contenido[id].left;
+            panelRight.innerHTML = contenido[id].right;
+            news.innerHTML = contenido[id].news;
+        }
+    }
 
-  const leagueKey = mapBtnToLeagueKey[btn.id];
-  if (leagueKey) {
-    localStorage.setItem("frontera_active_league", leagueKey);
+    render("Liga");
     updateProximosLink();
-  }
 
-  return true;
-});
+    menu.addEventListener("click", (e) => {
+        const btn = e.target.closest("button");
+        if (!btn) return;
+
+        render(btn.id);
+
+        const leagueKey = mapBtnToLeagueKey[btn.id];
+        if (leagueKey) {
+            localStorage.setItem("frontera_active_league", leagueKey);
+            updateProximosLink();
+        }
+    });
+}
 
 document.addEventListener("click", (e) => {
-  const muteBtn = e.target.closest(".adMute");
-  if (!muteBtn) return;
-
-  const video = muteBtn.closest(".adMedia")?.querySelector("video");
-  if (!video) return;
-
-  video.muted = !video.muted;
-  muteBtn.textContent = video.muted ? "🔇" : "🔊";
+    const muteBtn = e.target.closest(".adMute");
+    if (!muteBtn) return;
+    const video = muteBtn.closest(".adMedia")?.querySelector("video");
+    if (video) {
+        video.muted = !video.muted;
+        muteBtn.textContent = video.muted ? "🔇" : "🔊";
+    }
 });
 
 document.addEventListener("click", () => {
@@ -350,7 +366,6 @@ function createMatchCard(p, isBig = false) {
         </div>
         <div class="${isBig ? 'match__markets--big' : 'match__markets'}">
             <button class="market__btn"><span class="market__name">${p.equipo1}</span><span class="market__odds">${p.cuota1}</span></button>
-            <button class="market__btn"><span class="market__name">Empate</span><span class="market__odds">${p.cuotaEmpate}</span></button>
             <button class="market__btn"><span class="market__name">${p.equipo2}</span><span class="market__odds">${p.cuota2}</span></button>
         </div>
     `;
@@ -406,7 +421,8 @@ function updateHero(p) {
     hero.onclick = (e) => {
         if (e.target.closest('.hero__actions') || e.target.closest('.hero__card')) return;
         sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p));
-        window.location.href = 'html/páginaCuotasApuesta.html';
+        const isSub = window.location.pathname.includes('/html/');
+        window.location.href = isSub ? 'páginaCuotasApuesta.html' : 'html/páginaCuotasApuesta.html';
     };
 
     const teams = hero.querySelectorAll('.hero__team');
@@ -420,7 +436,7 @@ function updateHero(p) {
 
     const btns = hero.querySelectorAll('.outcome-btn');
     const setupBtn = (btn, name, cuota) => {
-        btn.querySelector('.outcome-label').textContent = `Gana ${name}`;
+        btn.querySelector('.outcome-label').textContent = name === 'Empate' ? 'Empate' : `Gana ${name}`;
         btn.querySelector('.outcome-price').textContent = cuota;
         btn.onclick = (e) => {
             e.stopPropagation();
@@ -437,6 +453,9 @@ function updateHero(p) {
     };
     setupBtn(btns[0], p.equipo1, p.cuota1);
     setupBtn(btns[1], p.equipo2, p.cuota2);
+    
+    // Si hay un tercer botón para empate, lo configuramos (necesitaría ajuste en HTML si no existe)
+    if (btns[2]) setupBtn(btns[2], 'Empate', p.cuotaEmpate);
 }
 
 window.apostarHero = () => {
@@ -446,7 +465,10 @@ window.apostarHero = () => {
 
     if (isNaN(amount) || amount <= 0) return window.showToast('Cantidad inválida.');
     if (amount > saldo) return window.showToast('Saldo insuficiente.');
-    if (localStorage.getItem('isLoggedIn') !== 'true') return window.location.href = 'html/loginApuesta.html';
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        const isSub = window.location.pathname.includes('/html/');
+        return window.location.href = isSub ? 'loginApuesta.html' : 'html/loginApuesta.html';
+    }
 
     window.actualizarSaldo(saldo - amount);
     const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');

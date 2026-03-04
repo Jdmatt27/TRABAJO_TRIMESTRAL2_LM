@@ -58,13 +58,16 @@ function validarApuestasGlobal() {
             if (histRaw) {
                 const historial = JSON.parse(histRaw);
                 const res = historial.find(h => 
-                    (h.homeIdx === a.matchKey.split('-')[0]*1 && h.awayIdx === a.matchKey.split('-')[1]*1) ||
+                    (String(h.homeIdx) === String(a.matchKey.split('-')[0]) && String(h.awayIdx) === String(a.matchKey.split('-')[1])) ||
                     (h.equipoLocal === a.equipo1 && h.equipoVisitante === a.equipo2)
                 );
 
                 if (res) {
                     procesadas++;
-                    const ganador = res.homeG > res.awayG ? a.equipo1 : (res.awayG > res.homeG ? a.equipo2 : 'Empate');
+                    let ganador = 'Empate';
+                    if (res.homeG > res.awayG) ganador = a.equipo1;
+                    else if (res.awayG > res.homeG) ganador = a.equipo2;
+                    
                     const gano = a.eleccion === ganador;
 
                     if (gano) {
@@ -156,6 +159,8 @@ function initSession() {
     const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
     const headerRight = document.querySelector('.header__right');
     const navLinks = document.querySelector('.nav');
+    
+    // Detectar si estamos en la raíz o en /html/
     const isSubFolder = window.location.pathname.includes('/html/');
     const prefix = isSubFolder ? '' : 'html/';
     const rootPrefix = isSubFolder ? '../' : '';
@@ -163,16 +168,29 @@ function initSession() {
     if (isLoggedIn) {
         if (headerRight) {
             headerRight.innerHTML = '<button class="btn" id="logoutBtn">Cerrar Sesión</button>';
-            document.getElementById('logoutBtn').addEventListener('click', () => {
-                localStorage.removeItem('isLoggedIn');
-                localStorage.removeItem('userEmail');
-                window.location.href = `${rootPrefix}index.html`;
-            });
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', () => {
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    window.location.href = `${rootPrefix}index.html`;
+                });
+            }
         }
-        if (navLinks && !navLinks.querySelector(`[href*="perfilApuesta.html"]`)) {
-            navLinks.insertAdjacentHTML('beforeend', `<a class="nav__link" href="${prefix}perfilApuesta.html">Mi Cuenta</a>`);
-            navLinks.insertAdjacentHTML('beforeend', `<a class="nav__link--saldo-usuario" href="${prefix}añadirSaldoApuesta.html">0,00€</a>`);
+        
+        // Inyectar Mi Cuenta siempre, pero el Saldo solo en indexApuesta.html
+        if (navLinks) {
+            const hasProfile = navLinks.querySelector(`[href*="perfilApuesta.html"]`);
+            if (!hasProfile) {
+                navLinks.insertAdjacentHTML('beforeend', `<a class="nav__link" href="${prefix}perfilApuesta.html">Mi Cuenta</a>`);
+                
+                // Solo añadir el enlace de saldo si es la página de apuestas
+                if (window.location.pathname.includes('indexApuesta.html')) {
+                    navLinks.insertAdjacentHTML('beforeend', `<a class="nav__link--saldo-usuario" href="${prefix}añadirSaldoApuesta.html">0,00€</a>`);
+                }
+            }
         }
+        
         const emailDisplay = document.getElementById('uEmail');
         if (emailDisplay) emailDisplay.textContent = localStorage.getItem('userEmail');
     }

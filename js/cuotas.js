@@ -34,15 +34,6 @@ function renderizarDetallesPartido(partido) {
         </button>
     `;
 
-    if (isFutbol) {
-        marketsHTML += `
-            <button class="market__btn" id="btnCuotaEmpate" data-cuota="${partido.cuotaEmpate}" data-nombre="Empate">
-                <span class="market__name">Empate</span>
-                <span class="market__odds">${partido.cuotaEmpate}</span>
-            </button>
-        `;
-    }
-
     marketsHTML += `
         <button class="market__btn" id="btnCuota2" data-cuota="${partido.cuota2}" data-nombre="${partido.equipo2}">
             <span class="market__name">${partido.equipo2}</span>
@@ -60,7 +51,7 @@ function renderizarDetallesPartido(partido) {
                         ${partido.liga}
                     </span>
                     <div style="display: flex; gap: 10px; align-items: center;">
-                        <a href="../frontera.html" class="pill" style="background: #001933; color: white; border: 1px solid #00a9e0; text-decoration: none; font-weight: bold; cursor: pointer; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 4px 12px;">
+                        <a href="frontera.html?league=${partido.leagueKey}&match=${partido.matchKey}" class="pill" style="background: #001933; color: white; border: 1px solid #00a9e0; text-decoration: none; font-weight: bold; cursor: pointer; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 4px 12px;">
                             <img src="../Fuentes/movistar.svg" style="width: 16px; height: 16px; object-fit: contain;">
                             Ver Partido
                         </a>
