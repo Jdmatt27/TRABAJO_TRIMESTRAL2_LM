@@ -195,7 +195,7 @@ input[type=number]::-webkit-outer-spin-button {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 0 20px;
+    padding: 0 40px;
     border-bottom: 1px solid var(--line);
     background: var(--header-bg);
     backdrop-filter: blur(10px);
@@ -205,7 +205,7 @@ input[type=number]::-webkit-outer-spin-button {
 
 .header__content {
     width: 100%;
-    max-width: 1200px;
+    max-width: 100%;
     display: flex;
     gap: 20px;
     justify-content: space-between;

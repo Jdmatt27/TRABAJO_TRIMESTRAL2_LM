@@ -4,22 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Fronteras - Gestor de Grandes Ligas</title>
+  <link rel="stylesheet" href="../css/stylesApuestas.css">
   <link rel="stylesheet" href="../css/styles.css">
   <meta name="robots" content="noindex">
 </head>
 <body>
 
-  <header class="header__main margin__none">
-    <div class="header__inner">
-      <div class="header__logo" onclick="window.location.href='frontera.html'">⚽</div>
-      <nav class="header__nav">
-        <a href="../index.html" class="nav__link">Noticias</a>
-        <a href="indexApuesta.html" class="nav__link">Apuestas</a>
-        <a href="#" class="nav__link">Contacto</a>
-      </nav>
-      <button class="btn__small" onclick="window.location.href='loginApuesta.html'">Login</button>
-    </div>
-  </header>
+    <header class="header">
+        <div class="header__content">
+            <a href="../index.html" class="brand">
+                <img src="../Fuentes/Logo Furbo Bet.png" alt="FurboBet Logo" class="brand__logo">
+            </a>
+
+            <nav class="nav">
+                <a href="../index.html" class="nav__link">Noticias</a>
+                <a href="indexApuesta.html" class="nav__link">Apuestas</a>
+                <a href="#" class="nav__link">Contacto</a>
+            </nav>
+
+            <div class="header__right">
+                <a class="btn" href="loginApuesta.html">Login</a>
+            </div>
+        </div>
+    </header>
 
   <div class="hero__cover">
     <div class="hero__overlay"></div>
@@ -205,6 +212,22 @@
   <div id="toast-container" class="toast__container"></div>
   <canvas id="confetti-canvas"></canvas>
 
+    <footer>
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="#" class="footer__link">Privacidad</a>
+                <a href="#" class="footer__link">Términos</a>
+                <a href="#" class="footer__link">Soporte</a>
+                <a href="#" class="footer__link">Contacto</a>
+            </div>
+            <div class="footer__text">
+                <p>© 2026 FurboBet. Todos los derechos reservados.</p>
+                <p>FurboBet es una marca registrada de Furbo Entertainment Ltd. Juega con responsabilidad.</p>
+            </div>
+        </div>
+    </footer>
+
+  <script src="../js/core.js"></script>
   <script src="../js/fronteras.js"></script>
 </body>
 </html>

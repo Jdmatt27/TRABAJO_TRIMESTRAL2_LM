@@ -422,7 +422,8 @@ function updateHero(p) {
     hero.onclick = (e) => {
         if (e.target.closest('.hero__actions') || e.target.closest('.hero__card')) return;
         sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p));
-        window.location.href = 'html/páginaCuotasApuesta.html';
+        const isSub = window.location.pathname.includes('/html/');
+        window.location.href = isSub ? 'páginaCuotasApuesta.html' : 'html/páginaCuotasApuesta.html';
     };
 
     const teams = hero.querySelectorAll('.hero__team');
@@ -465,7 +466,10 @@ window.apostarHero = () => {
 
     if (isNaN(amount) || amount <= 0) return window.showToast('Cantidad inválida.');
     if (amount > saldo) return window.showToast('Saldo insuficiente.');
-    if (localStorage.getItem('isLoggedIn') !== 'true') return window.location.href = 'html/loginApuesta.html';
+    if (localStorage.getItem('isLoggedIn') !== 'true') {
+        const isSub = window.location.pathname.includes('/html/');
+        return window.location.href = isSub ? 'loginApuesta.html' : 'html/loginApuesta.html';
+    }
 
     window.actualizarSaldo(saldo - amount);
     const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');
