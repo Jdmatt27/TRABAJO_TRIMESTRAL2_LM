@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FurboBet - Noticias</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="header_container">
+            <p class="header__logo">⚽</p>
+        </div>
+        
+        <nav class="header__nav">
+        
+            <a id="link-proximos" class="nav__link" href="html/frontera.html"> Proximos partidos </a>
+            <a class="nav__link" href="html/indexApuesta.html">Apuestas</a>
+            <a href="html/frontera.html?view=seleccion" class="nav__link">Ligas</a>
+            <a class="nav__link" href="#">Patrocinadores</a>
+            
+
+        </nav>
+
+        <nav class="nav nav__mobile">
+            <details class="dropdown">
+                <summary class="dropdown__btn">⇒Menú </summary>
+                <ul class="dropdown__list">
+                    <a id="link-proximos-mobile" class="nav__link" href="html/frontera.html">Próximos partidos</a>
+                    <a class="nav__link" href="html/indexApuesta.html">Apuestas</a>
+                    <a href="html/frontera.html?view=seleccion" class="nav__link">Ligas</a>
+                    <a class="nav__link" href="#">Patrocinadores</a>
+                </ul>
+            </details>
+        </nav>
+
+        <button class="btn__small" onclick="window.location.href='html/loginApuesta.html'">Login</button>
+
+    </header>
+
+    <section class="leagues__Container">
+        <section class="leagues__container">
+  <div class="leagues__buttons" id="leaguesMenu">
+    <button class="leagues__button" id="Liga" type="button">Liga</button>
+    <button class="leagues__button" id="BundesLiga" type="button">Bundesliga</button>
+    <button class="leagues__button" id="Ligue1" type="button">Ligue 1</button>
+    <button class="leagues__button" id="SerieA" type="button">Serie A</button>
+    <button class="leagues__button" id="PremierLeague" type="button">Premier League</button>
+  </div>
+</section>
+
+        
+    </section>
+    <div class="container_advertisement">
+        <div class="container_advertisementLeft" id="panelLeft">
+            
+        </div>
+        <div class="container_advertisementRight" id="panelRight"></div>
+    </div>
+
+
+
+    <div class="container_news" id="news">
+        
+
+    </div>
+
+<script src="js/app.js"></script>
+
+
+<footer>
+    
+</footer>
+
+</body>
+</html>

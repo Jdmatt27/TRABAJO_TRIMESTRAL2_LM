@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FurboBet - Perfil</title>
+    <link rel="stylesheet" href="../css/stylesApuestas.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header__content">
+            <a href="indexApuesta.html" class="brand">
+                <img src="../Fuentes/Logo Furbo Bet.png" alt="FurboBet Logo" class="brand__logo">
+            </a>
+
+            <nav class="nav">
+                <a class="nav__link" href="../index.html">Noticias</a>
+                <a class="nav__link" href="frontera.html?view=seleccion">Ligas</a>
+                <a class="nav__link" href="#">Futdraft</a>
+            </nav>
+        </div>
+        </div>
+    </header>
+
+    <main class="page page--profile">
+    <div class="dashboard-grid">
+        
+        <aside class="profile-card">
+            <div class="profile-avatar">
+                <img src="../Fuentes/berme.jpeg" alt="User Avatar">
+            </div>
+            <h2 class="profile-name" id="uEmail">usuario@email.com</h2>
+            <div class="profile-badge">👑 Admin</div>
+        </aside>
+
+        <section class="profile-content">
+            
+            <div class="wallet-card">
+                <div class="wallet-info">
+                    <span class="wallet-label">Saldo Disponible</span>
+                    <div class="wallet-balance saldo-usuario">0.00 €</div>
+                </div>
+                <div class="wallet-actions">
+                    <button class="btn-action btn-deposit">Depositar</button>
+                    <button class="btn-action btn-withdraw">Retirar</button>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <span class="stat-icon">📊</span>
+                    <div class="stat-data">
+                        <span class="stat-value">124</span>
+                        <span class="stat-label">Apuestas Totales</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">🏆</span>
+                    <div class="stat-data">
+                        <span class="stat-value text-green">62%</span>
+                        <span class="stat-label">Win Rate</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <span class="stat-icon">📈</span>
+                    <div class="stat-data">
+                        <span class="stat-value">+450€</span>
+                        <span class="stat-label">Beneficio Neto</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section__head">
+                    <h3 class="section__title">Actividad Reciente</h3>
+                </div>
+                <p class="section__desc">No hay apuestas recientes para mostrar.</p>
+            </div>
+
+        </section>
+    </div>
+</main>
+
+    <footer>
+        <div class="footer__content">
+            <div class="footer__links">
+                <a href="#" class="footer__link">Privacidad</a>
+                <a href="#" class="footer__link">Términos</a>
+                <a href="#" class="footer__link">Soporte</a>
+                <a href="#" class="footer__link">Contacto</a>
+            </div>
+            <div class="footer__text">
+                <p>© 2026 FurboBet. Todos los derechos reservados.</p>
+                <p>Juega con responsabilidad.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <button id="theme-toggle" class="theme-toggle-floating" aria-label="Cambiar tema">🌓</button>
+    <script src="../js/core.js"></script>
+    <script src="../js/perfil.js"></script>
+</body>
+
+</html>
