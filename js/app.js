@@ -366,7 +366,6 @@ function createMatchCard(p, isBig = false) {
         </div>
         <div class="${isBig ? 'match__markets--big' : 'match__markets'}">
             <button class="market__btn"><span class="market__name">${p.equipo1}</span><span class="market__odds">${p.cuota1}</span></button>
-            <button class="market__btn"><span class="market__name">Empate</span><span class="market__odds">${p.cuotaEmpate}</span></button>
             <button class="market__btn"><span class="market__name">${p.equipo2}</span><span class="market__odds">${p.cuota2}</span></button>
         </div>
     `;

@@ -773,7 +773,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (teamView) teamView.classList.add('oculto');
       if (globalView) globalView.classList.remove('oculto');
 
-      if (globalContainer) globalContainer.innerHTML = '<p class="texto_centrado padding__box texto_tenue_pequeno">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
+      if (globalContainer) globalContainer.innerHTML = '<p class="texto_centrado relleno_20 texto_tenue_pequeno">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
       if (btnGlobalStart) btnGlobalStart.style.display = 'inline-block';
       if (btnGlobalSim) btnGlobalSim.style.display = 'none';
       if (btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
@@ -887,9 +887,9 @@ document.addEventListener("DOMContentLoaded", () => {
           row.style.fontSize = '0.9rem';
 
           if (isPlayed) {
-            row.innerHTML = `<span>${home.name}</span> <span class="global__result" style="color:#10b981;font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
+            row.innerHTML = `<span>${home.name}</span> <span class="resultado_global" style="color:#10b981;font-size:0.8rem">JUGADO</span> <span>${away.name}</span>`;
           } else {
-            row.innerHTML = `<span>${home.name}</span> <span class="global__result" style="font-weight:bold;color:#9ca3af">vs</span> <span>${away.name}</span>`;
+            row.innerHTML = `<span>${home.name}</span> <span class="resultado_global" style="font-weight:bold;color:#9ca3af">vs</span> <span>${away.name}</span>`;
           }
 
           list.appendChild(row);
@@ -915,7 +915,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     const finish = () => {
       if (el) {
-        const resultEl = el.querySelector('.global__result');
+        const resultEl = el.querySelector('.resultado_global');
         if (resultEl) {
           resultEl.textContent = `${homeGoals} - ${awayGoals}`;
           resultEl.style.color = '#22c55e';

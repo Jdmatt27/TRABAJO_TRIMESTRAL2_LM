@@ -991,8 +991,7 @@ tbody tr:last-child td{
 }
 
 
-.rejilla_global { display:grid; grid-template-columns:repeat(auto-fill, minmax(340px, 1fr)); gap:20px; margin-top:24px; }
-.global__result { padding: 6px 14px; background: var(--surface2); border-radius: 10px; font-weight: 900; min-width: 80px; text-align: center; border: 1px solid var(--border); color: var(--accent); font-size: 1.1rem; }
+
 
 
 

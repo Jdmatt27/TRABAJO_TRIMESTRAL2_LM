@@ -34,15 +34,6 @@ function renderizarDetallesPartido(partido) {
         </button>
     `;
 
-    if (isFutbol) {
-        marketsHTML += `
-            <button class="market__btn" id="btnCuotaEmpate" data-cuota="${partido.cuotaEmpate}" data-nombre="Empate">
-                <span class="market__name">Empate</span>
-                <span class="market__odds">${partido.cuotaEmpate}</span>
-            </button>
-        `;
-    }
-
     marketsHTML += `
         <button class="market__btn" id="btnCuota2" data-cuota="${partido.cuota2}" data-nombre="${partido.equipo2}">
             <span class="market__name">${partido.equipo2}</span>
