@@ -1523,6 +1523,39 @@ document.addEventListener("DOMContentLoaded", () => {
           document.getElementById("vista-panel")?.scrollIntoView({ behavior: "smooth" });
         }, 120);
       }
+
+      // Lógica para autoseleccionar un partido desde la URL
+      const matchParam = params.get("match"); // Espera formato "homeIdx-awayIdx"
+
+      if (matchParam) {
+        setTimeout(() => {
+          const [homeIdx, awayIdx] = matchParam.split('-');
+          const teamSelector = document.getElementById('team-selector');
+          const viewTeamBtn = document.getElementById('view-team-btn');
+
+          if (teamSelector && viewTeamBtn) {
+            teamSelector.value = homeIdx;
+            showTeamMatchesList();
+
+            const matchSelector = document.getElementById('match-selector');
+            const viewMatchDetailBtn = document.getElementById('view-match-detail-btn');
+
+            if (matchSelector && viewMatchDetailBtn) {
+              // Buscar el partido exacto en las opciones
+              for (let i = 0; i < matchSelector.options.length; i++) {
+                const opt = matchSelector.options[i];
+                if (!opt.value) continue;
+                const m = JSON.parse(opt.value);
+                if (m.homeIdx == homeIdx && m.awayIdx == awayIdx) {
+                  matchSelector.selectedIndex = i;
+                  viewMatchDetailBtn.click();
+                  break;
+                }
+              }
+            }
+          }
+        }, 300);
+      }
     } else {
       showSelection();
     }
