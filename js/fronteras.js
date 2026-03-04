@@ -1377,18 +1377,21 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!container) return;
 
     const toast = document.createElement('div');
-    toast.className = `toast__item ${type === 'success' ? 'is__success' : type === 'error' ? 'is__error' : 'is__info'}`;
+    const typeClass = type === 'success' ? 'exito' : type === 'error' ? 'error' : 'info';
+    toast.className = `notificacion ${typeClass}`;
 
-    let icon = 'i';
-    if (type === 'success') icon = 'OK';
-    if (type === 'error') icon = '!';
+    let icon = 'ℹ️';
+    if (type === 'success') icon = '✅';
+    if (type === 'error') icon = '❌';
 
-    toast.innerHTML = `<span>${icon}</span><span>${message}</span>`;
+    toast.innerHTML = `<span style="font-size:1.2rem;">${icon}</span><span style="font-weight:600;">${message}</span>`;
     container.appendChild(toast);
 
     setTimeout(() => {
-      toast.style.animation = 'fadeOut 0.3s forwards';
-      setTimeout(() => toast.remove(), 150);
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateX(20px)';
+      toast.style.transition = 'all 0.3s ease-in-out';
+      setTimeout(() => toast.remove(), 300);
     }, 3000);
   }
 
