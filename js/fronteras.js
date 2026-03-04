@@ -3,10 +3,10 @@
 document.addEventListener("DOMContentLoaded", () => {
   const params = new URLSearchParams(location.search);
   if (params.get("view") === "seleccion") {
-    document.getElementById("vista-seleccion")?.classList.remove("is__hidden");
-    document.getElementById("vista-panel")?.classList.add("is__hidden");
-    document.getElementById("vista-equipo")?.classList.add("is__hidden");
-    document.getElementById("vista-global")?.classList.add("is__hidden");
+    document.getElementById("vista-seleccion")?.classList.remove("oculto");
+    document.getElementById("vista-panel")?.classList.add("oculto");
+    document.getElementById("vista-equipo")?.classList.add("oculto");
+    document.getElementById("vista-global")?.classList.add("oculto");
     history.replaceState({}, "", "frontera.html");
     return;
   }
@@ -129,38 +129,38 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function showSelection() {
-    if (selView) selView.classList.remove('is__hidden');
-    if (dashView) dashView.classList.add('is__hidden');
-    if (teamView) teamView.classList.add('is__hidden');
-    if (globalView) globalView.classList.add('is__hidden');
+    if (selView) selView.classList.remove('oculto');
+    if (dashView) dashView.classList.add('oculto');
+    if (teamView) teamView.classList.add('oculto');
+    if (globalView) globalView.classList.add('oculto');
     if (typeof updateCarousel === 'function') setTimeout(updateCarousel, 50);
   }
 
   function showDashboard() {
-    if (selView) selView.classList.add('is__hidden');
-    if (dashView) dashView.classList.remove('is__hidden');
-    if (teamView) teamView.classList.add('is__hidden');
-    if (globalView) globalView.classList.add('is__hidden');
+    if (selView) selView.classList.add('oculto');
+    if (dashView) dashView.classList.remove('oculto');
+    if (teamView) teamView.classList.add('oculto');
+    if (globalView) globalView.classList.add('oculto');
   }
 
   function showTeamView() {
-    if (selView) selView.classList.add('is__hidden');
-    if (dashView) dashView.classList.add('is__hidden');
-    if (teamView) teamView.classList.remove('is__hidden');
-    if (globalView) globalView.classList.add('is__hidden');
+    if (selView) selView.classList.add('oculto');
+    if (dashView) dashView.classList.add('oculto');
+    if (teamView) teamView.classList.remove('oculto');
+    if (globalView) globalView.classList.add('oculto');
   }
 
   function load(leagueKey, el) {
     if (!leagues[leagueKey]) return showToast('Liga no encontrada', 'error');
 
-    document.querySelectorAll('.league__item.is__selected').forEach(x => x.classList.remove('is__selected'));
+    document.querySelectorAll('.item_liga.is__selected').forEach(x => x.classList.remove('is__selected'));
     if (el && el.classList) el.classList.add('is__selected');
 
     current = leagueKey;
     localStorage.setItem('frontera_active_league', leagueKey);
     if (leagueTitle) leagueTitle.textContent = leagues[leagueKey].name;
 
-    const hero = document.querySelector('.hero__cover');
+    const hero = document.querySelector('.portada_hero');
     if (hero) {
       const isSubFolder = window.location.pathname.includes('/html/');
       const imgPrefix = isSubFolder ? '../Images/' : 'Images/';
@@ -483,9 +483,9 @@ document.addEventListener("DOMContentLoaded", () => {
         if (eventsEl) {
           if (matchesInProgress.includes(matchKey)) {
             if (simulateMatchDetailBtn) simulateMatchDetailBtn.textContent = 'Simulando...';
-            eventsEl.innerHTML = '<p class="text__muted text__center padding__box">Partido en curso en segundo plano...</p>';
+            eventsEl.innerHTML = '<p class="texto_tenue_pequeno texto_centrado padding__box">Partido en curso en segundo plano...</p>';
           } else {
-            eventsEl.innerHTML = '<p class="text__muted text__center padding__box">Este partido ya se ha jugado.</p>';
+            eventsEl.innerHTML = '<p class="texto_tenue_pequeno texto_centrado padding__box">Este partido ya se ha jugado.</p>';
           }
         }
       } else {
@@ -497,7 +497,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (awayScoreEl) awayScoreEl.textContent = '0';
         if (minuteEl) minuteEl.textContent = '0';
         if (progressEl) progressEl.style.width = '0%';
-        if (eventsEl) eventsEl.innerHTML = '<p class="text__muted">Haz click en "Simular Partido" para ver eventos</p>';
+        if (eventsEl) eventsEl.innerHTML = '<p class="texto_tenue_pequeno">Haz click en "Simular Partido" para ver eventos</p>';
       }
 
       if (detailView) detailView.style.display = 'block';
@@ -777,12 +777,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   if (btnGlobalView) {
     btnGlobalView.addEventListener('click', () => {
-      if (selView) selView.classList.add('is__hidden');
-      if (dashView) dashView.classList.add('is__hidden');
-      if (teamView) teamView.classList.add('is__hidden');
-      if (globalView) globalView.classList.remove('is__hidden');
+      if (selView) selView.classList.add('oculto');
+      if (dashView) dashView.classList.add('oculto');
+      if (teamView) teamView.classList.add('oculto');
+      if (globalView) globalView.classList.remove('oculto');
 
-      if (globalContainer) globalContainer.innerHTML = '<p class="text__center padding__box text__muted">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
+      if (globalContainer) globalContainer.innerHTML = '<p class="texto_centrado padding__box texto_tenue_pequeno">Pulsa "Iniciar Semana" para ver los enfrentamientos.</p>';
       if (btnGlobalStart) btnGlobalStart.style.display = 'inline-block';
       if (btnGlobalSim) btnGlobalSim.style.display = 'none';
       if (btnGlobalSimOne) btnGlobalSimOne.style.display = 'none';
@@ -856,7 +856,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const jornada = lFixtures[lWeek];
         const leagueCard = document.createElement('div');
-        leagueCard.className = 'card__box';
+        leagueCard.className = 'tarjeta';
         leagueCard.style.padding = '10px';
         leagueCard.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name} - Semana ${lWeek + 1}</h4>`;
 
@@ -913,7 +913,7 @@ document.addEventListener("DOMContentLoaded", () => {
         if (btnGlobalSim) btnGlobalSim.style.display = 'inline-block';
         if (btnGlobalSimOne) btnGlobalSimOne.style.display = 'inline-block';
       } else {
-        globalContainer.innerHTML = '<p class="text__center padding__box text__muted">Todas las ligas han finalizado.</p>';
+        globalContainer.innerHTML = '<p class="texto_centrado padding__box texto_tenue_pequeno">Todas las ligas han finalizado.</p>';
       }
     });
   }
@@ -1097,7 +1097,7 @@ document.addEventListener("DOMContentLoaded", () => {
         lTable.sort((a, b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf);
 
         const card = document.createElement('div');
-        card.className = 'card__box';
+        card.className = 'tarjeta';
         card.style.padding = '10px';
         card.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name}</h4>`;
 
@@ -1150,7 +1150,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
 
       if (sortedWeeks.length === 0) {
-        globalContainer.innerHTML = '<p class="text__center padding__box text__muted">No hay historial disponible.</p>';
+        globalContainer.innerHTML = '<p class="texto_centrado padding__box texto_tenue_pequeno">No hay historial disponible.</p>';
         return;
       }
 
@@ -1163,7 +1163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       sortedWeeks.forEach(week => {
         const btn = document.createElement('button');
-        btn.className = 'btn__small';
+        btn.className = 'boton_pequeno';
         btn.style.fontSize = '14px';
         btn.style.padding = '12px 20px';
         btn.textContent = `Semana ${week}`;
@@ -1206,7 +1206,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (weekMatches.length === 0) return;
 
             const card = document.createElement('div');
-            card.className = 'card__box';
+            card.className = 'tarjeta';
             card.style.padding = '10px';
             card.innerHTML = `<h4 style="margin:0 0 10px 0;color:#22c55e;text-align:center">${leagues[key].name}</h4>`;
 
@@ -1318,9 +1318,9 @@ document.addEventListener("DOMContentLoaded", () => {
   window.goBackToSelection = function () { showSelection(); };
   window.goBackToDashboard = function () { showDashboard(); };
 
-  const track = document.querySelector('.carousel__track');
-  const container = document.querySelector('.carousel__viewer');
-  const items = track ? Array.from(track.querySelectorAll('.league__item')) : [];
+  const track = document.querySelector('.pista_carrusel');
+  const container = document.querySelector('.visor_carrusel');
+  const items = track ? Array.from(track.querySelectorAll('.item_liga')) : [];
 
   let slideIndex = 2;
 
@@ -1360,7 +1360,7 @@ document.addEventListener("DOMContentLoaded", () => {
   window.addEventListener('resize', updateCarousel);
   setTimeout(updateCarousel, 50);
 
-  const allLeagueItems = document.querySelectorAll('.league__item[data-key]');
+  const allLeagueItems = document.querySelectorAll('.item_liga[data-key]');
   allLeagueItems.forEach(el => {
     el.addEventListener('click', () => {
       const key = el.dataset.key;
@@ -1371,7 +1371,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (carouselSection) {
     carouselSection.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') {
-        const activeItem = document.querySelector('.league__item.is__active');
+        const activeItem = document.querySelector('.item_liga.is__active');
         if (activeItem) {
           const key = activeItem.dataset.key;
           if (key) load(key, activeItem);
