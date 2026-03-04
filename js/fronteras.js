@@ -1319,7 +1319,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!track || !container || !items.length) return;
 
     const slideWidth = items[0].getBoundingClientRect().width;
-    const gap = 24;
+    const gap = 14;
     const totalSlideWidth = slideWidth + gap;
     const containerWidth = container.offsetWidth;
 
@@ -1329,8 +1329,8 @@ document.addEventListener("DOMContentLoaded", () => {
     track.style.transform = `translateX(${translateX}px)`;
 
     items.forEach((item, i) => {
-      if (i === slideIndex) item.classList.add('is__active');
-      else item.classList.remove('is__active');
+      if (i === slideIndex) item.classList.add('activo');
+      else item.classList.remove('activo');
     });
   }
 

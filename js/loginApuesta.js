@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 showToast('¡Bienvenido de nuevo!', 'success');
                 
                 setTimeout(() => {
-                    window.location.href = 'indexApuesta.html'; 
+                    window.location.href = '../index.html'; 
                 }, 1000);
 
             } else {
