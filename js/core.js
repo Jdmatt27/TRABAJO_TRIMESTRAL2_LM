@@ -178,15 +178,21 @@ function initSession() {
             }
         }
         
-        // Inyectar Mi Cuenta siempre, pero el Saldo solo en indexApuesta.html
+        // Inyectar Mi Cuenta siempre, pero el Saldo en las páginas de apuestas
         if (navLinks) {
             const hasProfile = navLinks.querySelector(`[href*="perfilApuesta.html"]`);
             if (!hasProfile) {
                 navLinks.insertAdjacentHTML('beforeend', `<a class="nav__link" href="${prefix}perfilApuesta.html">Mi Cuenta</a>`);
-                
-                // Solo añadir el enlace de saldo si es la página de apuestas
-                if (window.location.pathname.includes('indexApuesta.html')) {
-                    navLinks.insertAdjacentHTML('beforeend', `<a class="nav__link--saldo-usuario" href="${prefix}añadirSaldoApuesta.html">0,00€</a>`);
+            }
+            
+            const hasSaldo = navLinks.querySelector('.nav__link--saldo-usuario');
+            if (!hasSaldo) {
+                // Decodificamos el path para evitar problemas con la 'á' de páginaCuotasApuesta
+                const decodedPath = decodeURIComponent(window.location.pathname);
+                const isApuestaPage = decodedPath.includes('indexApuesta.html') || 
+                                    decodedPath.includes('páginaCuotasApuesta.html');
+                if (isApuestaPage) {
+                    navLinks.insertAdjacentHTML('beforeend', `<a class="nav__link--saldo-usuario" href="${prefix}añadirSaldoApuesta.html">0,00 €</a>`);
                 }
             }
         }

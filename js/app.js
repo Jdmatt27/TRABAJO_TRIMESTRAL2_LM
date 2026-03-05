@@ -371,12 +371,29 @@ function createMatchCard(p, isBig = false) {
             </div>
         </div>
         <div class="${isBig ? 'match__markets--big' : 'match__markets'}">
-            <button class="market__btn"><span class="market__name">${p.equipo1}</span><span class="market__odds">${p.cuota1}</span></button>
-            <button class="market__btn"><span class="market__name">Empate</span><span class="market__odds">${p.cuotaEmpate}</span></button>
-            <button class="market__btn"><span class="market__name">${p.equipo2}</span><span class="market__odds">${p.cuota2}</span></button>
+            <button class="market__btn" data-type="1"><span class="market__name">${p.equipo1}</span><span class="market__odds">${p.cuota1}</span></button>
+            <button class="market__btn" data-type="X"><span class="market__name">Empate</span><span class="market__odds">${p.cuotaEmpate}</span></button>
+            <button class="market__btn" data-type="2"><span class="market__name">${p.equipo2}</span><span class="market__odds">${p.cuota2}</span></button>
         </div>
     `;
-    card.onclick = (e) => {
+
+    const btns = card.querySelectorAll('.market__btn');
+    btns.forEach(btn => {
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            const type = btn.dataset.type;
+            
+            // Guardamos la elección y redirigimos sin marcar el botón aquí
+            sessionStorage.setItem('preSeleccion', type);
+            sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p));
+            
+            const isSub = window.location.pathname.includes('/html/');
+            window.location.href = isSub ? 'páginaCuotasApuesta.html' : 'html/páginaCuotasApuesta.html';
+        };
+    });
+
+    card.onclick = () => {
+        sessionStorage.removeItem('preSeleccion');
         sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p));
         const isSub = window.location.pathname.includes('/html/');
         window.location.href = isSub ? 'páginaCuotasApuesta.html' : 'html/páginaCuotasApuesta.html';

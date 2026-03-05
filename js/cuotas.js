@@ -7,7 +7,17 @@ document.addEventListener('configReady', () => {
 
     const partido = JSON.parse(partidoJson);
     renderizarDetallesPartido(partido);
-    configurarEventosApuesta(partido);
+
+    // Aplicar pre-selección si existe (ahora con el selector correcto)
+    const preSeleccion = sessionStorage.getItem('preSeleccion');
+    if (preSeleccion) {
+        const index = preSeleccion === '1' ? 0 : preSeleccion === 'X' ? 1 : 2;
+        const mainMarketBtns = document.querySelectorAll('.match__markets--big .market__btn');
+        if (mainMarketBtns[index]) {
+            mainMarketBtns[index].click();
+        }
+        sessionStorage.removeItem('preSeleccion');
+    }
 });
 
 function generarDescripcionAleatoria(partido) {
@@ -17,78 +27,112 @@ function generarDescripcionAleatoria(partido) {
         `Duelo de titanes en la ${partido.liga}. Las estadísticas favorecen ligeramente al equipo local, pero la magia del fútbol siempre guarda sorpresas bajo la manga.`,
         `Todo listo para el pitido inicial. Con las plantillas al completo, se espera un partido de ida y vuelta con muchas ocasiones de gol para ambos bandos.`
     ];
-
-    const lista = descripcionesFutbol;
-    return lista[Math.floor(Math.random() * lista.length)];
+    return descripcionesFutbol[Math.floor(Math.random() * descripcionesFutbol.length)];
 }
 
 function renderizarDetallesPartido(partido) {
     const card = document.querySelector('.match__card--cuotas');
-    const isFutbol = partido.deporte === 'Fútbol';
+    const extraContainer = document.getElementById('extraMarketsContainer');
+    if (!card) return;
 
-    // GENERADOR DE CUOTAS DINÁMICO
-    let marketsHTML = `
-        <button class="market__btn" id="btnCuota1" data-cuota="${partido.cuota1}" data-nombre="${partido.equipo1}">
-            <span class="market__name">${partido.equipo1}</span>
-            <span class="market__odds">${partido.cuota1}</span>
-        </button>
-    `;
+    // --- CÁLCULO DE CUOTAS EXTRA ---
+    const ratingSum = (window.getEquipoData(partido.equipo1).rating || 70) + (window.getEquipoData(partido.equipo2).rating || 70);
+    const probOver = 0.45 + (ratingSum - 140) * 0.002;
+    const cuotaOver = Math.max(1.40, (1 / Math.min(0.70, probOver)) * 0.90).toFixed(2);
+    const cuotaUnder = (1 / (1 - (0.90 / cuotaOver))).toFixed(2);
 
-    marketsHTML += `
-        <button class="market__btn" id="btnCuotaEmpate" data-cuota="${partido.cuotaEmpate}" data-nombre="Empate">
-            <span class="market__name">Empate</span>
-            <span class="market__odds">${partido.cuotaEmpate}</span>
-        </button>
-    `;
+    const ratingDiff = Math.abs((window.getEquipoData(partido.equipo1).rating || 70) - (window.getEquipoData(partido.equipo2).rating || 70));
+    const probBTTS = 0.60 - (ratingDiff * 0.01);
+    const cuotaBTTS_Si = Math.max(1.50, (1 / Math.min(0.65, probBTTS)) * 0.92).toFixed(2);
+    const cuotaBTTS_No = (1 / (1 - (0.92 / cuotaBTTS_Si))).toFixed(2);
 
-    marketsHTML += `
-        <button class="market__btn" id="btnCuota2" data-cuota="${partido.cuota2}" data-nombre="${partido.equipo2}">
-            <span class="market__name">${partido.equipo2}</span>
-            <span class="market__odds">${partido.cuota2}</span>
-        </button>
-    `;
-
-    if (card) {
-        card.innerHTML = `
-            <div class="match__header" style="background-image: url('${partido.fondo}');">
-                <div class="match__overlay"></div>
-                <div class="match__top">
-                    <span class="badge" style="display: flex; align-items: center; gap: 6px;">
-                        <img src="${partido.ligaLogo}" onerror="window.imgError(this)" style="width: 16px; height: 16px; object-fit: contain;">
-                        ${partido.liga}
-                    </span>
-                    <div style="display: flex; gap: 10px; align-items: center;">
-                        <a href="frontera.html?league=${partido.leagueKey}&match=${partido.matchKey}" class="pill" style="background: #001933; color: white; border: 1px solid #00a9e0; text-decoration: none; font-weight: bold; cursor: pointer; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                            <img src="../Fuentes/movistar.svg" style="width: 16px; height: 16px; object-fit: contain;">
-                            Ver Partido
-                        </a>
-                        <span class="pill">${partido.estado}</span>
-                    </div>
-                </div>
-
-                <div class="match__teams">
-                    <div class="team">
-                        ${partido.logo1 ? `<img src="${partido.logo1}" onerror="window.imgError(this)" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
-                        <span class="team__name">${partido.equipo1}</span>
-                    </div>
-
-                    <div class="match__time">
-                        <span class="time__big">${partido.hora}</span>
-                        <span class="date__small">${partido.fecha}</span>
-                    </div>
-
-                    <div class="team">
-                        ${partido.logo2 ? `<img src="${partido.logo2}" onerror="window.imgError(this)" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
-                        <span class="team__name">${partido.equipo2}</span>
-                    </div>
+    // 1. RENDERIZADO TARJETA PRINCIPAL (Como antes)
+    card.innerHTML = `
+        <div class="match__header" style="background-image: url('${partido.fondo}');">
+            <div class="match__overlay"></div>
+            <div class="match__top">
+                <span class="badge" style="display: flex; align-items: center; gap: 6px;">
+                    <img src="${partido.ligaLogo}" onerror="window.imgError(this)" style="width: 16px; height: 16px; object-fit: contain;">
+                    ${partido.liga}
+                </span>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <a href="frontera.html?league=${partido.leagueKey}&match=${partido.matchKey}" class="pill" style="background: #001933; color: white; border: 1px solid #00a9e0; text-decoration: none; font-weight: bold; cursor: pointer; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 4px 12px;">
+                        <img src="../Fuentes/movistar.svg" style="width: 16px; height: 16px; object-fit: contain;">
+                        Ver Partido
+                    </a>
+                    <span class="pill">${partido.estado}</span>
                 </div>
             </div>
 
-            <div class="match__markets--big">
-                ${marketsHTML}
+            <div class="match__teams">
+                <div class="team">
+                    ${partido.logo1 ? `<img src="${partido.logo1}" onerror="window.imgError(this)" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
+                    <span class="team__name">${partido.equipo1}</span>
+                </div>
+                <div class="match__time">
+                    <span class="time__big">${partido.hora}</span>
+                    <span class="date__small">${partido.fecha}</span>
+                </div>
+                <div class="team">
+                    ${partido.logo2 ? `<img src="${partido.logo2}" onerror="window.imgError(this)" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
+                    <span class="team__name">${partido.equipo2}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="match__markets--big">
+            <button class="market__btn" data-cuota="${partido.cuota1}" data-nombre="${partido.equipo1}">
+                <span class="market__name">${partido.equipo1}</span>
+                <span class="market__odds">${partido.cuota1}</span>
+            </button>
+            <button class="market__btn" data-cuota="${partido.cuotaEmpate}" data-nombre="Empate">
+                <span class="market__name">Empate</span>
+                <span class="market__odds">${partido.cuotaEmpate}</span>
+            </button>
+            <button class="market__btn" data-cuota="${partido.cuota2}" data-nombre="${partido.equipo2}">
+                <span class="market__name">${partido.equipo2}</span>
+                <span class="market__odds">${partido.cuota2}</span>
+            </button>
+        </div>
+    `;
+
+    // 2. RENDERIZADO MERCADOS EXTRA (Aparte)
+    if (extraContainer) {
+        extraContainer.innerHTML = `
+            <div class="match__markets--details" style="background: var(--panel); border-radius: var(--radius); border: 1px solid var(--line); margin-top: 20px;">
+                <div class="market-section">
+                    <h3 class="market-title">Total de Goles (Más/Menos 2.5)</h3>
+                    <div class="market-grid">
+                        <button class="market__btn" data-cuota="${cuotaOver}" data-nombre="Más de 2.5 Goles">
+                            <span class="market__name">Más 2.5</span>
+                            <span class="market__odds">${cuotaOver}</span>
+                        </button>
+                        <button class="market__btn" data-cuota="${cuotaUnder}" data-nombre="Menos de 2.5 Goles">
+                            <span class="market__name">Menos 2.5</span>
+                            <span class="market__odds">${cuotaUnder}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="market-section">
+                    <h3 class="market-title">¿Ambos Equipos Marcarán?</h3>
+                    <div class="market-grid">
+                        <button class="market__btn" data-cuota="${cuotaBTTS_Si}" data-nombre="Ambos Marcan: SÍ">
+                            <span class="market__name">SÍ</span>
+                            <span class="market__odds">${cuotaBTTS_Si}</span>
+                        </button>
+                        <button class="market__btn" data-cuota="${cuotaBTTS_No}" data-nombre="Ambos Marcan: NO">
+                            <span class="market__name">NO</span>
+                            <span class="market__odds">${cuotaBTTS_No}</span>
+                        </button>
+                    </div>
+                </div>
             </div>
         `;
     }
+
+    // Configurar eventos después de que todo el HTML esté en el DOM
+    configurarEventosApuesta(partido);
 
     const heroTitle = document.querySelector('.hero__title');
     const heroText = document.querySelector('.hero__text');
@@ -96,7 +140,7 @@ function renderizarDetallesPartido(partido) {
     
     if (heroTitle) heroTitle.textContent = `${partido.equipo1} VS ${partido.equipo2}`;
     if (heroText) heroText.textContent = generarDescripcionAleatoria(partido);
-    if (pill) pill.textContent = `Apuestas ${partido.deporte}`;
+    if (pill) pill.textContent = `Apuestas Fútbol`;
 }
 
 let seleccionActual = null;
@@ -131,7 +175,7 @@ function configurarEventosApuesta(partido) {
     };
 
     botonesMercado.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.onclick = () => {
             const wasActive = btn.classList.contains('active');
             botonesMercado.forEach(b => b.classList.remove('active'));
             
@@ -147,13 +191,13 @@ function configurarEventosApuesta(partido) {
                 if (amountLabel) amountLabel.innerHTML = `Apostar por: <span style="color:var(--neon2)">${seleccionActual.nombre}</span> (x${seleccionActual.cuota})`;
             }
             actualizarGanancias();
-        });
+        };
     });
 
     inputCantidad.addEventListener('input', actualizarGanancias);
 
     quickBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.onclick = () => {
             let currentVal = parseFloat(inputCantidad.value) || 0;
             const text = btn.textContent.trim();
             if (text === '+$1') inputCantidad.value = currentVal + 1;
@@ -161,10 +205,10 @@ function configurarEventosApuesta(partido) {
             else if (text === '+$100') inputCantidad.value = currentVal + 100;
             else if (text === 'Max') inputCantidad.value = window.obtenerSaldo();
             actualizarGanancias();
-        });
+        };
     });
 
-    btnApostar.addEventListener('click', () => {
+    btnApostar.onclick = () => {
         if (!seleccionActual) {
             window.showToast('Selecciona un resultado primero.');
             return;
@@ -185,12 +229,13 @@ function configurarEventosApuesta(partido) {
 
         if (localStorage.getItem('isLoggedIn') !== 'true') {
             window.showToast('Inicia sesión para apostar.');
-            setTimeout(() => window.location.href = 'loginApuesta.html', 1500);
+            const prefix = window.location.pathname.includes('/html/') ? '' : 'html/';
+            setTimeout(() => window.location.href = prefix + 'loginApuesta.html', 1500);
             return;
         }
 
         guardarApuesta(seleccionActual, cantidad, partido);
-    });
+    };
 }
 
 function guardarApuesta(seleccion, cantidad, partido) {
