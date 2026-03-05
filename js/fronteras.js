@@ -368,15 +368,23 @@ document.addEventListener("DOMContentLoaded", () => {
     return players[Math.floor(Math.random() * limit)];
   }
 
-  function generateMatchEvent(homeTeam, awayTeam, minute) {
+  function generateMatchEvent(homeTeam, awayTeam, minute, matchState = { homeYellows: 0, awayYellows: 0, homeReds: 0, awayReds: 0 }) {
     const homeRating = homeTeam.rating || 70;
     const awayRating = awayTeam.rating || 70;
-    const ratingDiff = homeRating - awayRating;
+    
+    // FACTOR DE PENALIZACIÓN POR TARJETAS: 
+    // - Amarilla: -5% capacidad (0.95)
+    // - Roja: -30% capacidad (0.70)
+    const homePenalty = Math.pow(0.95, matchState.homeYellows) * Math.pow(0.70, matchState.homeReds);
+    const awayPenalty = Math.pow(0.95, matchState.awayYellows) * Math.pow(0.70, matchState.awayReds);
+
+    const ratingDiff = (homeRating * homePenalty) - (awayRating * awayPenalty);
     const eventChance = Math.random();
 
     if (eventChance < 0.035) {
       let homeGoalProb = 0.5 + (ratingDiff * 0.01);
       homeGoalProb = Math.max(0.1, Math.min(0.9, homeGoalProb));
+      
       const scorer = Math.random() < homeGoalProb ? homeTeam : awayTeam;
       const player = getPlayerName(scorer.name, 'field');
       return { type: 'gol', team: scorer.name, player, minute };
@@ -520,6 +528,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let homeScore = 0, awayScore = 0;
       let minute = 1;
       const playerYellows = {};
+      const matchState = { homeYellows: 0, awayYellows: 0, homeReds: 0, awayReds: 0 };
 
       function simulateMinute() {
         if (minute > 90) {
@@ -556,18 +565,33 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         let delay = 100;
-        const event = generateMatchEvent(homeTeam, awayTeam, minute);
+        const event = generateMatchEvent(homeTeam, awayTeam, minute, matchState);
 
         if (event) {
           if (event.type === 'tarjeta_amarilla') {
+            const isHome = event.team === homeTeam.name;
             const key = event.team + event.player;
             playerYellows[key] = (playerYellows[key] || 0) + 1;
+            
+            if (isHome) matchState.homeYellows++;
+            else matchState.awayYellows++;
+
             if (playerYellows[key] === 2) {
               event.type = 'tarjeta_roja';
+              if (isHome) {
+                matchState.homeYellows -= 2; // Las dos amarillas se convierten en roja
+                matchState.homeReds++;
+              } else {
+                matchState.awayYellows -= 2;
+                matchState.awayReds++;
+              }
             }
             triggerCardAnimation(event.type, event.player, event.team);
             delay = 2000;
           } else if (event.type === 'tarjeta_roja') {
+            if (event.team === homeTeam.name) matchState.homeReds++;
+            else matchState.awayReds++;
+            
             triggerCardAnimation(event.type, event.player, event.team);
             delay = 2000;
           }

@@ -1,7 +1,7 @@
 document.addEventListener('configReady', () => {
     const partidoJson = sessionStorage.getItem('partidoSeleccionado');
     if (!partidoJson) {
-        window.location.href = '../index.html';
+        window.location.href = 'indexApuesta.html';
         return;
     }
 
@@ -222,7 +222,9 @@ function guardarApuesta(seleccion, cantidad, partido) {
     localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
 
     window.showToast('¡Apuesta registrada!', 'success');
-    setTimeout(() => {
-        window.location.href = '../index.html';
-    }, 1500);
+    btnApostar.disabled = false;
+    btnApostar.textContent = 'Apostar';
+    document.querySelector('.amount-input').value = '';
+    document.querySelectorAll('.market__btn').forEach(b => b.classList.remove('active'));
+    seleccionActual = null;
 }

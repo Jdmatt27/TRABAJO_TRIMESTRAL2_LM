@@ -326,12 +326,17 @@ function obtenerPartidos() {
         const league = window.LIGAS_CONFIG[key];
         const historial = JSON.parse(localStorage.getItem(`frontera_${key}_historial`) || '[]');
         const fixtures = generateFixtures(league.teams.length);
-        const currentWeek = Math.floor(historial.length / Math.floor(league.teams.length / 2));
+        
+        // Calculamos la jornada actual: total partidos jugados / partidos por jornada
+        const matchesPerWeek = Math.floor(league.teams.length / 2);
+        const currentWeek = Math.floor(historial.length / matchesPerWeek);
 
+        // Solo añadimos los partidos de la jornada actual/siguiente
         if (currentWeek < fixtures.length) {
             fixtures[currentWeek].forEach((m, idx) => {
                 const hName = league.teams[m.homeIdx], aName = league.teams[m.awayIdx];
                 const hData = window.getEquipoData(hName), aData = window.getEquipoData(aName);
+                
                 allMatches.push({
                     id: `match_${key}_w${currentWeek}_${idx}`,
                     leagueKey: key, week: currentWeek, matchKey: `${m.homeIdx}-${m.awayIdx}`,
@@ -344,6 +349,7 @@ function obtenerPartidos() {
             });
         }
     });
+    // Ordenamos por relevancia para el Hero y el Grid
     return allMatches.sort((a, b) => b.ratingTotal - a.ratingTotal);
 }
 
@@ -371,7 +377,6 @@ function createMatchCard(p, isBig = false) {
         </div>
     `;
     card.onclick = (e) => {
-        if (e.target.closest('.market__btn')) return; 
         sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p));
         const isSub = window.location.pathname.includes('/html/');
         window.location.href = isSub ? 'páginaCuotasApuesta.html' : 'html/páginaCuotasApuesta.html';
