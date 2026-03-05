@@ -1,3 +1,5 @@
+let seleccionesActivas = [];
+
 document.addEventListener('configReady', () => {
     const partidoJson = sessionStorage.getItem('partidoSeleccionado');
     if (!partidoJson) {
@@ -8,7 +10,7 @@ document.addEventListener('configReady', () => {
     const partido = JSON.parse(partidoJson);
     renderizarDetallesPartido(partido);
 
-    // Aplicar pre-selección si existe (ahora con el selector correcto)
+    // Aplicar pre-selección si existe
     const preSeleccion = sessionStorage.getItem('preSeleccion');
     if (preSeleccion) {
         const index = preSeleccion === '1' ? 0 : preSeleccion === 'X' ? 1 : 2;
@@ -20,22 +22,11 @@ document.addEventListener('configReady', () => {
     }
 });
 
-function generarDescripcionAleatoria(partido) {
-    const descripcionesFutbol = [
-        `El esperado encuentro entre ${partido.equipo1} y ${partido.equipo2} promete ser un duelo táctico sin precedentes. Ambos equipos llegan en un estado de forma envidiable.`,
-        `Rivalidad histórica en el campo. El ${partido.equipo1} busca redimirse ante su afición frente a un ${partido.equipo2} que no regalará ni un centímetro de césped.`,
-        `Duelo de titanes en la ${partido.liga}. Las estadísticas favorecen ligeramente al equipo local, pero la magia del fútbol siempre guarda sorpresas bajo la manga.`,
-        `Todo listo para el pitido inicial. Con las plantillas al completo, se espera un partido de ida y vuelta con muchas ocasiones de gol para ambos bandos.`
-    ];
-    return descripcionesFutbol[Math.floor(Math.random() * descripcionesFutbol.length)];
-}
-
 function renderizarDetallesPartido(partido) {
     const card = document.querySelector('.match__card--cuotas');
     const extraContainer = document.getElementById('extraMarketsContainer');
     if (!card) return;
 
-    // --- CÁLCULO DE CUOTAS EXTRA ---
     const ratingSum = (window.getEquipoData(partido.equipo1).rating || 70) + (window.getEquipoData(partido.equipo2).rating || 70);
     const probOver = 0.45 + (ratingSum - 140) * 0.002;
     const cuotaOver = Math.max(1.40, (1 / Math.min(0.70, probOver)) * 0.90).toFixed(2);
@@ -46,84 +37,59 @@ function renderizarDetallesPartido(partido) {
     const cuotaBTTS_Si = Math.max(1.50, (1 / Math.min(0.65, probBTTS)) * 0.92).toFixed(2);
     const cuotaBTTS_No = (1 / (1 - (0.92 / cuotaBTTS_Si))).toFixed(2);
 
-    // 1. RENDERIZADO TARJETA PRINCIPAL (Como antes)
     card.innerHTML = `
         <div class="match__header" style="background-image: url('${partido.fondo}');">
             <div class="match__overlay"></div>
             <div class="match__top">
-                <span class="badge" style="display: flex; align-items: center; gap: 6px;">
-                    <img src="${partido.ligaLogo}" onerror="window.imgError(this)" style="width: 16px; height: 16px; object-fit: contain;">
-                    ${partido.liga}
-                </span>
+                <span class="badge"><img src="${partido.ligaLogo}" onerror="window.imgError(this)" style="width:16px;height:16px;"> ${partido.liga}</span>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <a href="frontera.html?league=${partido.leagueKey}&match=${partido.matchKey}" class="pill" style="background: #001933; color: white; border: 1px solid #00a9e0; text-decoration: none; font-weight: bold; cursor: pointer; z-index: 10; display: flex; align-items: center; gap: 6px; padding: 4px 12px;">
-                        <img src="../Fuentes/movistar.svg" style="width: 16px; height: 16px; object-fit: contain;">
-                        Ver Partido
+                        <img src="../Fuentes/movistar.svg" style="width: 16px; height: 16px; object-fit: contain;"> Ver Partido
                     </a>
                     <span class="pill">${partido.estado}</span>
                 </div>
             </div>
-
             <div class="match__teams">
-                <div class="team">
-                    ${partido.logo1 ? `<img src="${partido.logo1}" onerror="window.imgError(this)" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
-                    <span class="team__name">${partido.equipo1}</span>
-                </div>
-                <div class="match__time">
-                    <span class="time__big">${partido.hora}</span>
-                    <span class="date__small">${partido.fecha}</span>
-                </div>
-                <div class="team">
-                    ${partido.logo2 ? `<img src="${partido.logo2}" onerror="window.imgError(this)" class="team__logo">` : '<div class="team__logo-placeholder"></div>'}
-                    <span class="team__name">${partido.equipo2}</span>
-                </div>
+                <div class="team"><img src="${partido.logo1}" onerror="window.imgError(this)" class="team__logo"><span class="team__name">${partido.equipo1}</span></div>
+                <div class="match__time"><span class="time__big">${partido.hora}</span><span class="date__small">${partido.fecha}</span></div>
+                <div class="team"><img src="${partido.logo2}" onerror="window.imgError(this)" class="team__logo"><span class="team__name">${partido.equipo2}</span></div>
             </div>
         </div>
-
         <div class="match__markets--big">
-            <button class="market__btn" data-cuota="${partido.cuota1}" data-nombre="${partido.equipo1}">
-                <span class="market__name">${partido.equipo1}</span>
-                <span class="market__odds">${partido.cuota1}</span>
+            <button class="market__btn" data-id="1" data-cuota="${partido.cuota1}" data-nombre="Gana ${partido.equipo1}">
+                <span class="market__name">${partido.equipo1}</span><span class="market__odds">${partido.cuota1}</span>
             </button>
-            <button class="market__btn" data-cuota="${partido.cuotaEmpate}" data-nombre="Empate">
-                <span class="market__name">Empate</span>
-                <span class="market__odds">${partido.cuotaEmpate}</span>
+            <button class="market__btn" data-id="X" data-cuota="${partido.cuotaEmpate}" data-nombre="Empate">
+                <span class="market__name">Empate</span><span class="market__odds">${partido.cuotaEmpate}</span>
             </button>
-            <button class="market__btn" data-cuota="${partido.cuota2}" data-nombre="${partido.equipo2}">
-                <span class="market__name">${partido.equipo2}</span>
-                <span class="market__odds">${partido.cuota2}</span>
+            <button class="market__btn" data-id="2" data-cuota="${partido.cuota2}" data-nombre="Gana ${partido.equipo2}">
+                <span class="market__name">${partido.equipo2}</span><span class="market__odds">${partido.cuota2}</span>
             </button>
         </div>
     `;
 
-    // 2. RENDERIZADO MERCADOS EXTRA (Aparte)
     if (extraContainer) {
         extraContainer.innerHTML = `
-            <div class="match__markets--details" style="background: var(--panel); border-radius: var(--radius); border: 1px solid var(--line); margin-top: 20px;">
+            <div class="match__markets--details">
                 <div class="market-section">
-                    <h3 class="market-title">Total de Goles (Más/Menos 2.5)</h3>
+                    <h3 class="market-title">Total de Goles (2.5)</h3>
                     <div class="market-grid">
-                        <button class="market__btn" data-cuota="${cuotaOver}" data-nombre="Más de 2.5 Goles">
-                            <span class="market__name">Más 2.5</span>
-                            <span class="market__odds">${cuotaOver}</span>
+                        <button class="market__btn" data-id="over" data-cuota="${cuotaOver}" data-nombre="Más de 2.5 Goles">
+                            <span class="market__name">Más 2.5</span><span class="market__odds">${cuotaOver}</span>
                         </button>
-                        <button class="market__btn" data-cuota="${cuotaUnder}" data-nombre="Menos de 2.5 Goles">
-                            <span class="market__name">Menos 2.5</span>
-                            <span class="market__odds">${cuotaUnder}</span>
+                        <button class="market__btn" data-id="under" data-cuota="${cuotaUnder}" data-nombre="Menos de 2.5 Goles">
+                            <span class="market__name">Menos 2.5</span><span class="market__odds">${cuotaUnder}</span>
                         </button>
                     </div>
                 </div>
-
                 <div class="market-section">
                     <h3 class="market-title">¿Ambos Equipos Marcarán?</h3>
                     <div class="market-grid">
-                        <button class="market__btn" data-cuota="${cuotaBTTS_Si}" data-nombre="Ambos Marcan: SÍ">
-                            <span class="market__name">SÍ</span>
-                            <span class="market__odds">${cuotaBTTS_Si}</span>
+                        <button class="market__btn" data-id="btts_si" data-cuota="${cuotaBTTS_Si}" data-nombre="Ambos Marcan: SÍ">
+                            <span class="market__name">SÍ</span><span class="market__odds">${cuotaBTTS_Si}</span>
                         </button>
-                        <button class="market__btn" data-cuota="${cuotaBTTS_No}" data-nombre="Ambos Marcan: NO">
-                            <span class="market__name">NO</span>
-                            <span class="market__odds">${cuotaBTTS_No}</span>
+                        <button class="market__btn" data-id="btts_no" data-cuota="${cuotaBTTS_No}" data-nombre="Ambos Marcan: NO">
+                            <span class="market__name">NO</span><span class="market__odds">${cuotaBTTS_No}</span>
                         </button>
                     </div>
                 </div>
@@ -131,145 +97,149 @@ function renderizarDetallesPartido(partido) {
         `;
     }
 
-    // Configurar eventos después de que todo el HTML esté en el DOM
-    configurarEventosApuesta(partido);
-
-    const heroTitle = document.querySelector('.hero__title');
-    const heroText = document.querySelector('.hero__text');
-    const pill = document.querySelector('.hero .pill');
-    
-    if (heroTitle) heroTitle.textContent = `${partido.equipo1} VS ${partido.equipo2}`;
-    if (heroText) heroText.textContent = generarDescripcionAleatoria(partido);
-    if (pill) pill.textContent = `Apuestas Fútbol`;
+    configurarEventosBoleto(partido);
+    const hTitle = document.querySelector('.hero__title');
+    if (hTitle) hTitle.textContent = `${partido.equipo1} vs ${partido.equipo2}`;
 }
 
-let seleccionActual = null;
+function configurarEventosBoleto(partido) {
+    const btns = document.querySelectorAll('.market__btn');
+    const inputAmount = document.getElementById('bet-amount');
+    const btnPlace = document.getElementById('btn-place-bet');
 
-function configurarEventosApuesta(partido) {
-    const botonesMercado = document.querySelectorAll('.market__btn');
-    const inputCantidad = document.querySelector('.amount-input');
-    const btnApostar = document.querySelector('.trade-btn');
-    const quickBtns = document.querySelectorAll('.q-btn');
-    const amountLabel = document.querySelector('.card__amount-section label');
+    btns.forEach(btn => {
+        btn.onclick = () => {
+            const id = btn.dataset.id;
+            const existingIdx = seleccionesActivas.findIndex(s => s.id === id);
 
-    let winningsDisplay = document.querySelector('.winnings-display');
-    if (!winningsDisplay) {
-        winningsDisplay = document.createElement('div');
-        winningsDisplay.className = 'winnings-display';
-        winningsDisplay.style.marginTop = '0.5rem';
-        winningsDisplay.style.fontSize = '0.9rem';
-        winningsDisplay.style.color = 'var(--muted)';
-        winningsDisplay.innerHTML = 'Ganancias potenciales: <span class="potential-val" style="color:var(--neon2); font-weight:bold;">0.00€</span>';
-        document.querySelector('.card__amount-section').appendChild(winningsDisplay);
+            if (existingIdx > -1) {
+                seleccionesActivas.splice(existingIdx, 1);
+                btn.classList.remove('active');
+            } else {
+                const group = getGroup(id);
+                const sameGroupIdx = seleccionesActivas.findIndex(s => getGroup(s.id) === group);
+                if (sameGroupIdx > -1) {
+                    const oldId = seleccionesActivas[sameGroupIdx].id;
+                    document.querySelector(`[data-id="${oldId}"]`)?.classList.remove('active');
+                    seleccionesActivas.splice(sameGroupIdx, 1);
+                }
+                seleccionesActivas.push({
+                    id,
+                    nombre: btn.dataset.nombre,
+                    cuota: parseFloat(btn.dataset.cuota),
+                    matchName: `${partido.equipo1} vs ${partido.equipo2}`
+                });
+                btn.classList.add('active');
+            }
+            actualizarBoletoUI();
+        };
+    });
+
+    if (inputAmount) inputAmount.oninput = actualizarWinnings;
+
+    document.querySelectorAll('.q-btn').forEach(qb => {
+        qb.onclick = () => {
+            const val = qb.dataset.val;
+            let current = parseFloat(inputAmount.value) || 0;
+            if (val === 'max') inputAmount.value = window.obtenerSaldo();
+            else inputAmount.value = current + parseFloat(val);
+            actualizarWinnings();
+        };
+    });
+
+    if (btnPlace) {
+        btnPlace.onclick = () => {
+            const amount = parseFloat(inputAmount.value);
+            const saldo = window.obtenerSaldo();
+            if (seleccionesActivas.length === 0) return window.showToast('Selecciona alguna cuota.');
+            if (isNaN(amount) || amount <= 0) return window.showToast('Importe no válido.');
+            if (amount > saldo) return window.showToast('Saldo insuficiente.');
+            if (localStorage.getItem('isLoggedIn') !== 'true') {
+                window.showToast('Inicia sesión para apostar.');
+                setTimeout(() => window.location.href = 'loginApuesta.html', 1500);
+                return;
+            }
+
+            const totalOdds = seleccionesActivas.reduce((acc, s) => acc * s.cuota, 1);
+            const nuevaApuesta = {
+                id: Date.now(),
+                matchId: partido.id,
+                leagueKey: partido.leagueKey,
+                matchKey: partido.matchKey,
+                equipo1: partido.equipo1,
+                equipo2: partido.equipo2,
+                tipo: 'combinada',
+                selecciones: JSON.parse(JSON.stringify(seleccionesActivas)),
+                cuotaTotal: totalOdds.toFixed(2),
+                importe: amount,
+                estado: 'pendiente',
+                timestamp: new Date().toISOString()
+            };
+
+            window.actualizarSaldo(saldo - amount);
+            const apuestas = JSON.parse(localStorage.getItem('furboBet_bets') || '[]');
+            apuestas.push(nuevaApuesta);
+            localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
+
+            window.showToast('¡Apuesta realizada!', 'success');
+            seleccionesActivas = [];
+            document.querySelectorAll('.market__btn').forEach(b => b.classList.remove('active'));
+            inputAmount.value = '';
+            actualizarBoletoUI();
+        };
+    }
+}
+
+function getGroup(id) {
+    if (['1', 'X', '2'].includes(id)) return 'ganador';
+    if (['over', 'under'].includes(id)) return 'goles';
+    if (['btts_si', 'btts_no'].includes(id)) return 'btts';
+    return 'otro';
+}
+
+function actualizarBoletoUI() {
+    const list = document.getElementById('selections-list');
+    const footer = document.getElementById('bet-slip-footer');
+    const count = document.getElementById('bet-count');
+    const oddsEl = document.getElementById('total-odds');
+    if (!list) return;
+
+    count.textContent = `${seleccionesActivas.length} Selecciones`;
+    if (seleccionesActivas.length === 0) {
+        list.innerHTML = '<p class="bet-slip__empty">Selecciona una cuota para empezar</p>';
+        footer.style.display = 'none';
+        return;
     }
 
-    const actualizarGanancias = () => {
-        const cantidad = parseFloat(inputCantidad.value) || 0;
-        const potentialVal = winningsDisplay.querySelector('.potential-val');
-        if (seleccionActual && cantidad > 0) {
-            const ganancias = cantidad * seleccionActual.cuota;
-            potentialVal.textContent = ganancias.toFixed(2) + '€';
-        } else {
-            potentialVal.textContent = '0.00€';
-        }
-    };
+    footer.style.display = 'block';
+    list.innerHTML = seleccionesActivas.map(s => `
+        <div class="selection-item">
+            <div class="selection-item__top">
+                <span class="selection-item__name">${s.nombre}</span>
+                <span class="selection-item__odds">${s.cuota.toFixed(2)}</span>
+            </div>
+            <div class="selection-item__match">${s.matchName}</div>
+            <button class="selection-item__remove" onclick="removerSeleccion('${s.id}')">×</button>
+        </div>
+    `).join('');
 
-    botonesMercado.forEach(btn => {
-        btn.onclick = () => {
-            const wasActive = btn.classList.contains('active');
-            botonesMercado.forEach(b => b.classList.remove('active'));
-            
-            if (wasActive) {
-                seleccionActual = null;
-                if (amountLabel) amountLabel.textContent = 'Cantidad a apostar';
-            } else {
-                btn.classList.add('active');
-                seleccionActual = {
-                    nombre: btn.dataset.nombre,
-                    cuota: parseFloat(btn.dataset.cuota)
-                };
-                if (amountLabel) amountLabel.innerHTML = `Apostar por: <span style="color:var(--neon2)">${seleccionActual.nombre}</span> (x${seleccionActual.cuota})`;
-            }
-            actualizarGanancias();
-        };
-    });
-
-    inputCantidad.addEventListener('input', actualizarGanancias);
-
-    quickBtns.forEach(btn => {
-        btn.onclick = () => {
-            let currentVal = parseFloat(inputCantidad.value) || 0;
-            const text = btn.textContent.trim();
-            if (text === '+$1') inputCantidad.value = currentVal + 1;
-            else if (text === '+$20') inputCantidad.value = currentVal + 20;
-            else if (text === '+$100') inputCantidad.value = currentVal + 100;
-            else if (text === 'Max') inputCantidad.value = window.obtenerSaldo();
-            actualizarGanancias();
-        };
-    });
-
-    btnApostar.onclick = () => {
-        if (!seleccionActual) {
-            window.showToast('Selecciona un resultado primero.');
-            return;
-        }
-
-        const cantidad = parseFloat(inputCantidad.value);
-        const saldoActual = window.obtenerSaldo();
-
-        if (isNaN(cantidad) || cantidad <= 0) {
-            window.showToast('Introduce una cantidad válida.');
-            return;
-        }
-
-        if (cantidad > saldoActual) {
-            window.showToast('No tienes suficiente saldo.');
-            return;
-        }
-
-        if (localStorage.getItem('isLoggedIn') !== 'true') {
-            window.showToast('Inicia sesión para apostar.');
-            const prefix = window.location.pathname.includes('/html/') ? '' : 'html/';
-            setTimeout(() => window.location.href = prefix + 'loginApuesta.html', 1500);
-            return;
-        }
-
-        guardarApuesta(seleccionActual, cantidad, partido);
-    };
+    const totalOdds = seleccionesActivas.reduce((acc, s) => acc * s.cuota, 1);
+    oddsEl.textContent = totalOdds.toFixed(2);
+    actualizarWinnings();
 }
 
-function guardarApuesta(seleccion, cantidad, partido) {
-    const btnApostar = document.querySelector('.trade-btn');
-    btnApostar.disabled = true;
-    btnApostar.textContent = 'Registrando...';
-
-    const saldoActual = window.obtenerSaldo();
-    window.actualizarSaldo(saldoActual - cantidad);
-
-    const nuevaApuesta = {
-        id: Date.now(),
-        matchId: partido.id,
-        leagueKey: partido.leagueKey,
-        week: partido.week,
-        matchKey: partido.matchKey,
-        equipo1: partido.equipo1,
-        equipo2: partido.equipo2,
-        eleccion: seleccion.nombre,
-        cuota: seleccion.cuota,
-        importe: cantidad,
-        estado: 'pendiente',
-        timestamp: new Date().toISOString()
-    };
-
-    const apuestasRaw = localStorage.getItem('furboBet_bets');
-    const apuestas = apuestasRaw ? JSON.parse(apuestasRaw) : [];
-    apuestas.push(nuevaApuesta);
-    localStorage.setItem('furboBet_bets', JSON.stringify(apuestas));
-
-    window.showToast('¡Apuesta registrada!', 'success');
-    btnApostar.disabled = false;
-    btnApostar.textContent = 'Apostar';
-    document.querySelector('.amount-input').value = '';
-    document.querySelectorAll('.market__btn').forEach(b => b.classList.remove('active'));
-    seleccionActual = null;
+function actualizarWinnings() {
+    const amount = parseFloat(document.getElementById('bet-amount')?.value) || 0;
+    const totalOdds = seleccionesActivas.reduce((acc, s) => acc * s.cuota, 1);
+    const winEl = document.getElementById('potential-win');
+    if (winEl) winEl.textContent = (amount * totalOdds).toFixed(2) + '€';
 }
+
+window.removerSeleccion = (id) => {
+    const idx = seleccionesActivas.findIndex(s => s.id === id);
+    if (idx > -1) {
+        seleccionesActivas.splice(idx, 1);
+        document.querySelector(`[data-id="${id}"]`)?.classList.remove('active');
+        actualizarBoletoUI();
+    }
+};

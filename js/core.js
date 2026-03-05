@@ -58,21 +58,36 @@ function validarApuestasGlobal() {
             if (histRaw) {
                 const historial = JSON.parse(histRaw);
                 const res = historial.find(h => 
-                    (String(h.homeIdx) === String(a.matchKey.split('-')[0]) && String(h.awayIdx) === String(a.matchKey.split('-')[1])) ||
-                    (h.equipoLocal === a.equipo1 && h.equipoVisitante === a.equipo2)
+                    (String(h.homeIdx) === String(a.matchKey.split('-')[0]) && String(h.awayIdx) === String(a.matchKey.split('-')[1]))
                 );
 
                 if (res) {
                     procesadas++;
-                    let ganador = 'Empate';
-                    if (res.homeG > res.awayG) ganador = a.equipo1;
-                    else if (res.awayG > res.homeG) ganador = a.equipo2;
-                    
-                    const gano = a.eleccion === ganador;
+                    let todasAcertadas = true;
+                    // Normalizar selecciones (soporta boleto nuevo y formato antiguo de Hero)
+                    const selecciones = a.selecciones || [{ id: (a.eleccion === a.equipo1 ? '1' : a.eleccion === a.equipo2 ? '2' : 'X'), nombre: a.eleccion }];
 
-                    if (gano) {
+                    selecciones.forEach(sel => {
+                        let acertada = false;
+                        const { homeG, awayG } = res;
+                        const totalG = homeG + awayG;
+
+                        switch(sel.id) {
+                            case '1': if (homeG > awayG) acertada = true; break;
+                            case 'X': if (homeG === awayG) acertada = true; break;
+                            case '2': if (awayG > homeG) acertada = true; break;
+                            case 'over': if (totalG > 2.5) acertada = true; break;
+                            case 'under': if (totalG < 2.5) acertada = true; break;
+                            case 'btts_si': if (homeG > 0 && awayG > 0) acertada = true; break;
+                            case 'btts_no': if (homeG === 0 || awayG === 0) acertada = true; break;
+                        }
+                        if (!acertada) todasAcertadas = false;
+                    });
+
+                    if (todasAcertadas) {
                         a.estado = 'ganada';
-                        const premio = (a.importe * a.cuota);
+                        const cuotaFinal = parseFloat(a.cuotaTotal || a.cuota);
+                        const premio = a.importe * cuotaFinal;
                         premioTotal += premio;
                         resultadosDetallados.push({ ...a, res, gano: true, premio });
                     } else {
