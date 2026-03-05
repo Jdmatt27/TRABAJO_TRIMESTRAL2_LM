@@ -2559,6 +2559,11 @@ tbody tr:last-child td{
     padding:10px;
   }
 
+  .flex_espacio_10{
+    display: flex;
+    flex-direction: column;
+  }
+
   .selector_equipo,
   .selector_partido{
     min-width:100%;
