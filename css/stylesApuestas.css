@@ -96,6 +96,44 @@
     border-color: #94a3b8;
 }
 
+[data-theme="light"] .btn:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: #0f172a;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .toast {
+    background: white;
+    color: #0f172a;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .toast__score {
+    background: #f1f5f9;
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .toast__header {
+    border-bottom-color: #f1f5f9;
+}
+
+[data-theme="light"] .hero__card,
+[data-theme="light"] .hero__card-login {
+    background: white;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.06);
+    border-color: #e2e8f0;
+}
+
+[data-theme="light"] .amount-input,
+[data-theme="light"] .currency {
+    color: #0f172a;
+}
+
+[data-theme="light"] .stat-card {
+    background: white;
+}
+
 /* ==========================================================================
    2. BASE STYLES
    ========================================================================== */

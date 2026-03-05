@@ -366,11 +366,12 @@ function createMatchCard(p, isBig = false) {
         </div>
         <div class="${isBig ? 'match__markets--big' : 'match__markets'}">
             <button class="market__btn"><span class="market__name">${p.equipo1}</span><span class="market__odds">${p.cuota1}</span></button>
+            <button class="market__btn"><span class="market__name">Empate</span><span class="market__odds">${p.cuotaEmpate}</span></button>
             <button class="market__btn"><span class="market__name">${p.equipo2}</span><span class="market__odds">${p.cuota2}</span></button>
         </div>
     `;
     card.onclick = (e) => {
-        if (e.target.closest('.market__btn')) return; // No redirigir si clickea el botón de cuota directamente
+        if (e.target.closest('.market__btn')) return; 
         sessionStorage.setItem('partidoSeleccionado', JSON.stringify(p));
         const isSub = window.location.pathname.includes('/html/');
         window.location.href = isSub ? 'páginaCuotasApuesta.html' : 'html/páginaCuotasApuesta.html';
@@ -436,7 +437,7 @@ function updateHero(p) {
 
     const btns = hero.querySelectorAll('.outcome-btn');
     const setupBtn = (btn, name, cuota) => {
-        btn.querySelector('.outcome-label').textContent = name === 'Empate' ? 'Empate' : `Gana ${name}`;
+        btn.querySelector('.outcome-label').textContent = `Gana ${name}`;
         btn.querySelector('.outcome-price').textContent = cuota;
         btn.onclick = (e) => {
             e.stopPropagation();
@@ -453,9 +454,6 @@ function updateHero(p) {
     };
     setupBtn(btns[0], p.equipo1, p.cuota1);
     setupBtn(btns[1], p.equipo2, p.cuota2);
-    
-    // Si hay un tercer botón para empate, lo configuramos (necesitaría ajuste en HTML si no existe)
-    if (btns[2]) setupBtn(btns[2], 'Empate', p.cuotaEmpate);
 }
 
 window.apostarHero = () => {
